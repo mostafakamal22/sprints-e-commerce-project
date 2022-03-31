@@ -7,8 +7,9 @@ const App = () => {
   return (
     <div>
       <Routes>
-        {/* test route (will be optimized later) */}
         <Route path='/' element={<Home />} />
+        <Route path='/login' element={<LoginPage />} />
+        <Route path='/register' element={<RegisterPage />} />
       </Routes>
     </div>
   )

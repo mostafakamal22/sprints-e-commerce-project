@@ -52,7 +52,7 @@ const Navbar = () => {
 
                             <div className="border-t border-gray-200 py-6 px-4 space-y-6">
                                 <div className="flow-root">
-                                    <Link to="/signin" className="-m-2 p-2 block font-medium text-gray-900">
+                                    <Link to="/login" className="-m-2 p-2 block font-medium text-gray-900">
                                         Sign in
                                     </Link>
                                 </div>
@@ -95,7 +95,7 @@ const Navbar = () => {
 
                             <div className="ml-auto flex items-center">
                                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                                    <Link to="signin" className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                                    <Link to="login" className="text-sm font-medium text-gray-700 hover:text-gray-800">
                                         Sign in
                                     </Link>
                                     <span className="h-6 w-px bg-gray-200" aria-hidden="true" />

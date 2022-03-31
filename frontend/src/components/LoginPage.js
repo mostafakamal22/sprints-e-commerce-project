@@ -1,5 +1,6 @@
 import { LockClosedIcon } from '@heroicons/react/solid'
 import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 const LoginPage = () => {
 
@@ -7,6 +8,8 @@ const LoginPage = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [rememberMe, setRememberMe] = useState(false)
+
+  const navigate = useNavigate()
 
   // Form On Submit
   const signIn = (e) => {
@@ -19,8 +22,12 @@ const LoginPage = () => {
     }
 
     /* To Do send data to API to login */
-    
+
     /* To Do set the app user state */
+
+    /* Navigate to home */
+    navigate('/')
+
     console.log(credentials)
   }
 
@@ -107,6 +114,9 @@ const LoginPage = () => {
                 </span>
                 Sign in
               </button>
+              <Link to='/register' type='button' className="mt-5 font-medium text-indigo-600 hover:text-indigo-500">
+                Need an account?
+              </Link>
             </div>
           </form>
         </div>

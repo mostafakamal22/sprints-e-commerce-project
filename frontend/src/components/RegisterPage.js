@@ -1,5 +1,6 @@
 import { LockClosedIcon } from '@heroicons/react/solid'
 import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 const RegisterPage = () => {
 
@@ -7,6 +8,8 @@ const RegisterPage = () => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    const navigate = useNavigate()
 
     // Form On Submit
     const registerUser = (e) => {
@@ -20,7 +23,9 @@ const RegisterPage = () => {
 
         /* To Do send data to API to register a new user */
 
-        /* To Do redirect to login page */
+        /*redirect to login page */
+        navigate('/login')
+
         console.log(userData)
     }
 
@@ -94,8 +99,14 @@ const RegisterPage = () => {
                                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                                     <LockClosedIcon className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" />
                                 </span>
-                                Sign in
+                                Create Account
                             </button>
+
+                            <p>
+                                Already registered? <Link to='/login' type='button' className="mt-5 font-medium text-indigo-600 hover:text-indigo-500">
+                                    Login
+                                </Link> instead.
+                            </p>
                         </div>
                     </form>
                 </div>
