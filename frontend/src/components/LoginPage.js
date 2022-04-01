@@ -1,8 +1,12 @@
 import { LockClosedIcon } from '@heroicons/react/solid'
-import { useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import UserContext from '../context/user/UserContext'
 
 const LoginPage = () => {
+
+  // Connect to context
+  const { state, loginUser } = useContext(UserContext)
 
   // Form States
   const [email, setEmail] = useState('')
@@ -10,6 +14,10 @@ const LoginPage = () => {
   const [rememberMe, setRememberMe] = useState(false)
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (state.authed) navigate('/')
+  }, [navigate, state])
 
   // Form On Submit
   const signIn = (e) => {
@@ -24,9 +32,15 @@ const LoginPage = () => {
     /* To Do send data to API to login */
 
     /* To Do set the app user state */
+    // Fake api response
+    const apiResponse = {
+      name: 'megz',
+      email: 'megz@gmail.com',
+      authToken: 'Baerer token',
+    }
 
-    /* Navigate to home */
-    navigate('/')
+    // Dispatch the action to the state
+    loginUser(apiResponse)
 
     console.log(credentials)
   }

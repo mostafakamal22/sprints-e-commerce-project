@@ -1,15 +1,21 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Dialog, Transition } from '@headlessui/react'
 import { MenuIcon, SearchIcon, ShoppingBagIcon, XIcon } from '@heroicons/react/outline'
+import UserContext from '../context/user/UserContext'
 
 const Navbar = () => {
 
     const [open, setOpen] = useState(false)
     const [searchShow, setSearchShow] = useState(false)
+    const { state, logoutUser } = useContext(UserContext)
 
     const toggleSearch = () => {
         setSearchShow(!searchShow)
+    }
+
+    const handleLogout = () => {
+        logoutUser()
     }
 
     return (
@@ -51,6 +57,11 @@ const Navbar = () => {
                             </div>
 
                             <div className="border-t border-gray-200 py-6 px-4 space-y-6">
+                                <div>
+                                    {/* User controls */}
+                                    <span className="sr-only">Open user menu</span>
+                                    <span className="">Welcome {state.name}</span>
+                                </div>
                                 <div className="flow-root">
                                     <Link to="/login" className="-m-2 p-2 block font-medium text-gray-900">
                                         Sign in
@@ -60,6 +71,11 @@ const Navbar = () => {
                                     <Link to="register" className="-m-2 p-2 block font-medium text-gray-900">
                                         Create account
                                     </Link>
+                                </div>
+                                <div className="flow-root">
+                                    <button onClick={() => handleLogout()} className="-m-2 p-2 block font-medium text-red-900">
+                                        Logout
+                                    </button>
                                 </div>
                             </div>
                         </div>
