@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router'
-import UserContext from '../context/user/UserContext'
-import Navbar from './Navbar'
+import UserContext from '../../../context/user/UserContext'
+import Navbar from '../../shared/Navbar'
 
 const Home = () => {
 

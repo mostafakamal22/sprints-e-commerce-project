@@ -2,7 +2,7 @@ import { Fragment, useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Dialog, Transition } from '@headlessui/react'
 import { MenuIcon, SearchIcon, ShoppingBagIcon, XIcon } from '@heroicons/react/outline'
-import UserContext from '../context/user/UserContext'
+import UserContext from '../../context/user/UserContext'
 
 const Navbar = () => {
 

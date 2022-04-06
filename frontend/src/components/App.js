@@ -1,8 +1,8 @@
 import { Routes, Route } from 'react-router'
 import { UserProvider } from '../context/user/UserContext';
-import Home from './Home';
-import LoginPage from './LoginPage';
-import RegisterPage from './RegisterPage';
+import LoginPage from './views/authorization/LoginPage';
+import RegisterPage from './views/authorization/RegisterPage';
+import Home from './views/main/Home';
 
 const App = () => {
   return (
