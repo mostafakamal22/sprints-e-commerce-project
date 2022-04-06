@@ -10,6 +10,6 @@ const {
 const { protect } = require('../middleware/authMiddleware')
 
 // Define all the routes for /api/users
-router.get('/', protect, testAPI)
+router.get('/', testAPI)
 
 module.exports = router

@@ -2,6 +2,7 @@ import { LockClosedIcon } from '@heroicons/react/solid'
 import { useContext, useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import UserContext from '../../../context/user/UserContext'
+import axios from 'axios'
 
 const LoginPage = () => {
 
@@ -20,7 +21,7 @@ const LoginPage = () => {
   }, [navigate, state])
 
   // Form On Submit
-  const signIn = (e) => {
+  const login = async (e) => {
     e.preventDefault()
 
     const credentials = {
@@ -30,8 +31,9 @@ const LoginPage = () => {
     }
 
     /* To Do send data to API to login */
+    const res = await axios.get('/api/users')
+    console.log(res.data)
 
-    /* To Do set the app user state */
     // Fake api response
     const apiResponse = {
       name: 'megz',
@@ -43,6 +45,11 @@ const LoginPage = () => {
     loginUser(apiResponse)
 
     console.log(credentials)
+  }
+
+  // Form on forgot username
+  const forgetUsername = () => {
+
   }
 
   // Form on forgot password
@@ -57,9 +64,9 @@ const LoginPage = () => {
           <div>
             <h2 className="text-center text-1xl">Logo</h2>
             {/* ToDo add logo*/}
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Log in to your account</h2>
           </div>
-          <form className="mt-8 space-y-6" onSubmit={(e) => signIn(e)} >
+          <form className="mt-8 space-y-6" onSubmit={(e) => login(e)} >
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="rounded-md shadow-sm -space-y-px">
               <div>
@@ -96,7 +103,7 @@ const LoginPage = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col items-start justify-between">
               <div className="flex items-center">
                 <input
                   id="remember-me"
@@ -111,26 +118,45 @@ const LoginPage = () => {
                 </label>
               </div>
 
-              <div className="text-sm">
-                <button onClick={() => forgetPassword()} type='button' className="font-medium text-indigo-600 hover:text-indigo-500">
-                  Forgot your password?
-                </button>
+              <div className='container p-4'>
+                <p className='text-center text-xs text-gray-500'>
+                  Remember to log out afterwards if you’re using a shared computer, for example in a library or school.
+                </p>
               </div>
+
             </div>
 
-            <div>
+            <div className='flex flex-col justify-center items-center'>
               <button
                 type="submit"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="group relative w-1/2 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                   <LockClosedIcon className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" />
                 </span>
-                Sign in
+                Log in
               </button>
-              <Link to='/register' type='button' className="mt-5 font-medium text-indigo-600 hover:text-indigo-500">
-                Need an account?
-              </Link>
+              <div className='flex flex-row space-x-5 p-4'>
+                <div className="text-sm">
+                  <button onClick={() => forgetUsername()} type='button' className="font-medium text-indigo-600 hover:text-indigo-500">
+                    Forgot Username?
+                  </button>
+                </div>
+                <div>
+                  <span className='text-gray-400'>|</span>
+                </div>
+                <div className="text-sm">
+                  <button onClick={() => forgetPassword()} type='button' className="font-medium text-indigo-600 hover:text-indigo-500">
+                    Forgot password?
+                  </button>
+                </div>
+              </div>
+              <div className='flex flex-col items-center space-y-0'>
+                <span>Don't have an account?</span>
+                <Link to='/register' type='button' className="mt-5 font-medium text-indigo-600 hover:text-indigo-500">
+                  Create one
+                </Link>
+              </div>
             </div>
           </form>
         </div>
