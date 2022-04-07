@@ -39,6 +39,14 @@ const RegisterPage = () => {
                         <h2 className="text-center text-1xl">Logo</h2>
                         {/* ToDo add logo*/}
                         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Create an account</h2>
+                        <div className='flex flex-col items-center mt-4 space-y-0'>
+                            <p>
+                                Already have an account?
+                            </p>
+                            <Link to='/login' type='button' className="mt-5 font-medium text-indigo-600 hover:text-indigo-500">
+                                Log in
+                            </Link>
+                        </div>
                     </div>
                     <form className="mt-8 space-y-6" onSubmit={(e) => registerUser(e)} >
                         <input type="hidden" name="remember" defaultValue="true" />
@@ -93,10 +101,10 @@ const RegisterPage = () => {
                             </div>
                         </div>
 
-                        <div>
+                        <div className='flex justify-center'>
                             <button
                                 type="submit"
-                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                className="group relative w-1/2 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
                                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                                     <LockClosedIcon className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" />
@@ -104,11 +112,6 @@ const RegisterPage = () => {
                                 Create Account
                             </button>
 
-                            <p>
-                                Already registered? <Link to='/login' type='button' className="mt-5 font-medium text-indigo-600 hover:text-indigo-500">
-                                    Login
-                                </Link> instead.
-                            </p>
                         </div>
                     </form>
                 </div>
