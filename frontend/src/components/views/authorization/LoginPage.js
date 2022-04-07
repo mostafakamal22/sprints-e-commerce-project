@@ -30,7 +30,7 @@ const LoginPage = () => {
       rememberMe,
     }
 
-    /* To Do send data to API to login */
+    /* Send data to API to login */
     const res = await axios.get('/api/users')
     console.log(res.data)
 

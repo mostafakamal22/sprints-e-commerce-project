@@ -1,4 +1,5 @@
 import { LockClosedIcon } from '@heroicons/react/solid'
+import axios from 'axios'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -21,7 +22,8 @@ const RegisterPage = () => {
             password,
         }
 
-        /* To Do send data to API to register a new user */
+        /* Send data to API to register a new user */
+        axios.post('/users/register', userData).then(res => console.log(res))
 
         /*redirect to login page */
         navigate('/login')
