@@ -32,5 +32,6 @@ export const useProtect = (target) => {
         } else {
             logoutUser()
         }
-    }, [navigate, target, loginUser, logoutUser])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [navigate, target])
 }
