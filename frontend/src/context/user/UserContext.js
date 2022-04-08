@@ -6,8 +6,17 @@ const UserContext = createContext()
 export const UserProvider = ({ children }) => {
 
     const initialState = {
-        name: '',
-        email: '',
+        user: {
+            firstName: '',
+            secondName: '',
+            email: '',
+            password: '',
+            address: '',
+            secondaryAddress: '',
+            phone: '',
+            userType: 0,
+            status: 0,
+        },
         authToken: '',
         authed: false,
     }
@@ -23,7 +32,7 @@ export const UserProvider = ({ children }) => {
             }
         })
     }
-    
+
     const logoutUser = () => {
         dispatch({
             type: 'LOGOUT_USER',
