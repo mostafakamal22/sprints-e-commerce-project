@@ -1,24 +1,23 @@
 import { LockClosedIcon } from '@heroicons/react/solid'
-import { useContext, useState, useEffect } from 'react'
+import { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import UserContext from '../../../context/user/UserContext'
 import axios from 'axios'
+import { useProtect } from '../../../hooks/useProtect'
 
 const LoginPage = () => {
 
-  // Connect to context
-  const { state, loginUser } = useContext(UserContext)
+  useProtect('/')
 
-  // Form States
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [rememberMe, setRememberMe] = useState(false)
+  // Connect to context
+  const { loginUser } = useContext(UserContext)
 
   const navigate = useNavigate()
 
-  useEffect(() => {
-    if (state.authed) navigate('/')
-  }, [navigate, state])
+  // Form States
+  const [loading, setLoading] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   // Form On Submit
   const login = async (e) => {
@@ -27,22 +26,34 @@ const LoginPage = () => {
     const credentials = {
       email,
       password,
-      rememberMe,
     }
 
     /* Send data to API to login */
-    const res = await axios.get('/api/users')
+    const res = await axios.get('/api/users', credentials)
     console.log(res.data)
 
     // Fake api response
     const apiResponse = {
-      name: 'megz',
-      email: 'megz@gmail.com',
+      user: {
+        firstName: 'firstName',
+        secondName: 'secondName',
+        email: 'email',
+        password: 'password',
+        address: 'address',
+        secondaryAddress: 'secondaryAddress',
+        phone: 'phone',
+        userType: 0,
+        status: 0,
+      },
       authToken: 'Baerer token',
     }
 
     // Dispatch the action to the state
     loginUser(apiResponse)
+
+    // Save token to local storage
+    localStorage.setItem('token', JSON.stringify(apiResponse.authToken))
+    navigate('/')
 
     console.log(credentials)
   }
@@ -104,20 +115,6 @@ const LoginPage = () => {
             </div>
 
             <div className="flex flex-col items-start justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                  value={rememberMe}
-                  onChange={() => setRememberMe(!rememberMe)}
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                  Remember me
-                </label>
-              </div>
-
               <div className='container p-4'>
                 <p className='text-center text-xs text-gray-500'>
                   Remember to log out afterwards if you’re using a shared computer, for example in a library or school.

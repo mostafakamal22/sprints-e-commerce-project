@@ -1,6 +1,6 @@
 import { LockClosedIcon } from '@heroicons/react/solid'
 import axios from 'axios'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import UserContext from '../../../context/user/UserContext'
 import { useProtect } from '../../../hooks/useProtect'
@@ -9,7 +9,7 @@ const RegisterPage = () => {
 
     useProtect('/')
 
-    const { state, loginUser } = useContext(UserContext)
+    const { loginUser } = useContext(UserContext)
     const navigate = useNavigate()
 
     // Form States
@@ -49,6 +49,7 @@ const RegisterPage = () => {
 
         /* Send data to API to register a new user */
         const res = await axios.get('/api/users', userData)
+        console.log(res)
 
         // Fake response
         const fakeRes = {

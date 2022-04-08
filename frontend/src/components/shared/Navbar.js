@@ -1,14 +1,45 @@
-import { Fragment, useContext, useState } from 'react'
+import { Fragment, useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Dialog, Transition } from '@headlessui/react'
 import { MenuIcon, SearchIcon, ShoppingBagIcon, XIcon } from '@heroicons/react/outline'
 import UserContext from '../../context/user/UserContext'
+import axios from 'axios'
 
 const Navbar = () => {
 
     const [open, setOpen] = useState(false)
     const [searchShow, setSearchShow] = useState(false)
-    const { state, logoutUser } = useContext(UserContext)
+    const { state, logoutUser, loginUser } = useContext(UserContext)
+
+    useEffect(() => {
+        const token = JSON.parse(localStorage.getItem('token'))
+
+        if (token) {
+            axios.get('/api/users').then(res => {
+                // Fake api response
+                const apiResponse = {
+                    user: {
+                        firstName: 'firstName',
+                        secondName: 'secondName',
+                        email: 'email',
+                        password: 'password',
+                        address: 'address',
+                        secondaryAddress: 'secondaryAddress',
+                        phone: 'phone',
+                        userType: 0,
+                        status: 0,
+                    },
+                    authToken: 'Baerer token',
+                }
+                loginUser(apiResponse)
+            })
+        } else {
+            logoutUser()
+        }
+
+
+
+    }, [loginUser])
 
     const toggleSearch = () => {
         setSearchShow(!searchShow)
@@ -61,23 +92,32 @@ const Navbar = () => {
                                 <div>
                                     {/* User controls */}
                                     <span className="sr-only">Open user menu</span>
-                                    <span className="">Welcome {state.name}</span>
+                                    <span className="">Welcome {state.authed ? state.user.firstName : 'Gamer'}</span>
                                 </div>
-                                <div className="flow-root">
-                                    <Link to="/login" className="-m-2 p-2 block font-medium text-gray-900">
-                                        Sign in
-                                    </Link>
-                                </div>
-                                <div className="flow-root">
-                                    <Link to="register" className="-m-2 p-2 block font-medium text-gray-900">
-                                        Create account
-                                    </Link>
-                                </div>
-                                <div className="flow-root">
-                                    <button onClick={() => handleLogout()} className="-m-2 p-2 block font-medium text-red-900">
-                                        Logout
-                                    </button>
-                                </div>
+                                {state.authed
+                                    ? (
+                                        <>
+                                            <div className="flow-root">
+                                                <button onClick={() => handleLogout()} className="-m-2 p-2 block font-medium text-red-900">
+                                                    Logout
+                                                </button>
+                                            </div>
+                                        </>
+                                    )
+                                    : (
+                                        <>
+                                            <div className="flow-root">
+                                                <Link to="/login" className="-m-2 p-2 block font-medium text-gray-900">
+                                                    Sign in
+                                                </Link>
+                                            </div>
+                                            <div className="flow-root">
+                                                <Link to="register" className="-m-2 p-2 block font-medium text-gray-900">
+                                                    Create account
+                                                </Link>
+                                            </div>
+                                        </>
+                                    )}
                             </div>
                         </div>
                     </Transition.Child>
