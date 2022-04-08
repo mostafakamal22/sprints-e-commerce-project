@@ -7,6 +7,7 @@ export const UserProvider = ({ children }) => {
 
     const initialState = {
         user: {
+            id: 123,
             firstName: '',
             secondName: '',
             email: '',

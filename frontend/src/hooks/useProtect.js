@@ -1,19 +1,23 @@
 import axios from "axios"
 import { useContext, useEffect } from "react"
-import { useNavigate } from "react-router"
+import { useLocation, useNavigate } from "react-router"
 import UserContext from "../context/user/UserContext"
 
-export const useProtect = (target) => {
+export const useProtect = () => {
     const navigate = useNavigate()
     const { loginUser, logoutUser } = useContext(UserContext)
+    const url = useLocation().pathname
 
     useEffect(() => {
-        const token = JSON.parse(localStorage.getItem('token'))
-        if (token) {
+        const checkToken = localStorage.getItem('token')
+        if (checkToken) {
+            const { id, authToken } = JSON.parse(checkToken)
+            console.log(`Local storage UID: ${id} authToken: ${authToken}`)
             axios.get('/api/users').then(res => {
                 // Fake api response
                 const apiResponse = {
                     user: {
+                        id: 123,
                         firstName: 'firstName',
                         secondName: 'secondName',
                         email: 'email',
@@ -27,11 +31,13 @@ export const useProtect = (target) => {
                     authToken: 'Baerer token',
                 }
                 loginUser(apiResponse)
-                navigate(target)
+                if (url === '/login' || url === '/register') {
+                    navigate('/')
+                }
             })
         } else {
             logoutUser()
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [navigate, target])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 }

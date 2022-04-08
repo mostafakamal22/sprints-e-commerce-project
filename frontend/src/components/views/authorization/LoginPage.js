@@ -3,11 +3,8 @@ import { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import UserContext from '../../../context/user/UserContext'
 import axios from 'axios'
-import { useProtect } from '../../../hooks/useProtect'
 
 const LoginPage = () => {
-
-  useProtect('/')
 
   // Connect to context
   const { loginUser } = useContext(UserContext)
@@ -37,6 +34,7 @@ const LoginPage = () => {
     // Fake api response
     const apiResponse = {
       user: {
+        id: 123,
         firstName: 'firstName',
         secondName: 'secondName',
         email: 'email',
@@ -54,7 +52,11 @@ const LoginPage = () => {
     loginUser(apiResponse)
 
     // Save token to local storage
-    localStorage.setItem('token', JSON.stringify(apiResponse.authToken))
+    const storage = {
+      id: apiResponse.user.id,
+      authToken: apiResponse.authToken
+    }
+    localStorage.setItem('token', JSON.stringify(storage))
     setLoading(false)
     navigate('/')
 

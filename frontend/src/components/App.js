@@ -1,9 +1,12 @@
 import { Routes, Route } from 'react-router'
+import { useProtect } from '../hooks/useProtect';
 import LoginPage from './views/authorization/LoginPage';
 import RegisterPage from './views/authorization/RegisterPage';
 import Home from './views/main/Home';
 
 const App = () => {
+
+  useProtect()
 
   return (
     <div>

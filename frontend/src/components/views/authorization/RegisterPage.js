@@ -3,11 +3,8 @@ import axios from 'axios'
 import { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import UserContext from '../../../context/user/UserContext'
-import { useProtect } from '../../../hooks/useProtect'
 
 const RegisterPage = () => {
-
-    useProtect('/')
 
     const { loginUser } = useContext(UserContext)
     const navigate = useNavigate()
@@ -36,6 +33,7 @@ const RegisterPage = () => {
         }
 
         const userData = {
+            id: 123,
             firstName,
             secondName,
             email,
@@ -57,7 +55,11 @@ const RegisterPage = () => {
             authToken: 'Baerer token',
         }
 
-        localStorage.setItem('token', JSON.stringify(fakeRes.authToken))
+        const storage = {
+            id: fakeRes.userData.id,
+            authToken: fakeRes.authToken
+          }
+          localStorage.setItem('token', JSON.stringify(storage))
         loginUser(fakeRes)
         setLoading(false)
 

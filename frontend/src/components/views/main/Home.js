@@ -1,9 +1,6 @@
-import { useProtect } from '../../../hooks/useProtect'
 import Navbar from '../../shared/Navbar'
 
 const Home = () => {
-
-    useProtect('/')
 
     return (
         <div className="bg-white">
