@@ -15,22 +15,39 @@ export const useProtect = () => {
             console.log(`Local storage UID: ${id} authToken: ${authToken}`)
             axios.get('/api/users').then(res => {
                 // Fake api response
-                const apiResponse = {
+                const userRes = {
                     user: {
                         id: 123,
-                        firstName: 'firstName',
+                        firstName: 'UserName',
                         secondName: 'secondName',
                         email: 'email',
                         password: 'password',
                         address: 'address',
                         secondaryAddress: 'secondaryAddress',
                         phone: 'phone',
-                        userType: 0,
+                        userType: 1,
                         status: 0,
                     },
                     authToken: 'Baerer token',
                 }
-                loginUser(apiResponse)
+
+                const adminRes = {
+                    user: {
+                        id: 123,
+                        firstName: 'AdminName',
+                        secondName: 'secondName',
+                        email: 'email',
+                        password: 'password',
+                        address: 'address',
+                        secondaryAddress: 'secondaryAddress',
+                        phone: 'phone',
+                        userType: 1,
+                        status: 0,
+                    },
+                    authToken: 'Baerer token',
+                }
+
+                loginUser(adminRes)
                 if (url === '/login' || url === '/register') {
                     navigate('/')
                 }

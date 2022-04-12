@@ -32,35 +32,49 @@ const LoginPage = () => {
     console.log(res.data)
 
     // Fake api response
-    const apiResponse = {
+    const userRes = {
       user: {
         id: 123,
-        firstName: 'firstName',
+        firstName: 'UserName',
         secondName: 'secondName',
         email: 'email',
         password: 'password',
         address: 'address',
         secondaryAddress: 'secondaryAddress',
         phone: 'phone',
-        userType: 0,
+        userType: 1,
+        status: 0,
+      },
+      authToken: 'Baerer token',
+    }
+
+    const adminRes = {
+      user: {
+        id: 123,
+        firstName: 'AdminName',
+        secondName: 'secondName',
+        email: 'email',
+        password: 'password',
+        address: 'address',
+        secondaryAddress: 'secondaryAddress',
+        phone: 'phone',
+        userType: 1,
         status: 0,
       },
       authToken: 'Baerer token',
     }
 
     // Dispatch the action to the state
-    loginUser(apiResponse)
+    loginUser(adminRes)
 
     // Save token to local storage
     const storage = {
-      id: apiResponse.user.id,
-      authToken: apiResponse.authToken
+      id: adminRes.user.id,
+      authToken: adminRes.authToken
     }
     localStorage.setItem('token', JSON.stringify(storage))
     setLoading(false)
     navigate('/')
-
-    console.log(credentials)
   }
 
   // Form on forgot username

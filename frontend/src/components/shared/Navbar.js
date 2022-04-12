@@ -61,13 +61,19 @@ const Navbar = () => {
                                 <div>
                                     {/* User controls */}
                                     <span className="sr-only">Open user menu</span>
-                                    <span className="">Welcome {state.authed ? state.user.firstName : 'Gamer'}</span>
+                                    <span className="font-medium">Welcome {state.authed ? state.user.firstName : 'Gamer'}</span>
                                 </div>
                                 {state.authed
                                     ? (
                                         <>
                                             <div className="flow-root">
-                                                <button onClick={() => handleLogout()} className="-m-2 p-2 block font-medium text-red-900">
+                                                {state.user.userType === 1 ? (
+                                                    <Link to='/admin/dashboard' className="p-2 block font-medium text-gray-900 hover:bg-gray-100">
+                                                        Admin Dashboard
+                                                    </Link>
+                                                )
+                                                    : (null)}
+                                                <button onClick={() => handleLogout()} className="p-2 w-full text-left block font-medium text-red-900 hover:bg-gray-100">
                                                     Logout
                                                 </button>
                                             </div>
