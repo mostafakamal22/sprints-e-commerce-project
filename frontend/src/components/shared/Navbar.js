@@ -1,7 +1,7 @@
 import { Fragment, useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Dialog, Transition } from '@headlessui/react'
-import { MenuIcon, SearchIcon, ShoppingBagIcon, XIcon } from '@heroicons/react/outline'
+import { MenuIcon, SearchIcon, ShoppingBagIcon, XIcon, HeartIcon } from '@heroicons/react/outline'
 import UserContext from '../../context/user/UserContext'
 
 const Navbar = () => {
@@ -63,6 +63,22 @@ const Navbar = () => {
                                     <span className="sr-only">Open user menu</span>
                                     <span className="font-medium">Welcome {state.authed ? state.user.firstName : 'Gamer'}</span>
                                 </div>
+
+                                <div className="flex flex-col">
+                                    <Link to="/shop" className="p-2 block font-medium text-gray-900 hover:bg-gray-100">
+                                        Shop
+                                    </Link>
+                                    <Link to="/discover" className="p-2 block font-medium text-gray-900 hover:bg-gray-100">
+                                        Discover
+                                    </Link>
+                                    <Link to="/help" className="p-2 block font-medium text-gray-900 hover:bg-gray-100">
+                                        Help
+                                    </Link>
+                                    <Link to="/special" className="p-2 block font-medium text-gray-900 hover:bg-gray-100">
+                                        Special Offers
+                                    </Link>
+                                </div>
+
                                 {state.authed
                                     ? (
                                         <>
@@ -83,7 +99,7 @@ const Navbar = () => {
                                         <>
                                             <div className="flow-root">
                                                 <Link to="/login" className="-m-2 p-2 block font-medium text-gray-900">
-                                                    Sign in
+                                                    Log in
                                                 </Link>
                                             </div>
                                             <div className="flow-root">
@@ -125,13 +141,28 @@ const Navbar = () => {
                                 </Link>
                             </div>
 
+                            <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-start lg:space-x-6 ml-6">
+                                <Link to="/shop" className="text-lg font-medium text-gray-700 hover:text-gray-900">
+                                    Shop
+                                </Link>
+                                <Link to="/discover" className="text-lg font-medium text-gray-700 hover:text-gray-900">
+                                    Discover
+                                </Link>
+                                <Link to="/help" className="text-lg font-medium text-gray-700 hover:text-gray-900">
+                                    Help
+                                </Link>
+                                <Link to="/special" className="text-lg font-medium text-gray-700 hover:text-gray-900">
+                                    Special Offers
+                                </Link>
+                            </div>
+
                             <div className="ml-auto flex items-center">
                                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                                    <Link to="login" className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                                    <Link to="/login" className="text-sm font-medium text-gray-700 hover:text-gray-800">
                                         Sign in
                                     </Link>
                                     <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
-                                    <Link to="register" className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                                    <Link to="/register" className="text-sm font-medium text-gray-700 hover:text-gray-800">
                                         Create account
                                     </Link>
                                 </div>
@@ -145,9 +176,21 @@ const Navbar = () => {
                                     {/* Todo add search functionality */}
                                 </div>
 
+                                {/* Wish List */}
+                                <div className="ml-4 flow-root lg:ml-6">
+                                    <Link to="/wishlist" className="group -m-2 p-2 flex items-center">
+                                        <HeartIcon
+                                            className="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500"
+                                            aria-hidden="true"
+                                        />
+                                        <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
+                                        <span className="sr-only">items in wishlist, view it</span>
+                                    </Link>
+                                </div>
+
                                 {/* Cart */}
                                 <div className="ml-4 flow-root lg:ml-6">
-                                    <Link to="checkout" className="group -m-2 p-2 flex items-center">
+                                    <Link to="/cart" className="group -m-2 p-2 flex items-center">
                                         <ShoppingBagIcon
                                             className="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500"
                                             aria-hidden="true"

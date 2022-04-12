@@ -25,7 +25,7 @@ export const useProtect = () => {
                         address: 'address',
                         secondaryAddress: 'secondaryAddress',
                         phone: 'phone',
-                        userType: 1,
+                        userType: 0,
                         status: 0,
                     },
                     authToken: 'Baerer token',
