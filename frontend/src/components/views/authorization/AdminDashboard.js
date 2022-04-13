@@ -1,8 +1,11 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import ToastContext from "../../../context/toast/ToastContext"
 import Navbar from "../../shared/Navbar"
 
 const AdminDashboard = () => {
+
+    const { showToast } = useContext(ToastContext)
 
     // Component States
     const [showAddForm, setShowAddForm] = useState(false)
@@ -16,11 +19,11 @@ const AdminDashboard = () => {
             console.log(res)
         })
     }, [])
-
+    
     const toggleAddForm = () => {
         setShowAddForm(!showAddForm)
     }
-
+    
     const addAdminUser = async (e) => {
         e.preventDefault()
 

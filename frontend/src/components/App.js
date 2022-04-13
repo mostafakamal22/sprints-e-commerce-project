@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router'
 import { useProtect } from '../hooks/useProtect';
+import Toast from './shared/Toast';
 import AdminDashboard from './views/authorization/AdminDashboard';
 import LoginPage from './views/authorization/LoginPage';
 import RegisterPage from './views/authorization/RegisterPage';
@@ -29,6 +30,9 @@ const App = () => {
         <Route path='/cart' element={<Cart />} />
         <Route path='/wishlist' element={<Wishlist />} />
       </Routes>
+      <div className="container toast-container relative grid place-items-center">
+        <Toast />
+      </div>
     </div>
   )
 }
