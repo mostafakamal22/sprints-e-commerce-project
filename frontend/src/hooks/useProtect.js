@@ -12,42 +12,17 @@ export const useProtect = () => {
         const checkToken = localStorage.getItem('token')
         if (checkToken) {
             const { id, authToken } = JSON.parse(checkToken)
-            console.log(`Local storage UID: ${id} authToken: ${authToken}`)
-            axios.get('/api/users').then(res => {
-                // Fake api response
-                const userRes = {
-                    user: {
-                        id: 123,
-                        firstName: 'UserName',
-                        secondName: 'secondName',
-                        email: 'email',
-                        password: 'password',
-                        address: 'address',
-                        secondaryAddress: 'secondaryAddress',
-                        phone: 'phone',
-                        userType: 0,
-                        status: 0,
-                    },
-                    authToken: 'Baerer token',
+            const config = {
+                method: 'get',
+                url: `https://mina-ecommerce1.herokuapp.com/api/users/${id}?token=${authToken}`,
+                headers: {}
+            }
+            axios(config).then(res => {
+                const userData = {
+                    user: res.data,
+                    authToken: authToken,
                 }
-
-                const adminRes = {
-                    user: {
-                        id: 123,
-                        firstName: 'AdminName',
-                        secondName: 'secondName',
-                        email: 'email',
-                        password: 'password',
-                        address: 'address',
-                        secondaryAddress: 'secondaryAddress',
-                        phone: 'phone',
-                        userType: 1,
-                        status: 0,
-                    },
-                    authToken: 'Baerer token',
-                }
-
-                loginUser(adminRes)
+                loginUser(userData)
                 if (url === '/login' || url === '/register') {
                     navigate('/')
                 }
