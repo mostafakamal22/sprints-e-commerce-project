@@ -5,8 +5,6 @@ const Toast = () => {
 
     const { state, hideToast } = useContext(ToastContext)
 
-
-
     useEffect(() => {
         const timeout = setTimeout(() => {
             hideToast()
@@ -14,7 +12,8 @@ const Toast = () => {
         return () => {
             clearTimeout(timeout)
         }
-    }, [hideToast])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state.isToast])
 
     return (
         <div id="toast" className={`${state.isToast ? 'translate-x-0' : 'translate-x-96'} transition relative flex items-center w-full max-w-xs p-4 mb-4 text-gray-700 bg-white rounded-lg shadow-md dark:text-gray-400 dark:bg-gray-800" role="alert`}>
