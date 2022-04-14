@@ -2,3 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 @tailwind variants;
+
+.toast-container {
+   position: absolute;
+   height: 5rem;
+   width: fit-content;
+   bottom: 2rem;
+   right: 2rem;
+   overflow: hidden;
+}
