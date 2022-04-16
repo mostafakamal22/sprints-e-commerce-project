@@ -12,6 +12,7 @@ const UsersTool = () => {
     const { showModal, hideModal } = useContext(ModalContext)
     const { state } = useContext(UserContext)
 
+    // func to load the updated data from the DB
     const loadData = async () => {
         setLoading(true)
         const config = {
@@ -28,6 +29,7 @@ const UsersTool = () => {
         loadData()
     }, [])
 
+    // submit the add form
     const handleAddSubmit = async (formStates) => {
 
         if (formStates.password !== formStates.passwordConfirm) {
@@ -63,6 +65,7 @@ const UsersTool = () => {
         setLoading(false)
     }
 
+    // open the modal and fill it's content 
     const modalAdd = () => {
         const Content = () => {
             return (
@@ -76,6 +79,7 @@ const UsersTool = () => {
         showModal(Content)
     }
 
+    // submit the edit form
     const handleEditSubmit = async (formStates) => {
         setLoading(true)
         const userData = {
@@ -107,6 +111,7 @@ const UsersTool = () => {
         setLoading(false)
     }
 
+    // opens edit modal
     const modalEdit = (id) => {
         const initStates = {
             id: users[id].id,

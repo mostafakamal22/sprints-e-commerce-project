@@ -12,6 +12,7 @@ const BranchesTool = () => {
   const { showModal, hideModal } = useContext(ModalContext)
   const { state } = useContext(UserContext)
 
+  // func to load the updated data from the DB
   const loadData = async () => {
     setLoading(true)
     const config = {
@@ -28,6 +29,7 @@ const BranchesTool = () => {
     loadData()
   }, [])
 
+  // submit the add form
   const handleAddSubmit = async (formStates) => {
 
     const branchData = {
@@ -54,7 +56,9 @@ const BranchesTool = () => {
     setLoading(false)
   }
 
+  // open the modal and fill it's content 
   const modalAdd = () => {
+    // modal content
     const Content = () => {
       return (
         <div className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">
@@ -67,6 +71,7 @@ const BranchesTool = () => {
     showModal(Content)
   }
 
+  // submit the edit form
   const handleEditSubmit = async (formStates) => {
     setLoading(true)
     const branchData = {
@@ -93,6 +98,7 @@ const BranchesTool = () => {
     setLoading(false)
   }
 
+  // opens edit modal
   const modalEdit = (id) => {
     const initStates = {
       id: branches[id].id,
@@ -103,6 +109,7 @@ const BranchesTool = () => {
       googleMaps: branches[id].googlemap,
     }
 
+    // fills the content for the edit modal
     const Content = () => {
       return (
         <div className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">
