@@ -1,6 +1,11 @@
 import { useContext, useEffect } from "react"
 import ToastContext from "../../context/toast/ToastContext"
 
+/**
+ * to use a toast notification just call showToast(msg: string, isSuccess: boolian) imported from toast context 
+ * toast closes after 3 sec and if the close button clicked 
+ */
+
 const Toast = () => {
 
     const { state, hideToast } = useContext(ToastContext)

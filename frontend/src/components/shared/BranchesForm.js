@@ -1,10 +1,16 @@
 import { LockClosedIcon } from '@heroicons/react/outline'
 import React, { useState } from 'react'
 
+/** 
+*   to use the form you must provide an onSubmit func to run once the form is submitted
+*   and if you want the form to have pre filled data provide it as initStates prope
+*/
+
 const BranchesForm = ({ onSubmit, initStates }) => {
 
     // Form States
     const [loading, setLoading] = useState(false)
+    // eslint-disable-next-line no-unused-vars
     const [id, setID] = useState(initStates ? initStates.id : '')
     const [name, setName] = useState(initStates ? initStates.name : '')
     const [phone1, setPhone1] = useState(initStates ? initStates.phone1 : '')
@@ -12,6 +18,7 @@ const BranchesForm = ({ onSubmit, initStates }) => {
     const [address, setAddress] = useState(initStates ? initStates.address : '')
     const [googleMaps, setGoogleMaps] = useState(initStates ? initStates.googleMaps : '')
 
+    // runs the onSubmit func provided as a prope giving it all the state so you can use it
     const handleSubmit = (e) => {
         e.preventDefault()
         setLoading(true)

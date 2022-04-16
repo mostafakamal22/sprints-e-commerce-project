@@ -1,10 +1,18 @@
 import { LockClosedIcon } from '@heroicons/react/outline'
 import React, { useState } from 'react'
 
+/** 
+*   to use the form you must provide an onSubmit func to run once the form is submitted
+*   and if you want the form to have pre filled data provide it as initStates prope
+*   also provide boolian admin value to set the user status and type controls
+*   also provide boolian withPW value to show or hide the password fields of the form
+*/
+
 const RegisterForm = ({ onSubmit, withPW, initStates, admin }) => {
 
     // Form States
     const [loading, setLoading] = useState(false)
+    // eslint-disable-next-line no-unused-vars
     const [id, setID] = useState(initStates ? initStates.id : '')
     const [firstName, setFirstName] = useState(initStates ? initStates.firstName : '')
     const [secondName, setSecondName] = useState(initStates ? initStates.secondName : '')
@@ -17,6 +25,7 @@ const RegisterForm = ({ onSubmit, withPW, initStates, admin }) => {
     const [userType, setUserType] = useState(initStates ? initStates.auth : 0)
     const [userStatus, setUserStatus] = useState(initStates ? initStates.status : 0)
 
+    // runs the onSubmit func provided as a prope
     const handleSubmit = (e) => {
         e.preventDefault()
         setLoading(true)
