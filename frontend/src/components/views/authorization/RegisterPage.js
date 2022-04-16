@@ -33,34 +33,38 @@ const RegisterPage = () => {
         }
 
         const userData = {
-            id: 123,
-            firstName,
-            secondName,
+            first: firstName,
+            last: secondName,
             email,
-            password,
-            address,
-            secondaryAddress,
+            pw: password,
+            address1: address,
+            address2: secondaryAddress,
             phone,
-            userType: 0,
+            auth: 0,
             status: 0,
         }
 
         /* Send data to API to register a new user */
-        const res = await axios.get('/api/users', userData)
-        console.log(res)
-
-        // Fake response
-        const fakeRes = {
-            userData,
-            authToken: 'Baerer token',
+        const config = {
+            method: 'post',
+            url: 'https://mina-ecommerce1.herokuapp.com/api/users',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: userData
         }
+        const res = await axios(config)
 
         const storage = {
-            id: fakeRes.userData.id,
-            authToken: fakeRes.authToken
-          }
-          localStorage.setItem('token', JSON.stringify(storage))
-        loginUser(fakeRes)
+            id: res.data.user.id,
+            authToken: res.data.token
+        }
+        localStorage.setItem('token', JSON.stringify(storage))
+        const data = {
+            user: res.data.user,
+            authToken: res.data.token,
+        }
+        loginUser(data)
         setLoading(false)
 
         /*redirect to Home page */

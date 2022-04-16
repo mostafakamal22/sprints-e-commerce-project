@@ -24,53 +24,31 @@ const LoginPage = () => {
 
     const credentials = {
       email,
-      password,
+      pw: password,
     }
 
     /* Send data to API to login */
-    const res = await axios.get('/api/users', credentials)
-    console.log(res.data)
-
-    // Fake api response
-    const userRes = {
-      user: {
-        id: 123,
-        firstName: 'UserName',
-        secondName: 'secondName',
-        email: 'email',
-        password: 'password',
-        address: 'address',
-        secondaryAddress: 'secondaryAddress',
-        phone: 'phone',
-        userType: 1,
-        status: 0,
+    const config = {
+      method: 'post',
+      url: 'https://mina-ecommerce1.herokuapp.com/api/users/login',
+      headers: {
+        'Content-Type': 'application/json'
       },
-      authToken: 'Baerer token',
+      data: credentials
     }
-
-    const adminRes = {
-      user: {
-        id: 123,
-        firstName: 'AdminName',
-        secondName: 'secondName',
-        email: 'email',
-        password: 'password',
-        address: 'address',
-        secondaryAddress: 'secondaryAddress',
-        phone: 'phone',
-        userType: 1,
-        status: 0,
-      },
-      authToken: 'Baerer token',
-    }
+    const res = await axios(config)
 
     // Dispatch the action to the state
-    loginUser(adminRes)
+    const data = {
+      user: res.data.user,
+      authToken: res.data.token,
+    }
+    loginUser(data)
 
     // Save token to local storage
     const storage = {
-      id: adminRes.user.id,
-      authToken: adminRes.authToken
+      id: res.data.user.id,
+      authToken: res.data.token
     }
     localStorage.setItem('token', JSON.stringify(storage))
     setLoading(false)

@@ -61,7 +61,7 @@ const Navbar = () => {
                                 <div>
                                     {/* User controls */}
                                     <span className="sr-only">Open user menu</span>
-                                    <span className="font-medium">Welcome {state.authed ? state.user.firstName : 'Gamer'}</span>
+                                    <span className="font-medium">Welcome {state.authed ? state.user.first_name : 'Gamer'}</span>
                                 </div>
 
                                 <div className="flex flex-col">
@@ -103,7 +103,7 @@ const Navbar = () => {
                                                 </Link>
                                             </div>
                                             <div className="flow-root">
-                                                <Link to="register" className="-m-2 p-2 block font-medium text-gray-900">
+                                                <Link to="/register" className="-m-2 p-2 block font-medium text-gray-900">
                                                     Create account
                                                 </Link>
                                             </div>

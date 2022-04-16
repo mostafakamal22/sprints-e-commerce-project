@@ -7,15 +7,15 @@ export const UserProvider = ({ children }) => {
 
     const initialState = {
         user: {
-            id: 123,
-            firstName: '',
-            secondName: '',
+            id: 0,
+            first_name: '',
+            last_name: '',
             email: '',
             password: '',
-            address: '',
-            secondaryAddress: '',
+            address1: '',
+            address2: '',
             phone: '',
-            userType: 0,
+            auth: 0,
             status: 0,
         },
         authToken: '',
