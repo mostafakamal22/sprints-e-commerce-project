@@ -57,7 +57,7 @@ export default function ProductCard() {
         <p className="text-base mb-2">$399.99</p>
         <Ripples className="!block" color={"rgba(253,128,36,.1)"} during={2200}>
           {/*add to cart*/}
-          <button className="block w-full p-3 bg-[rgb(253,128,36)] font-bold text-sm uppercase  border-2 border-[rgb(253,128,36)] rounded hover:bg-white focus:outline-none transition-all duration-500 ease-in-out">
+          <button className="block w-full p-3 bg-[rgb(253,128,36)] font-bold text-sm uppercase  border-2 border-[rgb(253,128,36)] rounded hover:bg-white focus:outline-none focus:outline-0 transition-all duration-500 ease-in-out">
             Add To Cart
           </button>
         </Ripples>
