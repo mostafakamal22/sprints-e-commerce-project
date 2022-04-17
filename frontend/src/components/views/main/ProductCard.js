@@ -2,6 +2,7 @@ import React from "react";
 //Ripples is lib. for ripples effects while clicking items
 import Ripples from "react-ripples";
 import { AiOutlineHeart } from "react-icons/ai";
+import { Link } from "react-router-dom";
 //AiFillHeart when added to cart
 
 export default function ProductCard() {
@@ -35,9 +36,9 @@ export default function ProductCard() {
 
       {/*product details*/}
       <div className="py-6 flex flex-col justify-center ">
-        <a href="#" className="text-lg mb-5 underline">
+        <Link to='/' className="text-lg mb-5 underline">
           Real Madrid – Santiago Bernabéu Stadium.
-        </a>
+        </Link>
 
         {/*product rating*/}
         <div className="flex items-center mb-2">

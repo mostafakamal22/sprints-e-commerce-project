@@ -1,39 +1,34 @@
-import axios from "axios"
-import { useContext, useEffect, useState } from "react"
-import ToastContext from "../../../context/toast/ToastContext"
+import { Route, Routes } from "react-router"
 import Navbar from "../../shared/Navbar"
-import AddAdminForm from "../adminTools/AddAdminForm"
+import AdminToolbar from "../adminTools/AdminToolbar"
+import { AnalyticsTool } from "../adminTools/AnalyticsTool"
+import BranchesTool from "../adminTools/BranchesTool"
+import BrandsTool from "../adminTools/BrandsTool"
+import CategoriesTool from "../adminTools/CategoriesTool"
+import CouponsTool from "../adminTools/CouponsTool"
+import ImagesTool from "../adminTools/ImagesTool"
+import OrdersTool from "../adminTools/OrdersTool"
+import ProductsTool from "../adminTools/ProductsTool"
+import UsersTool from "../adminTools/UsersTool"
 
 const AdminDashboard = () => {
-
-    const { showToast } = useContext(ToastContext)
-
-    // Component States
-    const [showAddForm, setShowAddForm] = useState(false)
-
-    useEffect(() => {
-        axios.get('/api/users').then(res => {
-            console.log(res)
-        })
-    }, [])
-
-    const toggleAddForm = () => {
-        setShowAddForm(!showAddForm)
-
-        // Test the toast here!!! (text, success or error >> true and false)
-        showToast('toast text message', true /* Success */)
-    }
 
     return (
         <div>
             <Navbar />
-            <h1 className="text-center text-3xl">Admin Dashboard</h1>
-            <div className="flex justify-center w-full mt-6">
-                <button onClick={() => toggleAddForm()} className="group relative w-1/2 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Add Admin
-                </button>
-            </div>
-            {showAddForm ? <AddAdminForm /> : null}
+            <h1 className="text-left text-3xl font-medium text-gray-700 px-6 pt-6">Admin Dashboard</h1>
+            <AdminToolbar />
+            <Routes>
+                <Route path="/users" element={<UsersTool />} />
+                <Route path="/branches" element={<BranchesTool />} />
+                <Route path="/brands" element={<BrandsTool />} />
+                <Route path="/coupons" element={<CouponsTool />} />
+                <Route path="/images" element={<ImagesTool />} />
+                <Route path="/orders" element={<OrdersTool />} />
+                <Route path="/products" element={<ProductsTool />} />
+                <Route path="/categories" element={<CategoriesTool />} />
+                <Route path="/analytics" element={<AnalyticsTool />} />
+            </Routes>
         </div>
     )
 }

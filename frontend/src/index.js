@@ -6,6 +6,7 @@ import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 import { UserProvider } from './context/user/UserContext';
 import { ToastProvider } from './context/toast/ToastContext';
+import { ModalProvider } from './context/modal/ModalContext';
 
 const container = document.getElementById('root')
 const root = ReactDOM.createRoot(container)
@@ -13,7 +14,9 @@ root.render(
     <BrowserRouter>
         <UserProvider>
             <ToastProvider>
-                <App />
+                <ModalProvider>
+                    <App />
+                </ModalProvider>
             </ToastProvider>
         </UserProvider>
     </BrowserRouter>

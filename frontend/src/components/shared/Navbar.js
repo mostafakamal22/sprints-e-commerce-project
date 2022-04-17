@@ -16,6 +16,7 @@ const Navbar = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('token')
+        // updates the app state
         logoutUser()
     }
 
@@ -83,7 +84,7 @@ const Navbar = () => {
                                     ? (
                                         <>
                                             <div className="flow-root">
-                                                {state.user.userType === 1 ? (
+                                                {state.user.auth === 1 ? (
                                                     <Link to='/admin/dashboard' className="p-2 block font-medium text-gray-900 hover:bg-gray-100">
                                                         Admin Dashboard
                                                     </Link>
@@ -141,31 +142,52 @@ const Navbar = () => {
                                 </Link>
                             </div>
 
-                            <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-start lg:space-x-6 ml-6">
-                                <Link to="/shop" className="text-lg font-medium text-gray-700 hover:text-gray-900">
-                                    Shop
-                                </Link>
-                                <Link to="/discover" className="text-lg font-medium text-gray-700 hover:text-gray-900">
-                                    Discover
-                                </Link>
-                                <Link to="/help" className="text-lg font-medium text-gray-700 hover:text-gray-900">
-                                    Help
-                                </Link>
-                                <Link to="/special" className="text-lg font-medium text-gray-700 hover:text-gray-900">
-                                    Special Offers
-                                </Link>
+                            <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-between ml-6">
+                                <div className='lg:space-x-6'>
+                                    <Link to="/shop" className="text-lg font-medium text-gray-700 hover:text-gray-900">
+                                        Shop
+                                    </Link>
+                                    <Link to="/discover" className="text-lg font-medium text-gray-700 hover:text-gray-900">
+                                        Discover
+                                    </Link>
+                                    <Link to="/help" className="text-lg font-medium text-gray-700 hover:text-gray-900">
+                                        Help
+                                    </Link>
+                                    <Link to="/special" className="text-lg font-medium text-gray-700 hover:text-gray-900">
+                                        Special Offers
+                                    </Link>
+                                </div>
+                                {state.authed
+                                    ? (
+                                        <div className="flex w-fit">
+                                            {state.user.auth === 1 ? (
+                                                <Link to='/admin/dashboard' className=" whitespace-nowrap p-2 block font-medium text-gray-900 hover:bg-gray-100">
+                                                    Admin Dashboard
+                                                </Link>
+                                            )
+                                                : (null)}
+                                            <button onClick={() => handleLogout()} className="p-2 w-full text-left block font-medium text-red-900 hover:bg-gray-100">
+                                                Logout
+                                            </button>
+                                        </div>
+                                    )
+                                    : (
+                                        <div className="flex w-fit">
+                                            <div className="flow-root">
+                                                <Link to="/login" className="m-2 p-2 block font-medium text-gray-900">
+                                                    Log in
+                                                </Link>
+                                            </div>
+                                            <div className="flow-root">
+                                                <Link to="/register" className="m-2 p-2 block font-medium text-gray-900">
+                                                    Create account
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    )}
                             </div>
 
                             <div className="ml-auto flex items-center">
-                                <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                                    <Link to="/login" className="text-sm font-medium text-gray-700 hover:text-gray-800">
-                                        Sign in
-                                    </Link>
-                                    <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
-                                    <Link to="/register" className="text-sm font-medium text-gray-700 hover:text-gray-800">
-                                        Create account
-                                    </Link>
-                                </div>
 
                                 {/* Search */}
                                 <div className="flex lg:ml-6">
