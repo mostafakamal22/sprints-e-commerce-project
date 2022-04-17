@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { MdAdd, MdDelete, MdEdit } from 'react-icons/md'
 import ModalContext from '../../../context/modal/ModalContext'
 import UserContext from '../../../context/user/UserContext'
-import BranchesForm from '../../shared/BranchesForm'
+import BranchesForm from '../../shared/forms/BranchesForm'
 
 const BranchesTool = () => {
 
