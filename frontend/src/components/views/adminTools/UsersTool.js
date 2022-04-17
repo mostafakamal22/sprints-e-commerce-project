@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { MdAdd, MdDelete, MdEdit } from 'react-icons/md'
 import ModalContext from '../../../context/modal/ModalContext'
 import UserContext from '../../../context/user/UserContext'
-import RegisterForm from '../../shared/RegisterForm'
+import RegisterForm from '../../shared/forms/RegisterForm'
 
 const UsersTool = () => {
 
