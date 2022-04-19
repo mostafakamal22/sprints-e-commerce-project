@@ -4,21 +4,15 @@ import { BrowserRouter } from 'react-router-dom';
 import './styles/index.css';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
-import { UserProvider } from './context/user/UserContext';
-import { ToastProvider } from './context/toast/ToastContext';
-import { ModalProvider } from './context/modal/ModalContext';
+import { StoreProvider } from './context/store/StoreContext';
 
 const container = document.getElementById('root')
 const root = ReactDOM.createRoot(container)
 root.render(
     <BrowserRouter>
-        <UserProvider>
-            <ToastProvider>
-                <ModalProvider>
-                    <App />
-                </ModalProvider>
-            </ToastProvider>
-        </UserProvider>
+        <StoreProvider>
+            <App />
+        </StoreProvider>
     </BrowserRouter>
 )
 

@@ -1,14 +1,14 @@
 import axios from "axios";
 import { useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
-import UserContext from "../context/user/UserContext";
+import StoreContext from "../context/store/StoreContext";
 
 export const useProtect = () => {
     const navigate = useNavigate();
-    const { loginUser, logoutUser } = useContext(UserContext);
+    const { loginUser, logoutUser, setAppData, setLoading } = useContext(StoreContext);
     const url = useLocation().pathname;
 
-    useEffect(() => {
+    const checkAuth = () => {
         const checkToken = localStorage.getItem('token')
         if (checkToken) {
             const { id, authToken } = JSON.parse(checkToken)
@@ -20,7 +20,7 @@ export const useProtect = () => {
             axios(config).then(res => {
                 const userData = {
                     user: res.data,
-                    authToken: authToken,
+                    token: authToken,
                 }
                 loginUser(userData)
                 if (url === '/login' || url === '/register') {
@@ -30,6 +30,16 @@ export const useProtect = () => {
         } else {
             logoutUser()
         }
+    }
+
+    useEffect(() => {
+        setLoading(true)
+
+        checkAuth()
+        setAppData().then(() => {
+            setLoading(false)
+        })
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 };

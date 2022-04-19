@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import ModalContext from '../../context/modal/ModalContext'
+import StoreContext from '../../context/store/StoreContext'
 
 /**
  * to use a modal you just call showModal(Content) giving it the content to be displayed inside as a functional component
@@ -9,10 +9,10 @@ import ModalContext from '../../context/modal/ModalContext'
 const Modal = () => {
 
     // to manage the state of the app for modals
-    const { state, hideModal } = useContext(ModalContext)
+    const { store, hideModal } = useContext(StoreContext)
 
     // hide it in case we close it
-    if (!state.isModal) {
+    if (!store.modal.isModal) {
         return
     }
 
@@ -29,7 +29,7 @@ const Modal = () => {
                             </button>
                         </div>
                         {/* gets the content you put at the app state */}
-                        {<state.content />}
+                        {<store.modal.content />}
                     </div>
                 </div>
             </div>

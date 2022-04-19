@@ -1,33 +1,12 @@
 import axios from 'axios'
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { MdAdd, MdDelete, MdEdit } from 'react-icons/md'
-import ModalContext from '../../../context/modal/ModalContext'
-import UserContext from '../../../context/user/UserContext'
-import BranchesForm from '../../shared/BranchesForm'
+import StoreContext from '../../../context/store/StoreContext'
+import BranchesForm from '../../shared/forms/BranchesForm'
 
 const BranchesTool = () => {
 
-  const [branches, setBranches] = useState([])
-  const [loading, setLoading] = useState(true)
-  const { showModal, hideModal } = useContext(ModalContext)
-  const { state } = useContext(UserContext)
-
-  // func to load the updated data from the DB
-  const loadData = async () => {
-    setLoading(true)
-    const config = {
-      method: 'get',
-      url: 'https://mina-ecommerce1.herokuapp.com/api/branches',
-    }
-    axios(config).then(res => {
-      setBranches(res.data)
-      setLoading(false)
-    })
-  }
-
-  useEffect(() => {
-    loadData()
-  }, [])
+  const { store, setLoading, showModal, hideModal, setAppData } = useContext(StoreContext)
 
   // submit the add form
   const handleAddSubmit = async (formStates) => {
@@ -43,7 +22,7 @@ const BranchesTool = () => {
     /* Send data to API to register a new user */
     const config = {
       method: 'post',
-      url: `https://mina-ecommerce1.herokuapp.com/api/branches?token=${state.authToken}`,
+      url: `https://mina-ecommerce1.herokuapp.com/api/branches?token=${store.auth.token}`,
       headers: {
         'Content-Type': 'application/json'
       },
@@ -52,7 +31,7 @@ const BranchesTool = () => {
     const res = await axios(config)
     console.log(res)
     hideModal()
-    loadData()
+    setAppData()
     setLoading(false)
   }
 
@@ -85,7 +64,7 @@ const BranchesTool = () => {
     /* Send data to API to register a new user */
     const config = {
       method: 'put',
-      url: `https://mina-ecommerce1.herokuapp.com/api/branches/${formStates.id}?token=${state.authToken}`,
+      url: `https://mina-ecommerce1.herokuapp.com/api/branches/${formStates.id}?token=${store.auth.token}`,
       headers: {
         'Content-Type': 'application/json'
       },
@@ -94,19 +73,19 @@ const BranchesTool = () => {
     const res = await axios(config)
     console.log(res)
     hideModal()
-    loadData()
+    setAppData()
     setLoading(false)
   }
 
   // opens edit modal
   const modalEdit = (id) => {
     const initStates = {
-      id: branches[id].id,
-      name: branches[id].name,
-      address: branches[id].address,
-      phone1: branches[id].phone1,
-      phone2: branches[id].phone2,
-      googleMaps: branches[id].googlemap,
+      id: store.appData.branches[id].id,
+      name: store.appData.branches[id].name,
+      address: store.appData.branches[id].address,
+      phone1: store.appData.branches[id].phone1,
+      phone2: store.appData.branches[id].phone2,
+      googleMaps: store.appData.branches[id].googlemap,
     }
 
     // fills the content for the edit modal
@@ -124,20 +103,21 @@ const BranchesTool = () => {
 
   const handleDelete = async (id) => {
     setLoading(true)
-    const bid = branches[id].id
+    const bid = store.appData.branches[id].id
     /* Send data to API to register a new user */
     const config = {
       method: 'delete',
-      url: `https://mina-ecommerce1.herokuapp.com/api/branches/${bid}?token=${state.authToken}`,
+      url: `https://mina-ecommerce1.herokuapp.com/api/branches/${bid}?token=${store.auth.token}`,
     }
     const res = await axios(config)
-    loadData()
+    setAppData()
+    setLoading(false)
     console.log(res)
   }
 
   return (
     <>
-      {loading
+      {store.loading
         ? (
           <div className="text-center">
             <svg role="status" className="inline mr-2 w-80 h-80 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -158,15 +138,7 @@ const BranchesTool = () => {
                       <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path></svg>
                     </div>
                     <input
-                      onChange={(e) => {
-                        const main = [...branches]
-                        if (e.target.value !== '') {
-                          setBranches(prev => prev.filter(branch => branch.name.includes(e.target.value)))
-                        } else {
-                          setBranches(main)
-                        }
-
-                      }}
+                      onChange={(e) => console.log(e.target.value)}
                       type="text"
                       id="table-search"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items" />
@@ -190,7 +162,7 @@ const BranchesTool = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {branches.map((branch, i) => (
+                    {store.appData.branches.map((branch, i) => (
                       <tr key={i} className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                           {branch.name}

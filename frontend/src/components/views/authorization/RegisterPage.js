@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import UserContext from '../../../context/user/UserContext'
-import RegisterForm from '../../shared/RegisterForm'
+import RegisterForm from '../../shared/forms/RegisterForm'
 
 const RegisterPage = () => {
 

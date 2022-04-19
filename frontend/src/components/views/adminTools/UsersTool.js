@@ -1,16 +1,13 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
 import { MdAdd, MdDelete, MdEdit } from 'react-icons/md'
-import ModalContext from '../../../context/modal/ModalContext'
-import UserContext from '../../../context/user/UserContext'
-import RegisterForm from '../../shared/RegisterForm'
+import StoreContext from '../../../context/store/StoreContext'
+import RegisterForm from '../../shared/forms/RegisterForm'
 
 const UsersTool = () => {
 
     const [users, setUsers] = useState([])
-    const [loading, setLoading] = useState(true)
-    const { showModal, hideModal } = useContext(ModalContext)
-    const { state } = useContext(UserContext)
+    const { store, showModal, hideModal, setLoading } = useContext(StoreContext)
 
     // func to load the updated data from the DB
     const loadData = async () => {
@@ -98,7 +95,7 @@ const UsersTool = () => {
         /* Send data to API to register a new user */
         const config = {
             method: 'put',
-            url: `https://mina-ecommerce1.herokuapp.com/api/users/${formStates.id}?token=${state.authToken}`,
+            url: `https://mina-ecommerce1.herokuapp.com/api/users/${formStates.id}?token=${store.auth.token}`,
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -143,7 +140,7 @@ const UsersTool = () => {
         /* Send data to API to register a new user */
         const config = {
             method: 'delete',
-            url: `https://mina-ecommerce1.herokuapp.com/api/users/${uid}?token=${state.authToken}`,
+            url: `https://mina-ecommerce1.herokuapp.com/api/users/${uid}?token=${store.auth.token}`,
         }
         const res = await axios(config)
         loadData()
@@ -152,7 +149,7 @@ const UsersTool = () => {
 
     return (
         <>
-            {loading
+            {store.loading
                 ? (
                     <div className="text-center">
                         <svg role="status" className="inline mr-2 w-80 h-80 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
