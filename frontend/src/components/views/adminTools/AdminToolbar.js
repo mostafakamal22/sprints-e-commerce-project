@@ -38,7 +38,7 @@ const AdminToolbar = () => {
         },
         {
             name: "Analytics Tool",
-            to: '/admin/dashboard/analytics'
+            to: '/admin/dashboard/'
         },
     ]
 

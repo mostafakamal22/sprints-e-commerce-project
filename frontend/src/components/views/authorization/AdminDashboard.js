@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router"
+import Footer from "../../shared/Footer"
 import Navbar from "../../shared/Navbar"
 import AdminToolbar from "../adminTools/AdminToolbar"
 import { AnalyticsTool } from "../adminTools/AnalyticsTool"
@@ -27,8 +28,9 @@ const AdminDashboard = () => {
                 <Route path="/orders" element={<OrdersTool />} />
                 <Route path="/products" element={<ProductsTool />} />
                 <Route path="/categories" element={<CategoriesTool />} />
-                <Route path="/analytics" element={<AnalyticsTool />} />
+                <Route path="/" element={<AnalyticsTool />} />
             </Routes>
+            <Footer />
         </div>
     )
 }

@@ -1,9 +1,7 @@
-import { LockClosedIcon } from "@heroicons/react/outline"
 import { useContext, useState } from "react"
 import StoreContext from "../../../context/store/StoreContext"
 
-const BrandsForm = ({ onSubmit, initStates }) => {
-
+const CategoriesForm = ({ initStates, onSubmit }) => {
     const { setLoading, store } = useContext(StoreContext)
 
     const [name, setName] = useState(initStates ? initStates.name : '')
@@ -36,24 +34,9 @@ const BrandsForm = ({ onSubmit, initStates }) => {
                         type="text"
                         required
                         className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                        placeholder="Brand Name"
+                        placeholder="Category Name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="origin" className="sr-only">
-                        Origin
-                    </label>
-                    <input
-                        id="origin"
-                        name="origin"
-                        type="text"
-                        required
-                        className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                        placeholder="Brand Origin"
-                        value={origin}
-                        onChange={(e) => setOrigin(e.target.value)}
                     />
                 </div>
                 <div className='flex justify-center'>
@@ -73,7 +56,7 @@ const BrandsForm = ({ onSubmit, initStates }) => {
                             type="submit"
                             className="group relative w-1/2 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
-                            {!initStates ? 'Create Brand' : 'Save'}
+                            {!initStates ? 'Create Category' : 'Save'}
                         </button>)}
                 </div>
             </form>
@@ -81,4 +64,4 @@ const BrandsForm = ({ onSubmit, initStates }) => {
     )
 }
 
-export default BrandsForm
+export default CategoriesForm
