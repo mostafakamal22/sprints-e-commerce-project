@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { MdAdd, MdDelete, MdEdit } from 'react-icons/md'
 import StoreContext from '../../../context/store/StoreContext'
 import RegisterForm from '../../shared/forms/RegisterForm'
@@ -7,7 +7,7 @@ import RegisterForm from '../../shared/forms/RegisterForm'
 const UsersTool = () => {
 
     const [users, setUsers] = useState([])
-    const { store, showModal, hideModal, setLoading } = useContext(StoreContext)
+    const { store, showModal, hideModal, setLoading, showToast } = useContext(StoreContext)
 
     // func to load the updated data from the DB
     const loadData = async () => {
@@ -24,13 +24,14 @@ const UsersTool = () => {
 
     useEffect(() => {
         loadData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     // submit the add form
     const handleAddSubmit = async (formStates) => {
 
         if (formStates.password !== formStates.passwordConfirm) {
-            alert(`Passwords don't match!`)
+            showToast(`Passwords don't match!`, false)
             return
         }
 
@@ -67,7 +68,7 @@ const UsersTool = () => {
         const Content = () => {
             return (
                 <div className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">
-                    <h3 className="text-xl font-medium text-gray-900 dark:text-white">Edit User</h3>
+                    <h3 className="text-xl font-medium text-gray-900 dark:text-white">Add User</h3>
                     <RegisterForm onSubmit={handleAddSubmit} withPW={true} admin={true} />
                 </div>
             )

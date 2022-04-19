@@ -1,21 +1,13 @@
-import { LockClosedIcon } from '@heroicons/react/outline'
-import React, { useContext, useState } from 'react'
-import StoreContext from '../../../context/store/StoreContext'
+import { LockClosedIcon } from "@heroicons/react/outline"
+import { useContext, useState } from "react"
+import StoreContext from "../../../context/store/StoreContext"
 
-/** 
-*   to use the form you must provide an onSubmit func to run once the form is submitted
-*   and if you want the form to have pre filled data provide it as initStates prope
-*/
-
-const BranchesForm = ({ onSubmit, initStates }) => {
+const BrandsForm = ({ onSubmit, initStates }) => {
 
     const { setLoading, store } = useContext(StoreContext)
 
     const [name, setName] = useState(initStates ? initStates.name : '')
-    const [phone1, setPhone1] = useState(initStates ? initStates.phone1 : '')
-    const [phone2, setPhone2] = useState(initStates ? initStates.phone2 : '')
-    const [address, setAddress] = useState(initStates ? initStates.address : '')
-    const [googleMaps, setGoogleMaps] = useState(initStates ? initStates.googleMaps : '')
+    const [origin, setOrigin] = useState(initStates ? initStates.origin : '')
 
     // runs the onSubmit func provided as a prope giving it all the state so you can use it
     const handleSubmit = (e) => {
@@ -24,10 +16,7 @@ const BranchesForm = ({ onSubmit, initStates }) => {
         const formStates = {
             id: initStates ? initStates.id : 0,
             name,
-            phone1,
-            phone2,
-            address,
-            googleMaps,
+            origin,
         }
         onSubmit(formStates)
         setLoading(false)
@@ -47,72 +36,26 @@ const BranchesForm = ({ onSubmit, initStates }) => {
                         type="text"
                         required
                         className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                        placeholder="Branch Name"
+                        placeholder="Brand Name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                     />
                 </div>
                 <div>
-                    <label htmlFor="address" className="sr-only">
-                        Address
+                    <label htmlFor="origin" className="sr-only">
+                        Origin
                     </label>
                     <input
-                        id="address"
-                        name="address"
+                        id="origin"
+                        name="origin"
                         type="text"
                         required
                         className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                        placeholder="Branch Address"
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
+                        placeholder="Brand Origin"
+                        value={origin}
+                        onChange={(e) => setOrigin(e.target.value)}
                     />
                 </div>
-                <div>
-                    <label htmlFor="phone" className="sr-only">
-                        Phone
-                    </label>
-                    <input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        required
-                        className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                        placeholder="Phone Number 1"
-                        value={phone1}
-                        onChange={(e) => setPhone1(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="phone" className="sr-only">
-                        Phone
-                    </label>
-                    <input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        required
-                        className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                        placeholder="Phone Number 2"
-                        value={phone2}
-                        onChange={(e) => setPhone2(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="googleMaps" className="sr-only">
-                        Phone
-                    </label>
-                    <input
-                        id="googleMaps"
-                        name="googleMaps"
-                        type="url"
-                        required
-                        className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                        placeholder="Location on Maps"
-                        value={googleMaps}
-                        onChange={(e) => setGoogleMaps(e.target.value)}
-                    />
-                </div>
-
                 <div className='flex justify-center'>
                     {store.loading
                         ? (<button
@@ -127,7 +70,7 @@ const BranchesForm = ({ onSubmit, initStates }) => {
                             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                                 <LockClosedIcon className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" />
                             </span>
-                            Please wait
+                            Please wait...
                         </button>)
                         : (<button
                             type="submit"
@@ -136,14 +79,12 @@ const BranchesForm = ({ onSubmit, initStates }) => {
                             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                                 <LockClosedIcon className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" />
                             </span>
-                            {!initStates ? 'Create Branch' : 'Save'}
+                            {!initStates ? 'Create Brand' : 'Save'}
                         </button>)}
-
-
                 </div>
             </form>
         </div>
     )
 }
 
-export default BranchesForm
+export default BrandsForm

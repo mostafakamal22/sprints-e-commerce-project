@@ -1,18 +1,17 @@
 import { LockClosedIcon } from '@heroicons/react/solid'
 import { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import UserContext from '../../../context/user/UserContext'
 import axios from 'axios'
+import StoreContext from '../../../context/store/StoreContext'
 
 const LoginPage = () => {
 
   // Connect to context
-  const { loginUser } = useContext(UserContext)
+  const { store, setLoading, loginUser, showToast } = useContext(StoreContext)
 
   const navigate = useNavigate()
 
   // Form States
-  const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -37,6 +36,13 @@ const LoginPage = () => {
       data: credentials
     }
     const res = await axios(config)
+
+    // Check if wrong password
+    if (!res.data) {
+      showToast(`Incorrect Password!`, false)
+      setLoading(false)
+      return
+    }
 
     // Dispatch the action to the state
     const data = {
@@ -121,7 +127,7 @@ const LoginPage = () => {
             </div>
 
             <div className='flex flex-col justify-center items-center'>
-              {loading
+              {store.loading
                 ? (
                   <button
                     disabled
