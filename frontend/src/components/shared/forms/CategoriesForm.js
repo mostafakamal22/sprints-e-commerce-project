@@ -5,7 +5,6 @@ const CategoriesForm = ({ initStates, onSubmit }) => {
     const { setLoading, store } = useContext(StoreContext)
 
     const [name, setName] = useState(initStates ? initStates.name : '')
-    const [origin, setOrigin] = useState(initStates ? initStates.origin : '')
 
     // runs the onSubmit func provided as a prope giving it all the state so you can use it
     const handleSubmit = (e) => {

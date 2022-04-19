@@ -7,6 +7,7 @@ import RegisterForm from '../../shared/forms/RegisterForm'
 const UsersTool = () => {
 
     const [users, setUsers] = useState([])
+    const [searchResults, setSearchResults] = useState([])
     const { store, showModal, hideModal, setLoading, showToast } = useContext(StoreContext)
 
     // func to load the updated data from the DB
@@ -18,13 +19,14 @@ const UsersTool = () => {
         }
         axios(config).then(res => {
             setUsers(res.data)
+            setSearchResults(res.data)
             setLoading(false)
         })
     }
 
     useEffect(() => {
         loadData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     // submit the add form
@@ -172,13 +174,11 @@ const UsersTool = () => {
                                         </div>
                                         <input
                                             onChange={(e) => {
-                                                const main = [...users]
                                                 if (e.target.value !== '') {
-                                                    setUsers(prev => prev.filter(user => user.first_name.includes(e.target.value)))
+                                                    setSearchResults(users.filter(user => user.first_name.toLowerCase().includes(e.target.value)))
                                                 } else {
-                                                    setUsers(main)
+                                                    setSearchResults(users)
                                                 }
-
                                             }}
                                             type="text"
                                             id="table-search"
@@ -203,7 +203,7 @@ const UsersTool = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {users.map((user, i) => (
+                                        {searchResults.map((user, i) => (
                                             <tr key={i} className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
                                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                                     {user.first_name}

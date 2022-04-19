@@ -1,4 +1,3 @@
-import { LockClosedIcon } from "@heroicons/react/outline"
 import { useContext, useState } from "react"
 import StoreContext from "../../../context/store/StoreContext"
 
