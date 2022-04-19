@@ -2,14 +2,14 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/
 import { useContext, useState } from "react";
 import { MdCheckCircle } from "react-icons/md";
 import { v4 as uuid } from 'uuid';
-import ToastContext from "../context/toast/ToastContext";
+import StoreContext from "../context/store/StoreContext";
 import { app } from './config'
 
 const storage = getStorage();
 
-const Upload = ({ setCoverImage, setLoading }) => {
+const Upload = ({ setCoverImage, isEdit }) => {
 
-    const { showToast } = useContext(ToastContext)
+    const { showToast, setLoading } = useContext(StoreContext)
 
     const [isRunning, setIsRunning] = useState(false)
     const [url, setURL] = useState('')
@@ -17,10 +17,9 @@ const Upload = ({ setCoverImage, setLoading }) => {
 
     const handleUpload = async (file) => {
         setLoading(true)
-        const fileName = uuid()
 
         // Upload file to the object 'images/fileName.jpeg'
-        const storageRef = ref(storage, 'images/' + fileName);
+        const storageRef = ref(storage, 'images/' + file.name);
         const uploadTask = uploadBytesResumable(storageRef, file);
 
         // Listen for state changes, errors, and completion of the upload.
@@ -64,12 +63,12 @@ const Upload = ({ setCoverImage, setLoading }) => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                     console.log('File available at', downloadURL);
                     setCoverImage(downloadURL)
+                    setURL(downloadURL)
                     setIsRunning(false)
                     setLoading(false)
                 });
             }
         );
-
     }
 
 
@@ -82,7 +81,7 @@ const Upload = ({ setCoverImage, setLoading }) => {
                 id="image"
                 name="image"
                 type="file"
-                required
+                required={!isEdit}
                 disabled={isRunning}
                 className="hidden"
                 onChange={(e) => {

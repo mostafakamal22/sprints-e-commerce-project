@@ -1,5 +1,6 @@
 import { LockClosedIcon } from '@heroicons/react/outline'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import StoreContext from '../../../context/store/StoreContext'
 
 /** 
 *   to use the form you must provide an onSubmit func to run once the form is submitted
@@ -8,10 +9,8 @@ import React, { useState } from 'react'
 
 const BranchesForm = ({ onSubmit, initStates }) => {
 
-    // Form States
-    const [loading, setLoading] = useState(false)
-    // eslint-disable-next-line no-unused-vars
-    const [id, setID] = useState(initStates ? initStates.id : '')
+    const { setLoading, store } = useContext(StoreContext)
+
     const [name, setName] = useState(initStates ? initStates.name : '')
     const [phone1, setPhone1] = useState(initStates ? initStates.phone1 : '')
     const [phone2, setPhone2] = useState(initStates ? initStates.phone2 : '')
@@ -23,8 +22,7 @@ const BranchesForm = ({ onSubmit, initStates }) => {
         e.preventDefault()
         setLoading(true)
         const formStates = {
-            id,
-            loading,
+            id: initStates ? initStates.id : 0,
             name,
             phone1,
             phone2,
@@ -116,7 +114,7 @@ const BranchesForm = ({ onSubmit, initStates }) => {
                 </div>
 
                 <div className='flex justify-center'>
-                    {loading
+                    {store.loading
                         ? (<button
                             disabled
                             type="submit"

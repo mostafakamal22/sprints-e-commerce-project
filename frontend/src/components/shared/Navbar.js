@@ -2,13 +2,13 @@ import { Fragment, useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Dialog, Transition } from '@headlessui/react'
 import { MenuIcon, SearchIcon, ShoppingBagIcon, XIcon, HeartIcon } from '@heroicons/react/outline'
-import UserContext from '../../context/user/UserContext'
+import StoreContext from '../../context/store/StoreContext'
 
 const Navbar = () => {
 
     const [open, setOpen] = useState(false)
     const [searchShow, setSearchShow] = useState(false)
-    const { state, logoutUser } = useContext(UserContext)
+    const { store, logoutUser } = useContext(StoreContext)
 
     const toggleSearch = () => {
         setSearchShow(!searchShow)
@@ -62,7 +62,7 @@ const Navbar = () => {
                                 <div>
                                     {/* User controls */}
                                     <span className="sr-only">Open user menu</span>
-                                    <span className="font-medium">Welcome {state.authed ? state.user.first_name : 'Gamer'}</span>
+                                    <span className="font-medium">Welcome {store.auth.authed ? store.auth.user.first_name : 'Gamer'}</span>
                                 </div>
 
                                 <div className="flex flex-col">
@@ -80,11 +80,11 @@ const Navbar = () => {
                                     </Link>
                                 </div>
 
-                                {state.authed
+                                {store.auth.authed
                                     ? (
                                         <>
                                             <div className="flow-root">
-                                                {state.user.auth === 1 ? (
+                                                {store.auth.user.auth === 1 ? (
                                                     <Link to='/admin/dashboard' className="p-2 block font-medium text-gray-900 hover:bg-gray-100">
                                                         Admin Dashboard
                                                     </Link>
@@ -157,10 +157,10 @@ const Navbar = () => {
                                         Special Offers
                                     </Link>
                                 </div>
-                                {state.authed
+                                {store.auth.authed
                                     ? (
                                         <div className="flex w-fit">
-                                            {state.user.auth === 1 ? (
+                                            {store.auth.user.auth === 1 ? (
                                                 <Link to='/admin/dashboard' className=" whitespace-nowrap p-2 block font-medium text-gray-900 hover:bg-gray-100">
                                                     Admin Dashboard
                                                 </Link>

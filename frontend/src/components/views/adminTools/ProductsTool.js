@@ -1,47 +1,26 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
 import { MdAdd, MdDelete, MdEdit } from 'react-icons/md'
-import ModalContext from '../../../context/modal/ModalContext'
-import UserContext from '../../../context/user/UserContext'
+import StoreContext from '../../../context/store/StoreContext'
 import ProductsForm from '../../shared/forms/ProductsForm'
-import RegisterForm from '../../shared/forms/RegisterForm'
 
 const ProductsTool = () => {
-  const [products, setProducts] = useState([])
-  const [loading, setLoading] = useState(true)
-  const { showModal, hideModal } = useContext(ModalContext)
-  const { state } = useContext(UserContext)
 
-  // func to load the updated data from the DB
-  const loadData = async () => {
-    setLoading(true)
-    const config = {
-      method: 'get',
-      url: 'https://mina-ecommerce1.herokuapp.com/api/products',
-    }
-    axios(config).then(res => {
-      setProducts(res.data)
-      setLoading(false)
-    })
-  }
-
-  useEffect(() => {
-    loadData()
-  }, [])
+  const { store, showModal, hideModal, setLoading, setAppData } = useContext(StoreContext)
 
   // submit the add form
   const handleAddSubmit = async (formStates) => {
+    setLoading(true)
 
     const productData = {
       name: formStates.name,
       description: formStates.description,
-      coverImage: formStates.coverImage,
+      coverimage: formStates.coverImage,
       price: formStates.price,
-      introDate: formStates.introDate,
       brand: formStates.brand,
       category: formStates.category,
       featured: formStates.featured,
-      new: formStates.new,
+      new: formStates.isNew,
       review: formStates.review,
       tag: formStates.tag,
     }
@@ -49,7 +28,7 @@ const ProductsTool = () => {
     /* Send data to API to register a new user */
     const config = {
       method: 'post',
-      url: 'https://mina-ecommerce1.herokuapp.com/api/products',
+      url: `https://mina-ecommerce1.herokuapp.com/api/products?token=${store.auth.token}`,
       headers: {
         'Content-Type': 'application/json'
       },
@@ -57,8 +36,8 @@ const ProductsTool = () => {
     }
     const res = await axios(config)
     console.log(res)
+    setAppData()
     hideModal()
-    loadData()
     setLoading(false)
   }
 
@@ -72,7 +51,6 @@ const ProductsTool = () => {
         </div>
       )
     }
-
     showModal(Content)
   }
 
@@ -82,23 +60,21 @@ const ProductsTool = () => {
     const productData = {
       name: formStates.name,
       description: formStates.description,
-      coverImage: formStates.coverImage,
+      coverimage: formStates.coverImage,
       price: formStates.price,
-      introDate: formStates.introDate,
       brand: formStates.brand,
       category: formStates.category,
       featured: formStates.featured,
-      new: formStates.new,
+      new: formStates.isNew,
       review: formStates.review,
       tag: formStates.tag,
     }
 
-    console.log(productData)
-
+    console.log(productData);
     /* Send data to API to register a new user */
     const config = {
       method: 'put',
-      url: `https://mina-ecommerce1.herokuapp.com/api/products/${formStates.id}?token=${state.authToken}`,
+      url: `https://mina-ecommerce1.herokuapp.com/api/products/${formStates.id}?token=${store.auth.token}`,
       headers: {
         'Content-Type': 'application/json'
       },
@@ -106,33 +82,34 @@ const ProductsTool = () => {
     }
     const res = await axios(config)
     console.log(res)
+    setAppData()
     hideModal()
-    loadData()
     setLoading(false)
   }
 
   // opens edit modal
-  const modalEdit = (id) => {
+  const modalEdit = (index) => {
     const initStates = {
-      id: products[id].id,
-      name: products[id].name,
-      description: products[id].description,
-      coverImage: products[id].coverImage,
-      price: products[id].price,
-      introDate: products[id].introDate,
-      brand: products[id].brand,
-      category: products[id].category,
-      featured: products[id].featured,
-      new: products[id].new,
-      review: products[id].review,
-      tag: products[id].tag,
+      id: store.appData.products[index].id,
+      name: store.appData.products[index].name,
+      description: store.appData.products[index].description,
+      coverImage: store.appData.products[index].coverimage,
+      price: store.appData.products[index].price,
+      brand: store.appData.products[index].brand,
+      category: store.appData.products[index].category,
+      featured: store.appData.products[index].featured,
+      isNew: store.appData.products[index].new,
+      review: store.appData.products[index].review,
+      tag: store.appData.products[index].tag,
     }
+
+    console.log(initStates);
 
     const Content = () => {
       return (
         <div className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">
-          <h3 className="text-xl font-medium text-gray-900 dark:text-white">Edit User</h3>
-          <RegisterForm onSubmit={handleEditSubmit} initStates={initStates} />
+          <h3 className="text-xl font-medium text-gray-900 dark:text-white">Edit Product</h3>
+          <ProductsForm onSubmit={handleEditSubmit} initStates={initStates} />
         </div>
       )
     }
@@ -142,20 +119,22 @@ const ProductsTool = () => {
 
   const handleDelete = async (id) => {
     setLoading(true)
-    const pid = products[id].id
+    const pid = store.appData.products[id].id
     /* Send data to API to register a new user */
     const config = {
       method: 'delete',
-      url: `https://mina-ecommerce1.herokuapp.com/api/products/${pid}?token=${state.authToken}`,
+      url: `https://mina-ecommerce1.herokuapp.com/api/products/${pid}?token=${store.auth.token}`,
     }
     const res = await axios(config)
-    loadData()
     console.log(res)
+    setAppData().then(() => {
+      setLoading(false)
+    })
   }
 
   return (
     <>
-      {loading
+      {store.loading
         ? (
           <div className="text-center">
             <svg role="status" className="inline mr-2 w-80 h-80 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -176,15 +155,7 @@ const ProductsTool = () => {
                       <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path></svg>
                     </div>
                     <input
-                      onChange={(e) => {
-                        const main = [...products]
-                        if (e.target.value !== '') {
-                          setProducts(prev => prev.filter(user => user.first_name.includes(e.target.value)))
-                        } else {
-                          setProducts(main)
-                        }
-
-                      }}
+                      onChange={(e) => console.log(e.target.value)}
                       type="text"
                       id="table-search"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items" />
@@ -208,7 +179,7 @@ const ProductsTool = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {products.map((product, i) => (
+                    {store.appData.products.map((product, i) => (
                       <tr key={i} className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                           {product.name}
