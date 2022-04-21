@@ -80,6 +80,10 @@ export const StoreProvider = ({ children }) => {
     }
 
     const showModal = (content) => {
+        
+        const body = document.getElementById('body')
+        body.classList.toggle('overflow-hidden')
+
         dispatch({
             type: 'SHOW_MODAL',
             payload: {
@@ -90,6 +94,10 @@ export const StoreProvider = ({ children }) => {
     }
 
     const hideModal = () => {
+
+        const body = document.getElementById('body')
+        body.classList.toggle('overflow-hidden')
+        
         dispatch({
             type: 'HIDE_MODAL',
             payload: {
@@ -101,25 +109,25 @@ export const StoreProvider = ({ children }) => {
     const setAppData = async () => {
         const brandsConfig = {
             method: 'get',
-            url: 'https://mina-ecommerce1.herokuapp.com/api/brands',
+            url: 'https://mina-jpp1.herokuapp.com/api/brands',
         }
         const brands = await (await axios(brandsConfig)).data
 
         const categoriesConfig = {
             method: 'get',
-            url: 'https://mina-ecommerce1.herokuapp.com/api/categories',
+            url: 'https://mina-jpp1.herokuapp.com/api/categories',
         }
         const categories = await (await axios(categoriesConfig)).data
 
         const branchesConfig = {
             method: 'get',
-            url: 'https://mina-ecommerce1.herokuapp.com/api/branches',
+            url: 'https://mina-jpp1.herokuapp.com/api/branches',
         }
         const branches = await (await axios(branchesConfig)).data
 
         const productsConfig = {
             method: 'get',
-            url: 'https://mina-ecommerce1.herokuapp.com/api/products',
+            url: 'https://mina-jpp1.herokuapp.com/api/products',
         }
         const products = await (await axios(productsConfig)).data
 

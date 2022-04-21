@@ -1,11 +1,11 @@
 import { LockClosedIcon } from '@heroicons/react/outline'
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import UserContext from '../../context/user/UserContext'
+import StoreContext from '../../context/store/StoreContext'
 
 const LoginPrompt = () => {
 
-    const { state } = useContext(UserContext)
+    const { store } = useContext(StoreContext)
     const [isCart, setIsCart] = useState()
     const url = useLocation().pathname
 
@@ -20,7 +20,7 @@ const LoginPrompt = () => {
 
     return (
         <>
-            {state.authed
+            {store.authed
                 ? (
                     <div>User authed, show the {isCart ? 'cart' : 'wishlist'} items</div>
                 )

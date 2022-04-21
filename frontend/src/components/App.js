@@ -13,12 +13,16 @@ import Special from "./views/main/Special";
 import Cart from "./views/profile/Cart";
 import Wishlist from "./views/profile/Wishlist";
 import ProductPage from "./views/product/ProductPage";
+import { useContext } from "react";
+import StoreContext from "../context/store/StoreContext";
 
 const App = () => {
+
+  const { store } = useContext(StoreContext)
   useProtect();
 
   return (
-    <div>
+    <div className="">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
@@ -32,7 +36,7 @@ const App = () => {
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/product/:id" element={<ProductPage />} />
       </Routes>
-      <div className="container toast-container relative grid place-items-center -z-10">
+      <div className={`container toast-container relative grid place-items-center ${store.toast.isToast ? '' : 'pointer-events-none'}`}>
         <Toast />
       </div>
       <Modal />

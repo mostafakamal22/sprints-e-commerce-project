@@ -1,19 +1,19 @@
 import axios from 'axios'
 import { useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import UserContext from '../../../context/user/UserContext'
+import StoreContext from '../../../context/store/StoreContext'
 import RegisterForm from '../../shared/forms/RegisterForm'
 
 const RegisterPage = () => {
 
-    const { loginUser } = useContext(UserContext)
+    const { loginUser, showToast } = useContext(StoreContext)
     const navigate = useNavigate()
 
     // Form On Submit
     const registerUser = async (formStates) => {
 
         if (formStates.password !== formStates.passwordConfirm) {
-            alert(`Passwords don't match!`)
+            showToast(`Passwords don't match!`, false)
             return
         }
 
@@ -32,7 +32,7 @@ const RegisterPage = () => {
         /* Send data to API to register a new user */
         const config = {
             method: 'post',
-            url: 'https://mina-ecommerce1.herokuapp.com/api/users',
+            url: 'https://mina-jpp1.herokuapp.com/api/users',
             headers: {
                 'Content-Type': 'application/json'
             },

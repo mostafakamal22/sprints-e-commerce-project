@@ -10,7 +10,7 @@ import { AiFillHome, AiOutlineMail, AiFillPrinter } from "react-icons/ai";
 
 export default function Footer() {
   return (
-    <footer className="text-center lg:text-left bg-[rgb(253,128,36)]/[.5] text-black-600">
+    <footer className="text-center lg:text-left bg-[rgb(253,128,36)]/[.5] text-black-600 mt-6">
       <div className="flex justify-center items-center lg:justify-between p-8 border-b border-black">
         <div className="mr-12 hidden lg:block">
           <span>Get connected with us on social networks:</span>
