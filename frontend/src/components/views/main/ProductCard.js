@@ -26,6 +26,7 @@ export default function ProductCard() {
     "
             src="https://www.lego.com/cdn/cs/set/assets/blte226ac95a59d6b48/10299.png?fit=bounds&format=webply&quality=80&width=320&height=320&dpr=1"
             alt="Santiago Bernabéu Stadium"
+            loading="lazy"
           />
           {/*only if a new/featured product*/}
           <span className="font-medium text-sm bg-yellow-400 py-1 px-2">
@@ -36,7 +37,7 @@ export default function ProductCard() {
 
       {/*product details*/}
       <div className="py-6 flex flex-col justify-center ">
-        <Link to='/' className="text-lg mb-5 underline">
+        <Link to="/" className="text-lg mb-5 underline">
           Real Madrid – Santiago Bernabéu Stadium.
         </Link>
 
@@ -57,7 +58,7 @@ export default function ProductCard() {
         <p className="text-base mb-2">$399.99</p>
         <Ripples className="!block" color={"rgba(253,128,36,.1)"} during={2200}>
           {/*add to cart*/}
-          <button className="block w-full p-3 bg-[rgb(253,128,36)] font-bold text-sm uppercase  border-2 border-[rgb(253,128,36)] rounded hover:bg-white focus:outline-none focus:outline-0 transition-all duration-500 ease-in-out">
+          <button className="block w-full p-3 bg-[rgb(253,128,36)] font-bold text-sm uppercase  border-2 border-[rgb(253,128,36)] rounded focus:bg-white hover:bg-white focus:outline-none focus:outline-0 transition-all duration-500 ease-in-out">
             Add To Cart
           </button>
         </Ripples>
