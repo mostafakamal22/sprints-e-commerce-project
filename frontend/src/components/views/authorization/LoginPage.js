@@ -1,23 +1,20 @@
-
-import { LockClosedIcon } from '@heroicons/react/solid'
-import { useContext, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
-import StoreContext from '../../../context/store/StoreContext'
-
+import { LockClosedIcon } from "@heroicons/react/solid";
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import StoreContext from "../../../context/store/StoreContext";
 
 const LoginPage = () => {
   // Connect to context
 
-  const { store, setLoading, loginUser, showToast } = useContext(StoreContext)
+  const { store, setLoading, loginUser, showToast } = useContext(StoreContext);
 
   const navigate = useNavigate();
 
   // Form States
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   // Form On Submit
   const login = async (e) => {
@@ -32,8 +29,8 @@ const LoginPage = () => {
 
     /* Send data to API to login */
     const config = {
-      method: 'post',
-      url: 'https://mina-jpp1.herokuapp.com/api/users/login',
+      method: "post",
+      url: "https://mina-jpp1.herokuapp.com/api/users/login",
 
       headers: {
         "Content-Type": "application/json",
@@ -44,28 +41,27 @@ const LoginPage = () => {
 
     // Check if wrong password
     if (!res.data) {
-      showToast(`Incorrect Password!`, false)
-      setLoading(false)
-      return
+      showToast(`Incorrect Password!`, false);
+      setLoading(false);
+      return;
     }
 
     // Dispatch the action to the state
     const data = {
       user: res.data.user,
       token: res.data.token,
-    }
-    loginUser(data)
+    };
+    loginUser(data);
 
     // Save token to local storage
     const storage = {
       id: res.data.user.id,
-      token: res.data.token
-    }
-    localStorage.setItem('token', JSON.stringify(storage))
-    setLoading(false)
-    navigate('/')
-  }
-
+      token: res.data.token,
+    };
+    localStorage.setItem("token", JSON.stringify(storage));
+    setLoading(false);
+    navigate("/");
+  };
 
   // Form on forgot username
   const forgetUsername = () => {};
@@ -132,16 +128,14 @@ const LoginPage = () => {
               </div>
             </div>
 
-
-            <div className='flex flex-col justify-center items-center'>
-              {store.loading
-                ? (
-                  <button
-                    disabled
-                    type="submit"
-                    className="group relative w-1/2 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-
-                  >
+            <div className="flex flex-col justify-center items-center">
+              {store.loading ? (
+                <button
+                  disabled
+                  type="submit"
+                  className="group relative w-1/2 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  <svg>
                     <path
                       d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
                       fill="#E5E7EB"
