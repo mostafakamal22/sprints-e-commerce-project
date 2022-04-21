@@ -11,16 +11,16 @@ export const useProtect = () => {
     const checkAuth = () => {
         const checkToken = localStorage.getItem('token')
         if (checkToken) {
-            const { id, authToken } = JSON.parse(checkToken)
+            const { id, token } = JSON.parse(checkToken)
             const config = {
                 method: 'get',
-                url: `https://mina-jpp1.herokuapp.com/api/users/${id}?token=${authToken}`,
+                url: `https://mina-jpp1.herokuapp.com/api/users/${id}?token=${token}`,
                 headers: {}
             }
             axios(config).then(res => {
                 const userData = {
                     user: res.data,
-                    token: authToken,
+                    token: token,
                 }
                 loginUser(userData)
                 if (url === '/login' || url === '/register') {

@@ -47,14 +47,14 @@ const LoginPage = () => {
     // Dispatch the action to the state
     const data = {
       user: res.data.user,
-      authToken: res.data.token,
+      token: res.data.token,
     }
     loginUser(data)
 
     // Save token to local storage
     const storage = {
       id: res.data.user.id,
-      authToken: res.data.token
+      token: res.data.token
     }
     localStorage.setItem('token', JSON.stringify(storage))
     setLoading(false)
