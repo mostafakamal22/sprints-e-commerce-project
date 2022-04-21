@@ -25,7 +25,7 @@ const CategoriesTool = () => {
     /* Send data to API to register a new user */
     const config = {
       method: 'post',
-      url: `https://mina-ecommerce1.herokuapp.com/api/categories?token=${store.auth.token}`,
+      url: `https://mina-jpp1.herokuapp.com/api/categories?token=${store.auth.token}`,
       headers: {
         'Content-Type': 'application/json'
       },
@@ -62,7 +62,7 @@ const CategoriesTool = () => {
     /* Send data to API to register a new user */
     const config = {
       method: 'put',
-      url: `https://mina-ecommerce1.herokuapp.com/api/categories/${formStates.id}?token=${store.auth.token}`,
+      url: `https://mina-jpp1.herokuapp.com/api/categories/${formStates.id}?token=${store.auth.token}`,
       headers: {
         'Content-Type': 'application/json'
       },
@@ -102,7 +102,7 @@ const CategoriesTool = () => {
     /* Send data to API to register a new user */
     const config = {
       method: 'delete',
-      url: `https://mina-ecommerce1.herokuapp.com/api/categories/${bid}?token=${store.auth.token}`,
+      url: `https://mina-jpp1.herokuapp.com/api/categories/${bid}?token=${store.auth.token}`,
     }
     const res = await axios(config)
     console.log(res)

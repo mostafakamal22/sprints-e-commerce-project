@@ -29,7 +29,7 @@ const LoginPage = () => {
     /* Send data to API to login */
     const config = {
       method: 'post',
-      url: 'https://mina-ecommerce1.herokuapp.com/api/users/login',
+      url: 'https://mina-jpp1.herokuapp.com/api/users/login',
       headers: {
         'Content-Type': 'application/json'
       },

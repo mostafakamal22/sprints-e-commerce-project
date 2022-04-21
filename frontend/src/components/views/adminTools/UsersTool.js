@@ -15,7 +15,7 @@ const UsersTool = () => {
         setLoading(true)
         const config = {
             method: 'get',
-            url: 'https://mina-ecommerce1.herokuapp.com/api/users',
+            url: 'https://mina-jpp1.herokuapp.com/api/users',
         }
         axios(config).then(res => {
             setUsers(res.data)
@@ -52,7 +52,7 @@ const UsersTool = () => {
         /* Send data to API to register a new user */
         const config = {
             method: 'post',
-            url: 'https://mina-ecommerce1.herokuapp.com/api/users',
+            url: 'https://mina-jpp1.herokuapp.com/api/users',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -98,7 +98,7 @@ const UsersTool = () => {
         /* Send data to API to register a new user */
         const config = {
             method: 'put',
-            url: `https://mina-ecommerce1.herokuapp.com/api/users/${formStates.id}?token=${store.auth.token}`,
+            url: `https://mina-jpp1.herokuapp.com/api/users/${formStates.id}?token=${store.auth.token}`,
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -143,7 +143,7 @@ const UsersTool = () => {
         /* Send data to API to register a new user */
         const config = {
             method: 'delete',
-            url: `https://mina-ecommerce1.herokuapp.com/api/users/${uid}?token=${store.auth.token}`,
+            url: `https://mina-jpp1.herokuapp.com/api/users/${uid}?token=${store.auth.token}`,
         }
         const res = await axios(config)
         loadData()

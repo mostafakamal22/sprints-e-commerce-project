@@ -34,7 +34,7 @@ const ProductsTool = () => {
     /* Send data to API to register a new user */
     const config = {
       method: 'post',
-      url: `https://mina-ecommerce1.herokuapp.com/api/products?token=${store.auth.token}`,
+      url: `https://mina-jpp1.herokuapp.com/api/products?token=${store.auth.token}`,
       headers: {
         'Content-Type': 'application/json'
       },
@@ -80,7 +80,7 @@ const ProductsTool = () => {
     /* Send data to API to register a new user */
     const config = {
       method: 'put',
-      url: `https://mina-ecommerce1.herokuapp.com/api/products/${formStates.id}?token=${store.auth.token}`,
+      url: `https://mina-jpp1.herokuapp.com/api/products/${formStates.id}?token=${store.auth.token}`,
       headers: {
         'Content-Type': 'application/json'
       },
@@ -129,7 +129,7 @@ const ProductsTool = () => {
     /* Send data to API to register a new user */
     const config = {
       method: 'delete',
-      url: `https://mina-ecommerce1.herokuapp.com/api/products/${pid}?token=${store.auth.token}`,
+      url: `https://mina-jpp1.herokuapp.com/api/products/${pid}?token=${store.auth.token}`,
     }
     const res = await axios(config)
     console.log(res)

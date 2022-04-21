@@ -14,7 +14,7 @@ export const useProtect = () => {
             const { id, authToken } = JSON.parse(checkToken)
             const config = {
                 method: 'get',
-                url: `https://mina-ecommerce1.herokuapp.com/api/users/${id}?token=${authToken}`,
+                url: `https://mina-jpp1.herokuapp.com/api/users/${id}?token=${authToken}`,
                 headers: {}
             }
             axios(config).then(res => {

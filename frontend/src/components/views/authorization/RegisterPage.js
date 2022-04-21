@@ -32,7 +32,7 @@ const RegisterPage = () => {
         /* Send data to API to register a new user */
         const config = {
             method: 'post',
-            url: 'https://mina-ecommerce1.herokuapp.com/api/users',
+            url: 'https://mina-jpp1.herokuapp.com/api/users',
             headers: {
                 'Content-Type': 'application/json'
             },
