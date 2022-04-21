@@ -36,6 +36,7 @@ export const StoreProvider = ({ children }) => {
             brands: [],
             products: [],
             categories: [],
+            coupons: [],
         },
         loading: false
     }
@@ -131,6 +132,12 @@ export const StoreProvider = ({ children }) => {
         }
         const products = await (await axios(productsConfig)).data
 
+        const couponsConfig = {
+            method: 'get',
+            url: 'https://mina-jpp1.herokuapp.com/api/coupons',
+        }
+        const coupons = await (await axios(couponsConfig)).data
+
         dispatch({
             type: 'SET_DATA',
             payload: {
@@ -138,6 +145,7 @@ export const StoreProvider = ({ children }) => {
                 categories,
                 branches,
                 products,
+                coupons,
             }
         })
     }
