@@ -48,7 +48,7 @@ export default function UserReview(props) {
             color={"rgba(253,128,36,.1)"}
             during={1200}
           >
-            <button className="font-medium rounded-lg text-xs px-2 py-1.5 bg-[rgb(253,128,36)]     border-2 border-[rgb(253,128,36)]  hover:bg-white focus:outline-none focus:outline-0 transition-all duration-500 ease-in-out">
+            <button className="font-medium rounded-lg text-xs px-2 py-1.5 bg-[rgb(253,128,36)]     border-2 border-[rgb(253,128,36)]  hover:bg-white focus:bg-white focus:outline-none focus:outline-0 transition-all duration-500 ease-in-out">
               Helpful
             </button>
           </Ripples>

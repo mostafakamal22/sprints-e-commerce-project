@@ -5,9 +5,10 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { Link } from "react-router-dom";
 //AiFillHeart when added to cart
 
-export default function ProductCard() {
+export default function ProductCard(props) {
+  const productData = props.productData;
   return (
-    <div className="text-left mx-auto text-dark font-bold snap-start select-none">
+    <div className="max-w-[350px] text-left mx-auto text-dark font-bold snap-start select-none">
       {/*product image and link*/}
       <Ripples
         className="!block border border-1 p-2"
@@ -20,24 +21,29 @@ export default function ProductCard() {
             Add to wish card{" "}
           </span>
         </button>
-        <a href="#!" className="relative">
+        <Link to={`/product/${productData.id}`} className="relative">
           <img
             className="block w-full h-auto rounded-t-lg object-center object-cover transition-all duration-500 ease-in-out hover:scale-105
     "
-            src="https://www.lego.com/cdn/cs/set/assets/blte226ac95a59d6b48/10299.png?fit=bounds&format=webply&quality=80&width=320&height=320&dpr=1"
-            alt="Santiago Bernabéu Stadium"
+            alt="product"
+            src={productData.coverimage}
           />
-          {/*only if a new/featured product*/}
-          <span className="font-medium text-sm bg-yellow-400 py-1 px-2">
-            New
-          </span>
-        </a>
+          {/*show badge only if a new/featured product*/}
+          {(productData.new || productData.featured) && (
+            <span className="font-medium text-sm bg-yellow-400 py-1 px-2">
+              New
+            </span>
+          )}
+        </Link>
       </Ripples>
 
       {/*product details*/}
       <div className="py-6 flex flex-col justify-center ">
-        <Link to='/' className="text-lg mb-5 underline">
-          Real Madrid – Santiago Bernabéu Stadium.
+        <Link
+          to={`/product/${productData.id}`}
+          className="text-lg mb-5 underline"
+        >
+          {productData.name}
         </Link>
 
         {/*product rating*/}
@@ -50,14 +56,16 @@ export default function ProductCard() {
           >
             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
           </svg>
-          <p className="text-sm font-bold text-dark-900">4.95</p>
+          <p className="text-sm font-bold text-dark-900">
+            {productData.review ? productData.review : "N/A"}
+          </p>
         </div>
 
         {/*product price*/}
-        <p className="text-base mb-2">$399.99</p>
+        <p className="text-base mb-2">${productData.price}</p>
         <Ripples className="!block" color={"rgba(253,128,36,.1)"} during={2200}>
           {/*add to cart*/}
-          <button className="block w-full p-3 bg-[rgb(253,128,36)] font-bold text-sm uppercase  border-2 border-[rgb(253,128,36)] rounded hover:bg-white focus:outline-none focus:outline-0 transition-all duration-500 ease-in-out">
+          <button className="block w-full p-3 bg-[rgb(253,128,36)] font-bold text-sm uppercase  border-2 border-[rgb(253,128,36)] rounded focus:bg-white hover:bg-white focus:outline-none focus:outline-0 transition-all duration-500 ease-in-out">
             Add To Cart
           </button>
         </Ripples>

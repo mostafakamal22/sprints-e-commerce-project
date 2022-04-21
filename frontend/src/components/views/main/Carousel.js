@@ -51,8 +51,8 @@ export default function Carousel() {
         navigation={true}
         modules={[Autoplay, Pagination, Navigation]}
       >
-        {CarouselData.map((item) => (
-          <SwiperSlide>
+        {CarouselData.map((item, index) => (
+          <SwiperSlide key={index}>
             <img
               className="w-full h-full object-cover object-center"
               src={item.image}
