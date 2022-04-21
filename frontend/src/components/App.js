@@ -30,7 +30,7 @@ const App = () => {
         <Route path="/special" element={<Special />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<Wishlist />} />
-        <Route path="/product" element={<ProductPage />} />
+        <Route path="/product/:id" element={<ProductPage />} />
       </Routes>
       <div className="container toast-container relative grid place-items-center -z-10">
         <Toast />

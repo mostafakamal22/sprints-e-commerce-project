@@ -145,10 +145,7 @@ export default function Footer() {
       </div>
       <div className="text-center p-6 bg-[rgb(253,128,36)]">
         <span>© 2022 Copyright </span>
-        <a
-          className="text-black font-semibold"
-          href="https://tailwind-elements.com/"
-        >
+        <a className="text-black font-semibold" href="#">
           T3 Toys
         </a>
       </div>
