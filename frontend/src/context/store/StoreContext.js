@@ -80,6 +80,10 @@ export const StoreProvider = ({ children }) => {
     }
 
     const showModal = (content) => {
+        
+        const body = document.getElementById('body')
+        body.classList.toggle('overflow-hidden')
+
         dispatch({
             type: 'SHOW_MODAL',
             payload: {
@@ -90,6 +94,10 @@ export const StoreProvider = ({ children }) => {
     }
 
     const hideModal = () => {
+
+        const body = document.getElementById('body')
+        body.classList.toggle('overflow-hidden')
+        
         dispatch({
             type: 'HIDE_MODAL',
             payload: {
