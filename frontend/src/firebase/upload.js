@@ -6,7 +6,6 @@ import {
 } from "firebase/storage";
 import { useContext, useState } from "react";
 import { MdCheckCircle } from "react-icons/md";
-import { v4 as uuid } from "uuid";
 import StoreContext from "../context/store/StoreContext";
 import { app } from "./config";
 

@@ -20,7 +20,7 @@ export const useProtect = () => {
             axios(config).then(res => {
                 const userData = {
                     user: res.data,
-                    token: token,
+                    token,
                 }
                 loginUser(userData)
                 if (url === '/login' || url === '/register') {
