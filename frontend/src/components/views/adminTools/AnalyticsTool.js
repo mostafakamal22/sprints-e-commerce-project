@@ -123,7 +123,7 @@ export const AnalyticsTool = () => {
         )
         : (
           <div className='grid place-items-center'>
-            <h1 className='text-left text-xl font-medium p-6 text-gray-700'>Brands Data</h1>
+            <h1 className='text-left text-xl font-medium p-6 text-gray-700'>Analytics Data</h1>
             <div className='max-w-2xl px-6'>
               <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <div className="p-4 flex">

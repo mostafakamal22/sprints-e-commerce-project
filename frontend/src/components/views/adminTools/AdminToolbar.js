@@ -1,7 +1,16 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 
 const AdminToolbar = () => {
+
+    const [active, setActive] = useState('')
+
+    const url = useLocation().pathname
+
+    useEffect(() => {
+        setActive(url)
+    }, [url])
 
     const taps = [
         {
@@ -45,7 +54,7 @@ const AdminToolbar = () => {
     return (
         <div className="flex flex-wrap justify-evenly w-full mt-6">
             {taps.map((tap, i) => (
-                <Link to={tap.to} key={i} className="group relative flex-grow flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700">
+                <Link to={tap.to} key={i} className={`group relative flex-grow flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none ${active === tap.to ? 'bg-indigo-700' : 'bg-indigo-600'}`}>
                     {tap.name}
                 </Link>
             ))}

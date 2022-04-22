@@ -182,8 +182,8 @@ const CouponsTool = () => {
                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                           {coupon.name}
                         </th>
-                        <td className={`px-6 py-4 ${Date.parse(coupon.validtill.split('T')[0]) <= new Date().valueOf() ? 'text-red-500': ''}`}>
-                          {coupon.validtill.split('T')[0]}
+                        <td className={`px-6 py-4 ${Date.parse(coupon.validtille && coupon.validtille.split('T')[0]) <= new Date().valueOf() ? 'text-red-500': ''}`}>
+                          {coupon.validtille.split('T')[0]}
                         </td>
                         <td className="px-6 py-4 flex max-w-fit">
                           <button id={i} onClick={(e) => modalEdit(e.currentTarget.id)} className="group relative flex-grow flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700">

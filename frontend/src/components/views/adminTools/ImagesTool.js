@@ -9,25 +9,6 @@ const ImagesTool = () => {
   const { store, showModal, hideModal, setLoading, showToast } =
     useContext(StoreContext);
 
-  const [images, setImages] = useState([]);
-  // get all images from the DB
-  const loadImages = async () => {
-    setLoading(true);
-    const config = {
-      method: "get",
-      url: "https://mina-jpp1.herokuapp.com/api/images",
-    };
-    axios(config).then((res) => {
-      setImages(res.data);
-      setLoading(false);
-    });
-  };
-
-  useEffect(() => {
-    loadImages();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   // submit the add form
   const handleAddSubmit = async (formStates) => {
     const imageData = {
@@ -48,7 +29,6 @@ const ImagesTool = () => {
     const res = await axios(config);
     console.log(res);
     hideModal();
-    loadImages();
     setLoading(false);
   };
 
@@ -129,7 +109,7 @@ const ImagesTool = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {images.map((image, i) => (
+                  {store.appData.images.map((image, i) => (
                     <tr
                       key={i}
                       className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600"

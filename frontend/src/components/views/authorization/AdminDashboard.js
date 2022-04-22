@@ -23,20 +23,7 @@ const AdminDashboard = () => {
 
     const { store } = useContext(StoreContext)
 
-    const [authed, setAuthed] = useState(true)
-
-    useEffect(() => {
-        if (!store.auth.user) {
-            return
-        }
-        if (store.auth.user.auth !== 1) {
-            setAuthed(false)
-        } else {
-            setAuthed(true)
-        }
-    }, [store])
-
-    if (!authed) {
+    if (store.auth.user.auth !== 1 && store.auth.authed) {
         return (
             <NotFound code={401} msg={`Unauthorized!`} />
         )
