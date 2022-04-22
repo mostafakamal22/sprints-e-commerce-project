@@ -7,27 +7,11 @@ import Spinner from '../../shared/Spinner'
 
 const UsersTool = () => {
 
-    const [users, setUsers] = useState([])
     const [searchResults, setSearchResults] = useState([])
-    const { store, showModal, hideModal, setLoading, showToast } = useContext(StoreContext)
-
-    // func to load the updated data from the DB
-    const loadData = async () => {
-        setLoading(true)
-        const config = {
-            method: 'get',
-            url: 'https://mina-jpp1.herokuapp.com/api/users',
-        }
-        axios(config).then(res => {
-            setUsers(res.data)
-            setSearchResults(res.data)
-            setLoading(false)
-        })
-    }
+    const { store, showModal, hideModal, setLoading, showToast, setAppData } = useContext(StoreContext)
 
     useEffect(() => {
-        loadData()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        setSearchResults(store.appData.users)
     }, [])
 
     // submit the add form
@@ -62,8 +46,9 @@ const UsersTool = () => {
         const res = await axios(config)
         console.log(res)
         hideModal()
-        loadData()
-        setLoading(false)
+        setAppData().then(() => {
+            setLoading(false)
+        })
     }
 
     // open the modal and fill it's content 
@@ -108,22 +93,23 @@ const UsersTool = () => {
         const res = await axios(config)
         console.log(res)
         hideModal()
-        loadData()
-        setLoading(false)
+        setAppData().then(() => {
+            setLoading(false)
+        })
     }
 
     // opens edit modal
     const modalEdit = (id) => {
         const initStates = {
-            id: users[id].id,
-            firstName: users[id].first_name,
-            secondName: users[id].last_name,
-            email: users[id].email,
-            phone: users[id].phone,
-            address: users[id].address1,
-            secondaryAddress: users[id].address2,
-            auth: users[id].auth,
-            status: users[id].status,
+            id: store.appData.users[id].id,
+            firstName: store.appData.users[id].first_name,
+            secondName: store.appData.users[id].last_name,
+            email: store.appData.users[id].email,
+            phone: store.appData.users[id].phone,
+            address: store.appData.users[id].address1,
+            secondaryAddress: store.appData.users[id].address2,
+            auth: store.appData.users[id].auth,
+            status: store.appData.users[id].status,
         }
 
         const Content = () => {
@@ -140,14 +126,16 @@ const UsersTool = () => {
 
     const handleDelete = async (id) => {
         setLoading(true)
-        const uid = users[id].id
+        const uid = store.appData.users[id].id
         /* Send data to API to register a new user */
         const config = {
             method: 'delete',
             url: `https://mina-jpp1.herokuapp.com/api/users/${uid}?token=${store.auth.token}`,
         }
         const res = await axios(config)
-        loadData()
+        setAppData().then(() => {
+            setLoading(false)
+        })
         console.log(res)
     }
 
@@ -171,9 +159,9 @@ const UsersTool = () => {
                                         <input
                                             onChange={(e) => {
                                                 if (e.target.value !== '') {
-                                                    setSearchResults(users.filter(user => user.first_name.toLowerCase().includes(e.target.value)))
+                                                    setSearchResults(store.appData.users.filter(user => user.first_name.toLowerCase().includes(e.target.value)))
                                                 } else {
-                                                    setSearchResults(users)
+                                                    setSearchResults(store.appData.users)
                                                 }
                                             }}
                                             type="text"
