@@ -32,11 +32,13 @@ export const StoreProvider = ({ children }) => {
             isModal: false,
         },
         appData: {
+            users: [],
             branches: [],
             brands: [],
             products: [],
             categories: [],
             coupons: [],
+            orders: [],
         },
         loading: false
     }
@@ -108,6 +110,12 @@ export const StoreProvider = ({ children }) => {
     }
 
     const setAppData = async () => {
+        const usersConfig = {
+            method: 'get',
+            url: 'https://mina-jpp1.herokuapp.com/api/users',
+        }
+        const users = await (await axios(usersConfig)).data
+
         const brandsConfig = {
             method: 'get',
             url: 'https://mina-jpp1.herokuapp.com/api/brands',
@@ -137,15 +145,24 @@ export const StoreProvider = ({ children }) => {
             url: 'https://mina-jpp1.herokuapp.com/api/coupons',
         }
         const coupons = await (await axios(couponsConfig)).data
+        
+        const ordersConfig = {
+            method: 'get',
+            url: 'https://mina-jpp1.herokuapp.com/api/orders',
+        }
+        const allOrders = await (await axios(ordersConfig)).data
+        const orders = allOrders.filter(o => o.status !== 0)
 
         dispatch({
             type: 'SET_DATA',
             payload: {
+                users,
                 brands,
                 categories,
                 branches,
                 products,
                 coupons,
+                orders,
             }
         })
     }
