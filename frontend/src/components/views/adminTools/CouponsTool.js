@@ -21,11 +21,12 @@ const CouponsTool = () => {
     const couponData = {
       name: formStates.name,
       available: formStates.available,
-      validtill: formStates.validtill,
+      validtille: formStates.validtille,
       discounttype: formStates.discounttype,
       discountvalue: formStates.discountvalue,
       minorder: formStates.minorder,
     }
+    console.log(couponData)
 
     /* Send data to API to register a new user */
     const config = {
@@ -39,8 +40,9 @@ const CouponsTool = () => {
     const res = await axios(config)
     console.log(res)
     hideModal()
-    setAppData()
-    setLoading(false)
+    setAppData().then(() => {
+      setLoading(false)
+    })
   }
 
   // open the modal and fill it's content 
@@ -63,8 +65,8 @@ const CouponsTool = () => {
     const couponData = {
       name: formStates.name,
       available: formStates.available,
-      validtill: formStates.validtill,
-      descounttype: formStates.descounttype,
+      validtille: formStates.validtille,
+      discounttype: formStates.discounttype,
       discountvalue: formStates.discountvalue,
       minorder: formStates.minorder,
     }
@@ -81,8 +83,9 @@ const CouponsTool = () => {
     const res = await axios(config)
     console.log(res)
     hideModal()
-    setAppData()
-    setLoading(false)
+    setAppData().then(() => {
+      setLoading(false)
+    })
   }
 
   // opens edit modal
@@ -91,8 +94,8 @@ const CouponsTool = () => {
       id: store.appData.coupons[index].id,
       name: store.appData.coupons[index].name,
       available: store.appData.coupons[index].available,
-      validtill: store.appData.coupons[index].validtill,
-      descounttype: store.appData.coupons[index].descounttype,
+      validtille: store.appData.coupons[index].validtille,
+      discounttype: store.appData.coupons[index].discounttype,
       discountvalue: store.appData.coupons[index].discountvalue,
       minorder: store.appData.coupons[index].minorder,
     }
@@ -113,15 +116,16 @@ const CouponsTool = () => {
   const handleDelete = async (index) => {
     setLoading(true)
     const cid = store.appData.coupons[index].id
+    console.log(cid)
     /* Send data to API to register a new user */
     const config = {
       method: 'delete',
       url: `https://mina-jpp1.herokuapp.com/api/coupons/${cid}?token=${store.auth.token}`,
     }
     const res = await axios(config)
-    setAppData()
-    setLoading(false)
-    console.log(res)
+    setAppData().then(() => {
+      setLoading(false)
+    })
   }
 
   return (
@@ -137,7 +141,7 @@ const CouponsTool = () => {
         )
         : (
           <div className='grid place-items-center'>
-            <h1 className='text-left text-xl font-medium p-6 text-gray-700'>Brands Data</h1>
+            <h1 className='text-left text-xl font-medium p-6 text-gray-700'>Coupons Data</h1>
             <div className='max-w-2xl px-6'>
               <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <div className="p-4 flex">
@@ -149,11 +153,11 @@ const CouponsTool = () => {
                     <input
                       onChange={(e) => {
                         if (e.target.value !== '') {
-                            setSearchResults(store.appData.coupons.filter(coupon => coupon.name.toLowerCase().includes(e.target.value)))
+                          setSearchResults(store.appData.coupons.filter(coupon => coupon.name.toLowerCase().includes(e.target.value)))
                         } else {
-                            setSearchResults(store.appData.coupons)
+                          setSearchResults(store.appData.coupons)
                         }
-                    }}
+                      }}
                       type="text"
                       id="table-search"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items" />
@@ -169,7 +173,7 @@ const CouponsTool = () => {
                         Coupon Name
                       </th>
                       <th scope="col" className="px-6 py-3">
-                        Origin
+                        Valid Till
                       </th>
                       <th scope="col" className="px-6 py-3">
                         <span>Edit or Delete</span>
@@ -182,8 +186,8 @@ const CouponsTool = () => {
                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                           {coupon.name}
                         </th>
-                        <td className="px-6 py-4">
-                          {coupon.available}
+                        <td className={`px-6 py-4 ${Date.parse(coupon.validtille.split('T')[0]) <= new Date().valueOf() ? 'text-red-500': ''}`}>
+                          {coupon.validtille.split('T')[0]}
                         </td>
                         <td className="px-6 py-4 flex max-w-fit">
                           <button id={i} onClick={(e) => modalEdit(e.currentTarget.id)} className="group relative flex-grow flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700">

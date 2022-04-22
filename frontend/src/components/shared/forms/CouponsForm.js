@@ -7,7 +7,7 @@ const CouponsForm = ({ initStates, onSubmit }) => {
 
     const [name, setName] = useState(initStates ? initStates.name : '')
     const [available, setAvailable] = useState(initStates ? initStates.available : 0)
-    const [validtill, setValidtill] = useState(initStates ? initStates.validtill : Date.now().toLocaleString())
+    const [validtille, setValidtill] = useState(initStates ? initStates.validtille.split('T')[0] : new Date().toISOString().split('T')[0])
     const [discounttype, setDiscounttype] = useState(initStates ? initStates.discounttype : 0)
     const [discountvalue, setDiscountvalue] = useState(initStates ? initStates.discountvalue : 0)
     const [minorder, setMinorder] = useState(initStates ? initStates.minorder : 0)
@@ -20,7 +20,7 @@ const CouponsForm = ({ initStates, onSubmit }) => {
             id: initStates ? initStates.id : 0,
             name,
             available,
-            validtill,
+            validtille,
             discounttype: discounttype === 'Value' ? 0 : 1,
             discountvalue: Number(discountvalue),
             minorder: Number(minorder),
@@ -59,9 +59,11 @@ const CouponsForm = ({ initStates, onSubmit }) => {
                             type="date"
                             required
                             className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                            value={validtill}
+                            value={validtille}
                             onChange={(e) => {
+                                console.log(validtille)
                                 setValidtill(e.target.value)
+                                console.log(validtille)
                             }}
                         />
                     </div>
@@ -75,7 +77,7 @@ const CouponsForm = ({ initStates, onSubmit }) => {
                             type="checkbox"
                             className="relative px-3 py-2 rounded-md sm:text-sm"
                             placeholder="Brand Origin"
-                            value={available}
+                            checked={available}
                             onChange={(e) => setAvailable(e.target.checked ? 1 : 0)}
                         />
                     </div>
@@ -121,7 +123,7 @@ const CouponsForm = ({ initStates, onSubmit }) => {
                         name="discounttype"
                         type="select"
                         required
-                        value={discounttype}
+                        value={discounttype === 0 ? 'Value': 'Percentage'}
                         className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                         placeholder="Discount Type"
                         onChange={(e) => setDiscounttype(e.target.value)}
