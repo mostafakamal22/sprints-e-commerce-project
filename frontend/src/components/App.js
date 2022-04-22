@@ -15,6 +15,7 @@ import Wishlist from "./views/profile/Wishlist";
 import ProductPage from "./views/product/ProductPage";
 import { useContext } from "react";
 import StoreContext from "../context/store/StoreContext";
+import NotFound from "./shared/NotFound";
 
 const App = () => {
 
@@ -35,6 +36,7 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/product/:id" element={<ProductPage />} />
+        <Route path="*" element={<NotFound code={404} msg={`Page not found!`}/>}/>
       </Routes>
       <div className={`container toast-container relative grid place-items-center ${store.toast.isToast ? '' : 'pointer-events-none'}`}>
         <Toast />

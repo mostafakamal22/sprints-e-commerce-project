@@ -1,6 +1,11 @@
+import { useContext, useEffect, useState } from "react"
 import { Route, Routes } from "react-router"
+import StoreContext from "../../../context/store/StoreContext"
+import { useProtect } from "../../../hooks/useProtect"
 import Footer from "../../shared/Footer"
 import Navbar from "../../shared/Navbar"
+import NotFound from "../../shared/NotFound"
+import Spinner from "../../shared/Spinner"
 import AdminToolbar from "../adminTools/AdminToolbar"
 import { AnalyticsTool } from "../adminTools/AnalyticsTool"
 import BranchesTool from "../adminTools/BranchesTool"
@@ -14,23 +19,52 @@ import UsersTool from "../adminTools/UsersTool"
 
 const AdminDashboard = () => {
 
+    useProtect()
+
+    const { store } = useContext(StoreContext)
+
+    const [authed, setAuthed] = useState(true)
+
+    useEffect(() => {
+        if (!store.auth.user) {
+            return
+        }
+        if (store.auth.user.auth !== 1) {
+            setAuthed(false)
+        } else {
+            setAuthed(true)
+        }
+    }, [store])
+
+    if (!authed) {
+        return (
+            <NotFound code={401} msg={`Unauthorized!`} />
+        )
+    }
+
     return (
         <div>
-            <Navbar />
-            <h1 className="text-left text-3xl font-medium text-gray-700 px-6 pt-6">Admin Dashboard</h1>
-            <AdminToolbar />
-            <Routes>
-                <Route path="/users" element={<UsersTool />} />
-                <Route path="/branches" element={<BranchesTool />} />
-                <Route path="/brands" element={<BrandsTool />} />
-                <Route path="/coupons" element={<CouponsTool />} />
-                <Route path="/images" element={<ImagesTool />} />
-                <Route path="/orders" element={<OrdersTool />} />
-                <Route path="/products" element={<ProductsTool />} />
-                <Route path="/categories" element={<CategoriesTool />} />
-                <Route path="/" element={<AnalyticsTool />} />
-            </Routes>
-            <Footer />
+            {store.loading
+                ? (<Spinner />)
+                : (
+                    <>
+                        <Navbar />
+                        <h1 className="text-left text-3xl font-medium text-gray-700 px-6 pt-6">Admin Dashboard</h1>
+                        <AdminToolbar />
+                        <Routes>
+                            <Route path="/users" element={<UsersTool />} />
+                            <Route path="/branches" element={<BranchesTool />} />
+                            <Route path="/brands" element={<BrandsTool />} />
+                            <Route path="/coupons" element={<CouponsTool />} />
+                            <Route path="/images" element={<ImagesTool />} />
+                            <Route path="/orders" element={<OrdersTool />} />
+                            <Route path="/products" element={<ProductsTool />} />
+                            <Route path="/categories" element={<CategoriesTool />} />
+                            <Route path="/" element={<AnalyticsTool />} />
+                        </Routes>
+                        <Footer />
+                    </>
+                )}
         </div>
     )
 }
