@@ -22,7 +22,7 @@ const CouponsTool = () => {
       name: formStates.name,
       available: formStates.available,
       validtill: formStates.validtill,
-      descounttype: formStates.descounttype,
+      discounttype: formStates.discounttype,
       discountvalue: formStates.discountvalue,
       minorder: formStates.minorder,
     }
