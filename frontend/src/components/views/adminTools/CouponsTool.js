@@ -21,7 +21,7 @@ const CouponsTool = () => {
     const couponData = {
       name: formStates.name,
       available: formStates.available,
-      validtille: formStates.validtille,
+      validtill: formStates.validtill,
       discounttype: formStates.discounttype,
       discountvalue: formStates.discountvalue,
       minorder: formStates.minorder,
@@ -65,7 +65,7 @@ const CouponsTool = () => {
     const couponData = {
       name: formStates.name,
       available: formStates.available,
-      validtille: formStates.validtille,
+      validtill: formStates.validtill,
       discounttype: formStates.discounttype,
       discountvalue: formStates.discountvalue,
       minorder: formStates.minorder,
@@ -94,7 +94,7 @@ const CouponsTool = () => {
       id: store.appData.coupons[index].id,
       name: store.appData.coupons[index].name,
       available: store.appData.coupons[index].available,
-      validtille: store.appData.coupons[index].validtille,
+      validtill: store.appData.coupons[index].validtill,
       discounttype: store.appData.coupons[index].discounttype,
       discountvalue: store.appData.coupons[index].discountvalue,
       minorder: store.appData.coupons[index].minorder,
@@ -186,8 +186,8 @@ const CouponsTool = () => {
                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                           {coupon.name}
                         </th>
-                        <td className={`px-6 py-4 ${Date.parse(coupon.validtille.split('T')[0]) <= new Date().valueOf() ? 'text-red-500': ''}`}>
-                          {coupon.validtille.split('T')[0]}
+                        <td className={`px-6 py-4 ${Date.parse(coupon.validtill.split('T')[0]) <= new Date().valueOf() ? 'text-red-500': ''}`}>
+                          {coupon.validtill.split('T')[0]}
                         </td>
                         <td className="px-6 py-4 flex max-w-fit">
                           <button id={i} onClick={(e) => modalEdit(e.currentTarget.id)} className="group relative flex-grow flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700">

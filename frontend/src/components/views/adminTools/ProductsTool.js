@@ -183,7 +183,7 @@ const ProductsTool = () => {
                         Product Name
                       </th>
                       <th scope="col" className="px-6 py-3">
-                        Price
+                        Product ID
                       </th>
                       <th scope="col" className="px-6 py-3">
                         <span>Edit or Delete</span>
@@ -197,7 +197,7 @@ const ProductsTool = () => {
                           {product.name}
                         </th>
                         <td className="px-6 py-4">
-                          {product.price}
+                          {product.id}
                         </td>
                         <td className="px-6 py-4 flex max-w-fit">
                           <button id={i} onClick={(e) => modalEdit(e.currentTarget.id)} className="group relative flex-grow flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700">

@@ -7,7 +7,7 @@ const CouponsForm = ({ initStates, onSubmit }) => {
 
     const [name, setName] = useState(initStates ? initStates.name : '')
     const [available, setAvailable] = useState(initStates ? initStates.available : 0)
-    const [validtille, setValidtill] = useState(initStates ? initStates.validtille.split('T')[0] : new Date().toISOString().split('T')[0])
+    const [validtill, setValidtill] = useState(initStates ? initStates.validtill.split('T')[0] : new Date().toISOString().split('T')[0])
     const [discounttype, setDiscounttype] = useState(initStates ? initStates.discounttype : 0)
     const [discountvalue, setDiscountvalue] = useState(initStates ? initStates.discountvalue : 0)
     const [minorder, setMinorder] = useState(initStates ? initStates.minorder : 0)
@@ -20,7 +20,7 @@ const CouponsForm = ({ initStates, onSubmit }) => {
             id: initStates ? initStates.id : 0,
             name,
             available,
-            validtille,
+            validtill,
             discounttype: discounttype === 'Value' ? 0 : 1,
             discountvalue: Number(discountvalue),
             minorder: Number(minorder),
@@ -59,11 +59,11 @@ const CouponsForm = ({ initStates, onSubmit }) => {
                             type="date"
                             required
                             className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                            value={validtille}
+                            value={validtill}
                             onChange={(e) => {
-                                console.log(validtille)
+                                console.log(validtill)
                                 setValidtill(e.target.value)
-                                console.log(validtille)
+                                console.log(validtill)
                             }}
                         />
                     </div>
