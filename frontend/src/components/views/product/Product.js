@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StarIcon } from "@heroicons/react/solid";
 import UsersReviewsOverView from "./UsersReviewsOverView";
 import UserReview from "./UserReview";
@@ -12,11 +12,11 @@ import "swiper/css/navigation";
 // import required modules
 import { Navigation } from "swiper";
 import { AiOutlineHeart } from "react-icons/ai";
+import { useLocation } from "react-router";
+import axios from "axios";
 
 //product fake data
-const product = {
-  name: "Chip & Dale",
-  price: "$19.99",
+const fakeProduct = {
   href: "#",
   breadcrumbs: [
     { id: 1, name: "Home", href: "#" },
@@ -98,7 +98,21 @@ const usersReviews = [
   },
 ];
 
-export default function Product() {
+const Product = () => {
+
+  const id = useLocation().pathname.split('t/')[1]
+
+  const [product, setProduct] = useState(fakeProduct)
+  useEffect(() => {
+    const config = {
+      method: "get",
+      url: `https://mina-jpp1.herokuapp.com/api/products/${id}`,
+    };
+    axios(config).then(res => {
+      setProduct({ ...fakeProduct, ...res.data })
+    })
+  }, [])
+
   return (
     <div className="mt-5">
       {/* Bread crumb */}
@@ -146,6 +160,13 @@ export default function Product() {
           modules={[Navigation]}
           className="mt-20 max-h-[600px] max-w-[750px]"
         >
+          <SwiperSlide>
+            <img
+              className="object-cover object-center w-full h-auto"
+              src={product.coverimage}
+              alt='cover'
+            />
+          </SwiperSlide>
           {product.images.map((pic, index) => (
             <SwiperSlide>
               <img
@@ -186,7 +207,7 @@ export default function Product() {
               </Ripples>
             </div>
 
-            <p className="text-3xl text-gray-900 my-5">{product.price}</p>
+            <p className="text-3xl text-gray-900 my-5">{product.price}$</p>
 
             {/* Reviews */}
             <div className="mt-6">
@@ -295,3 +316,5 @@ export default function Product() {
     </div>
   );
 }
+
+export default Product
