@@ -86,7 +86,7 @@ const Upload = ({ setCoverImage, isEdit }) => {
   return (
     <div className="w-1/2 grid place-items-center">
       <label
-        htmlFor="image"
+        htmlFor="upload"
         className={`flex items-center justify-between w-full py-2 px-4 text-sm font-medium rounded-md text-white ${
           isRunning
             ? "bg-gray-600 hover:bg-gray-600"
@@ -97,8 +97,8 @@ const Upload = ({ setCoverImage, isEdit }) => {
         {url !== "" ? <MdCheckCircle></MdCheckCircle> : null}
       </label>
       <input
-        id="image"
-        name="image"
+        id="upload"
+        name="upload"
         type="file"
         required={!isEdit}
         disabled={isRunning}

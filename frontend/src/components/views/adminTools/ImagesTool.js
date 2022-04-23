@@ -1,44 +1,43 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { MdAdd, MdDelete, MdEdit } from "react-icons/md";
+import { MdAdd, MdDelete, MdEdit, MdToggleOff, MdToggleOn } from "react-icons/md";
 import StoreContext from "../../../context/store/StoreContext";
 import ImagesForm from "../../shared/forms/imagesForm";
 import Spinner from "../../shared/Spinner";
 
 const ImagesTool = () => {
-  const { store, showModal, hideModal, setAppData } =
-    useContext(StoreContext);
+  const { store, showModal, hideModal, setAppData } = useContext(StoreContext);
 
   const [loading, setLoading] = useState([])
 
   useEffect(() => {
     setLoading(true)
-    setAppData('users').then((res) => {
+    setAppData('carousels').then(() => {
       setLoading(false)
     })
   }, [])
 
   // submit the add form
   const handleAddSubmit = async (formStates) => {
+    setLoading(true)
     const imageData = {
-      imageName: formStates.imageName,
-      productId: formStates.productId,
+      image: formStates.image,
+      havelink: formStates.havelink,
+      link: formStates.link,
     };
 
     /* Send data to API to add new image to the product */
     const config = {
       method: "post",
-      url: "https://mina-jpp1.herokuapp.com/api/images",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${store.auth.token}`,
-      },
+      url: `https://mina-jpp1.herokuapp.com/api/carousels?token=${store.auth.token}`,
       data: imageData,
     };
     const res = await axios(config);
     console.log(res);
     hideModal();
-    setLoading(false);
+    setAppData('carousels').then(() => {
+      setLoading(false)
+    })
   };
 
   // open the modal and fill it's content
@@ -56,6 +55,44 @@ const ImagesTool = () => {
 
     showModal(Content);
   };
+
+  // opens edit modal
+  const toggleImage = (index) => {
+    const imageData = {
+      image: store.appData.carousels[index].image,
+      havelink: store.appData.carousels[index].havelink === 0 ? 1 : 0,
+      link: store.appData.carousels[index].link,
+      id: store.appData.carousels[index].id,
+    }
+
+    /* Send data to API to register a new user */
+    const config = {
+      method: 'put',
+      url: `https://mina-jpp1.herokuapp.com/api/carousels/${imageData.id}?token=${store.auth.token}`,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: imageData,
+    }
+    axios(config).then(() => {
+      hideModal()
+      setAppData('carousels')
+    })
+  }
+
+  const handleDelete = async (index) => {
+    setLoading(true)
+    const imageID = store.appData.carousels[index].id
+    /* Send data to API to register a new user */
+    const config = {
+      method: 'delete',
+      url: `https://mina-jpp1.herokuapp.com/api/carousels/${imageID}?token=${store.auth.token}`,
+    }
+    const res = await axios(config)
+    setAppData('carousels').then(() => {
+      setLoading(false)
+    })
+  }
 
   return (
     <>
@@ -107,10 +144,10 @@ const ImagesTool = () => {
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     <th scope="col" className="px-6 py-3">
-                      User Name
+                      Image
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Product ID
+                      Status
                     </th>
                     <th scope="col" className="px-6 py-3">
                       <span>Edit or Delete</span>
@@ -118,7 +155,7 @@ const ImagesTool = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {store.appData.images.map((image, i) => (
+                  {store.appData.carousels.map((image, i) => (
                     <tr
                       key={i}
                       className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600"
@@ -127,19 +164,19 @@ const ImagesTool = () => {
                         scope="row"
                         className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                       >
-                        {image.imageName}
+                        <img src={image.link} alt='' width={100}></img>
                       </th>
-                      <td className="px-6 py-4">{image.productId}</td>
+                      <td className="px-6 py-4">{image.havelink === 0 ? 'On Carousel' : 'Off Carousel'}</td>
                       <td className="px-6 py-4 flex max-w-fit">
                         <button
                           id={i}
-                          /*onClick={(e) => modalEdit(e.currentTarget.id)}*/ className="group relative flex-grow flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700"
+                          onClick={(e) => toggleImage(e.currentTarget.id)} className="group relative flex-grow flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700"
                         >
-                          <MdEdit />
+                          {image.havelink !== 0 ? <MdToggleOn color="red"/> : <MdToggleOff color="lightgreen"/>}
                         </button>
                         <button
                           id={i}
-                          /*onClick={(e) => handleDelete(e.currentTarget.id)}*/ className="group relative flex-grow flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:bg-rose-700"
+                          onClick={(e) => handleDelete(e.currentTarget.id)} className="group relative flex-grow flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:bg-rose-700"
                         >
                           <MdDelete />
                         </button>
