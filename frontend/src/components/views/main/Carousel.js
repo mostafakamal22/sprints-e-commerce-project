@@ -21,14 +21,14 @@ const Carousel = () => {
 
   useEffect(() => {
     setLoading(true)
-    setAppData('carousels').then(() => {
+    setAppData('carousels').then((res) => {
       let data = []
-      store.appData.carousels.map(item => {
+      res.forEach(item => {
         if (item.havelink === 1) {
           data.push(item.link)
         }
-        return data
       })
+      console.log(data);
       setCarouselData(data)
       setLoading(false)
     })

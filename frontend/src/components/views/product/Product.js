@@ -279,8 +279,8 @@ const Product = () => {
 
               <div className="mt-4">
                 <ul className="pl-4 list-disc text-sm space-y-2">
-                  {product.highlights.map((highlight) => (
-                    <li key={highlight} className="text-gray-400">
+                  {product.highlights.map((highlight, i) => (
+                    <li key={i} className="text-gray-400">
                       <span className="text-gray-600">{highlight}</span>
                     </li>
                   ))}
@@ -306,8 +306,8 @@ const Product = () => {
         <div className="px-5 lg:px-10 my-10 max-w-[900px]">
           <h2 className="my-5 text-xl">Users Reviews</h2>
 
-          {usersReviews.map((review) => (
-            <UserReview userReview={review} />
+          {usersReviews.map((review, i) => (
+            <UserReview key={i} userReview={review} />
           ))}
         </div>
 
