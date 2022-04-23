@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -9,32 +9,35 @@ import "swiper/css/navigation";
 
 // import required modules
 import { Autoplay, Pagination, Navigation } from "swiper";
+import StoreContext from "../../../context/store/StoreContext";
+import Spinner from "../../shared/Spinner";
 
-//carousel images' data
-const CarouselData = [
-  {
-    image:
-      "https://images.unsplash.com/photo-1546768292-fb12f6c92568?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1501446529957-6226bd447c46?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1489&q=80",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1350&q=80",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1475189778702-5ec9941484ae?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1351&q=80",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1350&q=80",
-  },
-];
+const Carousel = () => {
 
-export default function Carousel() {
+  const { setAppData, store } = useContext(StoreContext)
+
+  const [carouselData, setCarouselData] = useState([])
+  const [loading, setLoading] = useState()
+
+  useEffect(() => {
+    setLoading(true)
+    setAppData('carousels').then(() => {
+      let data = []
+      store.appData.carousels.map(item => {
+        if (item.havelink === 1) {
+          data.push(item.link)
+        }
+        return data
+      })
+      setCarouselData(data)
+      setLoading(false)
+    })
+  }, [])
+
+  if (loading) {
+    return <Spinner />
+  }
+
   return (
     <div>
       <Swiper
@@ -51,11 +54,11 @@ export default function Carousel() {
         navigation={true}
         modules={[Autoplay, Pagination, Navigation]}
       >
-        {CarouselData.map((item, index) => (
+        {carouselData.map((item, index) => (
           <SwiperSlide key={index}>
             <img
               className="w-full h-full object-cover object-center"
-              src={item.image}
+              src={item}
               alt="carousel element"
             ></img>
           </SwiperSlide>
@@ -64,3 +67,5 @@ export default function Carousel() {
     </div>
   );
 }
+
+export default Carousel

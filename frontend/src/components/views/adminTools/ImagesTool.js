@@ -26,6 +26,8 @@ const ImagesTool = () => {
       link: formStates.link,
     };
 
+    console.log(imageData);
+
     /* Send data to API to add new image to the product */
     const config = {
       method: "post",
@@ -166,13 +168,13 @@ const ImagesTool = () => {
                       >
                         <img src={image.link} alt='' width={100}></img>
                       </th>
-                      <td className="px-6 py-4">{image.havelink === 0 ? 'On Carousel' : 'Off Carousel'}</td>
+                      <td className="px-6 py-4">{image.havelink !== 0 ? 'On Carousel' : 'Off Carousel'}</td>
                       <td className="px-6 py-4 flex max-w-fit">
                         <button
                           id={i}
                           onClick={(e) => toggleImage(e.currentTarget.id)} className="group relative flex-grow flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700"
                         >
-                          {image.havelink !== 0 ? <MdToggleOn color="red"/> : <MdToggleOff color="lightgreen"/>}
+                          {image.havelink === 0 ? <MdToggleOn color="red"/> : <MdToggleOff color="lightgreen"/>}
                         </button>
                         <button
                           id={i}

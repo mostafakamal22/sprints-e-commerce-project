@@ -38,7 +38,7 @@ export const StoreProvider = ({ children }) => {
       categories: [],
       coupons: [],
       orders: [],
-      images: [],
+      carousels: [],
     },
     loading: false,
   };
