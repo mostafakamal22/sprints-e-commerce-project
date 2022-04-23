@@ -1,7 +1,6 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext } from "react"
 import { Route, Routes } from "react-router"
 import StoreContext from "../../../context/store/StoreContext"
-import { useProtect } from "../../../hooks/useProtect"
 import Footer from "../../shared/Footer"
 import Navbar from "../../shared/Navbar"
 import NotFound from "../../shared/NotFound"
@@ -18,8 +17,6 @@ import ProductsTool from "../adminTools/ProductsTool"
 import UsersTool from "../adminTools/UsersTool"
 
 const AdminDashboard = () => {
-
-    useProtect()
 
     const { store } = useContext(StoreContext)
 

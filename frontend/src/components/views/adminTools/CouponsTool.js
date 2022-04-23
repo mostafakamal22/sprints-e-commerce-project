@@ -6,13 +6,18 @@ import CouponsForm from "../../shared/forms/CouponsForm"
 import Spinner from "../../shared/Spinner"
 
 const CouponsTool = () => {
-  const { store, setLoading, showModal, hideModal, setAppData } = useContext(StoreContext)
+  const { store, showModal, hideModal, setAppData } = useContext(StoreContext)
 
   const [searchResults, setSearchResults] = useState([])
+  const [loading, setLoading] = useState([])
 
   useEffect(() => {
-    setSearchResults(store.appData.coupons)
-  }, [store])
+      setLoading(true)
+      setAppData('coupons').then((res) => {
+          setSearchResults(res)
+          setLoading(false)
+      })
+  }, [])
 
   // submit the add form
   const handleAddSubmit = async (formStates) => {
@@ -131,7 +136,7 @@ const CouponsTool = () => {
 
   return (
     <>
-      {store.loading
+      {loading
         ? (
           <Spinner />
         )

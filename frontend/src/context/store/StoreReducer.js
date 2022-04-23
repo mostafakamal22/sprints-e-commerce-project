@@ -45,7 +45,10 @@ const storeReducer = (state, action) => {
             logger(state, action)
             return {
                 ...state,
-                appData: action.payload,
+                appData: {
+                    ...state.appData,
+                    [action.collection]: action.payload,
+                }
             }
         case 'SET_LOADING':
             logger(state, action)

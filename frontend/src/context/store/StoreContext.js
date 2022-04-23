@@ -107,78 +107,27 @@ export const StoreProvider = ({ children }) => {
     });
   };
 
-  const setAppData = async () => {
-    const brandsConfig = {
-      method: "get",
-      url: "https://mina-jpp1.herokuapp.com/api/brands",
-    };
-    const brands = await (await axios(brandsConfig)).data;
-
-    const categoriesConfig = {
-      method: "get",
-      url: "https://mina-jpp1.herokuapp.com/api/categories",
-    };
-    const categories = await (await axios(categoriesConfig)).data;
-
-    const usersConfig = {
-      method: "get",
-      url: "https://mina-jpp1.herokuapp.com/api/users",
-    };
-    const users = await (await axios(usersConfig)).data;
-
-    const branchesConfig = {
-      method: "get",
-      url: "https://mina-jpp1.herokuapp.com/api/branches",
-    };
-    const branches = await (await axios(branchesConfig)).data;
-
-    const productsConfig = {
-      method: "get",
-      url: "https://mina-jpp1.herokuapp.com/api/products",
-    };
-    const products = await (await axios(productsConfig)).data;
-
-    //get all images from backend
-    const imagesConfig = {
-      method: "get",
-      url: "https://mina-jpp1.herokuapp.com/api/images",
-    };
-
-    const images = await (await axios(imagesConfig)).data;
-
-    const couponsConfig = {
-      method: "get",
-      url: "https://mina-jpp1.herokuapp.com/api/coupons",
-    };
-    const coupons = await (await axios(couponsConfig)).data;
-
-    const ordersConfig = {
-      method: "get",
-      url: "https://mina-jpp1.herokuapp.com/api/orders",
-    };
-    const allOrders = await (await axios(ordersConfig)).data;
-    const orders = allOrders.filter((o) => o.status !== 0);
-
-    dispatch({
-      type: "SET_DATA",
-      payload: {
-        users,
-        brands,
-        categories,
-        branches,
-        products,
-        coupons,
-        orders,
-        images,
-      },
-    });
-  };
-
   const setLoading = (value) => {
     dispatch({
       type: "SET_LOADING",
       payload: value,
     });
+  };
+
+  const setAppData = async (collection) => {
+    const config = {
+      method: "get",
+      url: `https://mina-jpp1.herokuapp.com/api/${collection}`,
+    };
+    const res = await (await axios(config)).data;
+
+    dispatch({
+      type: "SET_DATA",
+      payload: res,
+      collection,
+    });
+
+    return res
   };
 
   return (

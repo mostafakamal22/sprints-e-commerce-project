@@ -8,13 +8,22 @@ import Spinner from '../../shared/Spinner'
 
 export const AnalyticsTool = () => {
 
-  const { store, setLoading, showModal, hideModal, setAppData } = useContext(StoreContext)
+  const { store, showModal, hideModal, setAppData } = useContext(StoreContext)
 
   const [searchResults, setSearchResults] = useState([])
+  const [loading, setLoading] = useState([])
 
   useEffect(() => {
-    setSearchResults(store.appData)
-  }, [store])
+    setLoading(true)
+    const config = {
+      method: "get",
+      url: `https://mina-jpp1.herokuapp.com/api/store/admin?token=${store.auth.token}`,
+    };
+    axios(config).then(res => {
+      setSearchResults(res.data)
+      setLoading(false)
+    })
+  }, [])
 
   // submit the add form
   const handleAddSubmit = async (formStates) => {
@@ -117,7 +126,7 @@ export const AnalyticsTool = () => {
 
   return (
     <>
-      {store.loading
+      {loading
         ? (
           <Spinner />
         )
@@ -157,9 +166,6 @@ export const AnalyticsTool = () => {
                       <th scope="col" className="px-6 py-3">
                         Amount
                       </th>
-                      <th scope="col" className="px-6 py-3">
-                        <span>Link</span>
-                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -169,12 +175,7 @@ export const AnalyticsTool = () => {
                           {data}
                         </th>
                         <td className="px-6 py-4">
-                          {store.appData[data].length}
-                        </td>
-                        <td className="px-6 py-4 flex max-w-fit">
-                          <Link id={i} to={`/admin/dashboard/${data}`} className="group relative flex-grow flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700">
-                            <span>Go to</span>
-                          </Link>
+                          {searchResults[data]}
                         </td>
                       </tr>
                     ))}

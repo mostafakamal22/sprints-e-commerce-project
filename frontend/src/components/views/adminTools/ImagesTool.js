@@ -6,8 +6,17 @@ import ImagesForm from "../../shared/forms/imagesForm";
 import Spinner from "../../shared/Spinner";
 
 const ImagesTool = () => {
-  const { store, showModal, hideModal, setLoading, showToast } =
+  const { store, showModal, hideModal, setAppData } =
     useContext(StoreContext);
+
+  const [loading, setLoading] = useState([])
+
+  useEffect(() => {
+    setLoading(true)
+    setAppData('users').then((res) => {
+      setLoading(false)
+    })
+  }, [])
 
   // submit the add form
   const handleAddSubmit = async (formStates) => {
@@ -50,7 +59,7 @@ const ImagesTool = () => {
 
   return (
     <>
-      {store.loading ? (
+      {loading ? (
         <Spinner />
       ) : (
         <div className="grid place-items-center">

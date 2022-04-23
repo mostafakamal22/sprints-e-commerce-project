@@ -9,6 +9,7 @@ export const useProtect = () => {
     const url = useLocation().pathname;
 
     const checkAuth = () => {
+        setLoading(true)
         const checkToken = localStorage.getItem('token')
         if (checkToken) {
             const { id, token } = JSON.parse(checkToken)
@@ -23,23 +24,19 @@ export const useProtect = () => {
                     token,
                 }
                 loginUser(userData)
+                setLoading(false)
                 if (url === '/login' || url === '/register') {
                     navigate('/')
                 }
             })
         } else {
             logoutUser()
+            setLoading(false)
         }
     }
 
     useEffect(() => {
-        setLoading(true)
-
         checkAuth()
-        setAppData().then(() => {
-            setLoading(false)
-        })
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 };

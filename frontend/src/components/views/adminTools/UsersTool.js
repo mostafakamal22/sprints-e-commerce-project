@@ -7,11 +7,16 @@ import Spinner from '../../shared/Spinner'
 
 const UsersTool = () => {
 
+    const { store, showModal, hideModal, showToast, setAppData } = useContext(StoreContext)
     const [searchResults, setSearchResults] = useState([])
-    const { store, showModal, hideModal, setLoading, showToast, setAppData } = useContext(StoreContext)
+    const [loading, setLoading] = useState([])
 
     useEffect(() => {
-        setSearchResults(store.appData.users)
+        setLoading(true)
+        setAppData('users').then((res) => {
+            setSearchResults(res)
+            setLoading(false)
+        })
     }, [])
 
     // submit the add form
@@ -46,7 +51,7 @@ const UsersTool = () => {
         const res = await axios(config)
         console.log(res)
         hideModal()
-        setAppData().then(() => {
+        setAppData('users').then(() => {
             setLoading(false)
         })
     }
@@ -93,7 +98,7 @@ const UsersTool = () => {
         const res = await axios(config)
         console.log(res)
         hideModal()
-        setAppData().then(() => {
+        setAppData('users').then(() => {
             setLoading(false)
         })
     }
@@ -141,7 +146,7 @@ const UsersTool = () => {
 
     return (
         <>
-            {store.loading
+            {loading
                 ? (
                     <Spinner />
                 )

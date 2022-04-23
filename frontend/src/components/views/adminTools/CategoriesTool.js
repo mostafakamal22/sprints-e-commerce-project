@@ -6,13 +6,18 @@ import CategoriesForm from "../../shared/forms/CategoriesForm"
 import Spinner from "../../shared/Spinner"
 
 const CategoriesTool = () => {
-  const { store, setLoading, showModal, hideModal, setAppData } = useContext(StoreContext)
+  const { store, showModal, hideModal, setAppData } = useContext(StoreContext)
 
   const [searchResults, setSearchResults] = useState(store.appData.categories)
+  const [loading, setLoading] = useState([])
 
   useEffect(() => {
-    setSearchResults(store.appData.categories)
-  }, [store])
+    setLoading(true)
+    setAppData('categories').then((res) => {
+      setSearchResults(res)
+      setLoading(false)
+    })
+  }, [])
 
   // submit the add form
   const handleAddSubmit = async (formStates) => {
@@ -114,7 +119,7 @@ const CategoriesTool = () => {
 
   return (
     <>
-      {store.loading
+      {loading
         ? (
           <Spinner />
         )

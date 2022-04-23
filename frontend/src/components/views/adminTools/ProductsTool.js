@@ -7,13 +7,18 @@ import Spinner from '../../shared/Spinner'
 
 const ProductsTool = () => {
 
-  const { store, showModal, hideModal, setLoading, setAppData } = useContext(StoreContext)
+  const { store, showModal, hideModal, setAppData } = useContext(StoreContext)
 
   const [searchResults, setSearchResults] = useState([])
+  const [loading, setLoading] = useState([])
 
   useEffect(() => {
-    setSearchResults(store.appData.products)
-  }, [store])
+      setLoading(true)
+      setAppData('products').then((res) => {
+          setSearchResults(res)
+          setLoading(false)
+      })
+  }, [])
 
   // submit the add form
   const handleAddSubmit = async (formStates) => {
@@ -141,7 +146,7 @@ const ProductsTool = () => {
 
   return (
     <>
-      {store.loading
+      {loading
         ? (
           <Spinner />
         )

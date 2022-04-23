@@ -7,13 +7,18 @@ import Spinner from '../../shared/Spinner'
 
 const BranchesTool = () => {
 
-  const { store, setLoading, showModal, hideModal, setAppData } = useContext(StoreContext)
+  const { store, showModal, hideModal, setAppData } = useContext(StoreContext)
 
   const [searchResults, setSearchResults] = useState([])
+  const [loading, setLoading] = useState([])
 
   useEffect(() => {
-    setSearchResults(store.appData.branches)
-  }, [store])
+      setLoading(true)
+      setAppData('branches').then((res) => {
+          setSearchResults(res)
+          setLoading(false)
+      })
+  }, [])
 
   // submit the add form
   const handleAddSubmit = async (formStates) => {
@@ -124,7 +129,7 @@ const BranchesTool = () => {
 
   return (
     <>
-      {store.loading
+      {loading
         ? (
           <Spinner />
         )
