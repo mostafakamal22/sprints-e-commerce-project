@@ -28,7 +28,7 @@ const Home = () => {
     getData().then(res => {
       setData('products', res)
       setProducts(res)
-      setNewProducts(res.filter(product => Date.now() - Date.parse(product.createdAt) < 1000000))
+      setNewProducts(res.filter(product => Date.now() - Date.parse(product.createdAt) < 10000000))
       setFeaturedProducts(res.filter(product => product.isFeatured))
     })
   }, [])

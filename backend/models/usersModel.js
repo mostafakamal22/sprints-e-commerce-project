@@ -34,6 +34,15 @@ const UserSchema = mongoose.Schema(
             type: String,
             required: [true, 'please add user status']
         },
+        cartItems: {
+            type: Array,
+        },
+        wishlistItems: {
+            type: Array,
+        },
+        orders: {
+            type: Array,
+        },
     },
     {
         timestamps: true,

@@ -5,14 +5,19 @@ const User = require('../models/usersModel')
 
 // @desc    Register new user
 // @route   POST /api/users
-// @access  Public
+// @access  Private
 const getUsers = asyncHandler(async (req, res) => {
-  const data = await User.find()
+  if (req.user.type === 'Admin' && req.user.status === 'Active') {
+    const data = await User.find()
 
-  if (data) {
-    res.status(200).json(data)
+    if (data) {
+      res.status(200).json(data)
+    } else {
+      res.status(500).json({ error: 'unknowen server or DB error' })
+    }
   } else {
-    res.status(500).json({ message: 'unknowen server or DB error' })
+    res.status(401)
+    throw new Error(`Unauthorized, user not active`)
   }
 })
 
@@ -56,6 +61,9 @@ const registerUser = asyncHandler(async (req, res) => {
     phone,
     type,
     status,
+    cartItems: [],
+    wishlistItems: [],
+    orders: [],
   })
 
   if (user) {
@@ -89,46 +97,12 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 })
 
-// @desc    Delete a user
-// @route   DELETE /api/users/:id
-// @access  private
-const deleteUser = asyncHandler(async (req, res) => {
-  const id = req.params.id
-
-  // Check for product
-  const doc = await User.findById(id)
-
-  if (doc) {
-    await User.deleteOne({ _id: id })
-    res.status(201).json({
-      id: doc.id
-    })
-  } else {
-    res.status(400)
-    throw new Error('Invalid user id')
-  }
-})
-
 // @desc    Edit a product
-// @route   PUT /api/products/:id
+// @route   PUT /api/users/:id
 // @access  private
 const editUser = asyncHandler(async (req, res) => {
-  const {
-    firstName,
-    lastName,
-    email,
-    address,
-    phone,
-    type,
-    status,
-  } = req.body
-  const id = req.params.id
-
-  // Check for product
-  const doc = await User.findById(id)
-
-  if (doc) {
-    const data = await User.findOneAndUpdate({ _id: id }, {
+  if (req.user.status === 'Active') {
+    const {
       firstName,
       lastName,
       email,
@@ -136,15 +110,131 @@ const editUser = asyncHandler(async (req, res) => {
       phone,
       type,
       status,
-    }, {
-      new: true
-    })
-    res.status(200).json({
-      updated: data
-    })
+    } = req.body
+    const id = req.params.id
+
+    // Check for user
+    const doc = await User.findById(id)
+
+    if (doc) {
+      const data = await User.findOneAndUpdate({ _id: id }, {
+        firstName,
+        lastName,
+        email,
+        address,
+        phone,
+        type,
+        status,
+      }, {
+        new: true
+      })
+      res.status(200).json({
+        updated: data
+      })
+    } else {
+      res.status(400)
+      throw new Error('Invalid user id')
+    }
   } else {
-    res.status(400)
-    throw new Error('Invalid user id')
+    res.status(401)
+    throw new Error(`Unauthorized, user not active`)
+  }
+})
+
+// @desc    Delete a user
+// @route   DELETE /api/users/:id
+// @access  private
+const deleteUser = asyncHandler(async (req, res) => {
+  if (req.user.type === 'Admin' && req.user.status === 'Active') {
+    const id = req.params.id
+
+    // Check for user
+    const doc = await User.findById(id)
+
+    if (doc) {
+      await User.deleteOne({ _id: id })
+      res.status(201).json({
+        id: doc.id
+      })
+    } else {
+      res.status(400)
+      throw new Error('Invalid user id')
+    }
+  } else {
+    res.status(401)
+    throw new Error(`Unauthorized, user not active`)
+  }
+})
+
+// @desc    Add a product to the user's cart, wishlist or orders
+// @route   PUT /api/users/:id/:location
+// @access  private
+const addItemToUser = asyncHandler(async (req, res) => {
+  if (req.user.type === 'Admin' && req.user.status === 'Active') {
+
+    const { itemID } = req.body
+    const { id, location } = req.params
+
+    // Check for user
+    const user = await User.findById(id)
+
+    if (user) {
+      if (!user[location].includes(itemID)) {
+        user[location].push(itemID)
+        const data = await User.findOneAndUpdate({ _id: id }, user, {
+          new: true
+        })
+        res.status(200).json({
+          updated: data
+        })
+      } else {
+        res.status(400)
+        throw new Error('Item already exists')
+      }
+    } else {
+      res.status(400)
+      throw new Error('Invalid user id')
+    }
+  } else {
+    res.status(401)
+    throw new Error(`Unauthorized, user not active`)
+  }
+})
+
+// @desc    Add a product to the user's cart, wishlist or orders
+// @route   PUT /api/users/:id/:location
+// @access  private
+const deleteItemFromUser = asyncHandler(async (req, res) => {
+  if (req.user.type === 'Admin' && req.user.status === 'Active') {
+
+    const { itemID } = req.body
+    const { id, location } = req.params
+
+    // Check for user
+    const user = await User.findById(id)
+
+    if (user) {
+      if (user[location].includes(itemID)) {
+        const update = user[location].filter(item => item !== itemID)
+        const data = await User.findOneAndUpdate({ _id: id }, {
+          [location]: update,
+        }, {
+          new: true
+        })
+        res.status(200).json({
+          updated: data
+        })
+      } else {
+        res.status(400)
+        throw new Error("Invalid item id")
+      }
+    } else {
+      res.status(400)
+      throw new Error('Invalid user id')
+    }
+  } else {
+    res.status(401)
+    throw new Error(`Unauthorized, user not active`)
   }
 })
 
@@ -161,4 +251,6 @@ module.exports = {
   loginUser,
   deleteUser,
   editUser,
+  addItemToUser,
+  deleteItemFromUser,
 }
