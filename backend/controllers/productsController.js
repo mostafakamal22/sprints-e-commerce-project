@@ -105,39 +105,41 @@ const deleteProduct = asyncHandler(async (req, res) => {
 // @route   PUT /api/products/:id
 // @access  private
 const editProduct = asyncHandler(async (req, res) => {
-    if (req.user.type === 'Admin' && req.user.status === 'Active') { } else {
+    if (req.user.type === 'Admin' && req.user.status === 'Active') {
+
+        const { category, images, age, pieces, isFeatured, features, highlights, details, name, price, brand, tags } = req.body
+        const id = req.params.id
+
+        // Check for product
+        const doc = await Product.findById(id)
+
+        if (doc) {
+            const data = await Product.findOneAndUpdate({ _id: id }, {
+                category,
+                images,
+                age,
+                pieces,
+                isFeatured,
+                features,
+                highlights,
+                details,
+                name,
+                price,
+                brand,
+                tags,
+            }, {
+                new: true
+            })
+            res.status(200).json({
+                updated: data
+            })
+        } else {
+            res.status(400)
+            throw new Error('Invalid product id')
+        }
+    } else {
         res.status(401)
         throw new Error(`Unauthorized, no privilges`)
-    }
-    const { category, images, age, pieces, isFeatured, features, highlights, details, name, price, brand, tags } = req.body
-    const id = req.params.id
-
-    // Check for product
-    const doc = await Product.findById(id)
-
-    if (doc) {
-        const data = await Product.findOneAndUpdate({ _id: id }, {
-            category,
-            images,
-            age,
-            pieces,
-            isFeatured,
-            features,
-            highlights,
-            details,
-            name,
-            price,
-            brand,
-            tags,
-        }, {
-            new: true
-        })
-        res.status(200).json({
-            updated: data
-        })
-    } else {
-        res.status(400)
-        throw new Error('Invalid product id')
     }
 })
 
