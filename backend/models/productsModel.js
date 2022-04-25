@@ -9,7 +9,6 @@ const productSchema = mongoose.Schema(
         images: {
             type: [String],
             required: [true, 'Please add a images'],
-            unique: true,
         },
         age: {
             type: String,
@@ -38,6 +37,7 @@ const productSchema = mongoose.Schema(
         name: {
             type: String,
             required: [true, 'Please add a name'],
+            unique: true,
         },
         price: {
             type: Number,
@@ -58,6 +58,7 @@ const productSchema = mongoose.Schema(
         },
         tags: {
             type: [String],
+            required: [true, 'Please add a tag'],
         },
     },
     {

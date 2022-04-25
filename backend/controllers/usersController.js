@@ -17,7 +17,7 @@ const getUsers = asyncHandler(async (req, res) => {
     }
   } else {
     res.status(401)
-    throw new Error(`Unauthorized, user not active`)
+    throw new Error(`Unauthorized, no privilges`)
   }
 })
 
@@ -137,7 +137,7 @@ const editUser = asyncHandler(async (req, res) => {
     }
   } else {
     res.status(401)
-    throw new Error(`Unauthorized, user not active`)
+    throw new Error(`Unauthorized, no privilges`)
   }
 })
 
@@ -162,7 +162,7 @@ const deleteUser = asyncHandler(async (req, res) => {
     }
   } else {
     res.status(401)
-    throw new Error(`Unauthorized, user not active`)
+    throw new Error(`Unauthorized, no privilges`)
   }
 })
 
@@ -197,7 +197,7 @@ const addItemToUser = asyncHandler(async (req, res) => {
     }
   } else {
     res.status(401)
-    throw new Error(`Unauthorized, user not active`)
+    throw new Error(`Unauthorized, no privilges`)
   }
 })
 
@@ -234,7 +234,7 @@ const deleteItemFromUser = asyncHandler(async (req, res) => {
     }
   } else {
     res.status(401)
-    throw new Error(`Unauthorized, user not active`)
+    throw new Error(`Unauthorized, no privilges`)
   }
 })
 
