@@ -16,11 +16,7 @@ const getImages = asyncHandler(async (req, res) => {
         res.status(500).json({ message: 'server or DB error please try again' })
         return
     }
-    if (data.length === 0) {
-        res.status(200).json({ message: 'no images yet!' })
-    } else {
-        res.status(200).json({ message: data })
-    }
+    res.status(200).json(data)
 })
 
 // @desc    Add new image

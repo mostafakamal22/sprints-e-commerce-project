@@ -13,32 +13,30 @@ const RegisterForm = ({ onSubmit, withPW, initStates, admin }) => {
     const { store, setLoading } = useContext(StoreContext)
 
     const [firstName, setFirstName] = useState(initStates ? initStates.firstName : '')
-    const [secondName, setSecondName] = useState(initStates ? initStates.secondName : '')
+    const [lastName, setLastName] = useState(initStates ? initStates.lastName : '')
     const [email, setEmail] = useState(initStates ? initStates.email : '')
-    const [password, setPassword] = useState('')
-    const [passwordConfirm, setPasswordConfirm] = useState('')
+    const [password, setPassword] = useState(initStates ? initStates.password : '')
+    const [passwordConfirm, setPasswordConfirm] = useState(initStates ? initStates.password : '')
     const [phone, setPhone] = useState(initStates ? initStates.phone : '')
     const [address, setAddress] = useState(initStates ? initStates.address : '')
-    const [secondaryAddress, setSecondaryAddress] = useState(initStates ? initStates.secondaryAddress : '')
-    const [userType, setUserType] = useState(initStates ? initStates.auth : 0)
-    const [userStatus, setUserStatus] = useState(initStates ? initStates.status : 0)
+    const [type, setType] = useState(initStates ? initStates.type : 'user')
+    const [status, setStatus] = useState(initStates ? initStates.status : 'inactive')
 
     // runs the onSubmit func provided as a prope
     const handleSubmit = (e) => {
         e.preventDefault()
         setLoading(true)
         const formStates = {
-            id: initStates ? initStates.id : 0,
+            id: initStates && initStates.id,
             firstName,
-            secondName,
+            lastName,
             email,
             password,
             passwordConfirm,
             phone,
             address,
-            secondaryAddress,
-            userType,
-            userStatus,
+            type,
+            status,
         }
         onSubmit(formStates)
         setLoading(false)
@@ -68,7 +66,7 @@ const RegisterForm = ({ onSubmit, withPW, initStates, admin }) => {
                         </div>
                         <div>
                             <label htmlFor="secondName" className="sr-only">
-                                Second Name
+                                Last Name
                             </label>
                             <input
                                 id="secondName"
@@ -78,8 +76,8 @@ const RegisterForm = ({ onSubmit, withPW, initStates, admin }) => {
                                 required
                                 className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                                 placeholder="Second Name"
-                                value={secondName}
-                                onChange={(e) => setSecondName(e.target.value)}
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
                             />
                         </div>
                     </div>
@@ -154,22 +152,6 @@ const RegisterForm = ({ onSubmit, withPW, initStates, admin }) => {
                                 onChange={(e) => setAddress(e.target.value)}
                             />
                         </div>
-                        <div>
-                            <label htmlFor="secondaryAddress" className="sr-only">
-                                Secondary Address
-                            </label>
-                            <input
-                                id="secondaryAddress"
-                                name="secondaryAddress"
-                                type="text"
-                                autoComplete="address-level1"
-                                required
-                                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                placeholder="Secondary Address"
-                                value={secondaryAddress}
-                                onChange={(e) => setSecondaryAddress(e.target.value)}
-                            />
-                        </div>
                     </div>
                     <div>
                         <label htmlFor="phone" className="sr-only">
@@ -189,12 +171,20 @@ const RegisterForm = ({ onSubmit, withPW, initStates, admin }) => {
                     </div>
                     {admin ? (<div className='py-6'>
                         <label htmlFor="User Type" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">User type</label>
-                        <select id="User Type" onChange={(e) => setUserType(e.target.value === 'Admin' ? 1 : 0)} value={userType === 0 ? 'User' : 'Admin'} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <select
+                            id="User Type"
+                            onChange={(e) => setType(e.target.value)}
+                            value={type}
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option>Admin</option>
                             <option>User</option>
                         </select>
                         <label htmlFor="User Status" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">User Status</label>
-                        <select id="User Status" onChange={(e) => setUserStatus(e.target.value === 'Active' ? 0 : e.target.value === 'Inactive' ? 1 : 2)} value={userStatus === 0 ? 'Active' : userStatus === 1 ? 'Inactive' : 'Suspended'} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <select
+                            id="User Status"
+                            onChange={(e) => setStatus(e.target.value)}
+                            value={status}
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option>Active</option>
                             <option>Inactive</option>
                             <option>Suspended</option>

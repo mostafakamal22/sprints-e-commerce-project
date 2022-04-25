@@ -11,25 +11,36 @@ import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper";
 import StoreContext from "../../../context/store/StoreContext";
 import Spinner from "../../shared/Spinner";
+import axios from "axios";
 
 const Carousel = () => {
 
-  const { setAppData, store } = useContext(StoreContext)
+  const { setData, store } = useContext(StoreContext)
 
   const [carouselData, setCarouselData] = useState([])
   const [loading, setLoading] = useState()
 
+  const getData = async () => {
+    const config = {
+      method: "get",
+      url: `/api/carousel`,
+    };
+    const res = await (await axios(config)).data;
+
+    return res
+  };
+
   useEffect(() => {
     setLoading(true)
-    setAppData('carousels').then((res) => {
-      let data = []
+    getData().then(res => {
+      let arr = []
       res.forEach(item => {
-        if (item.havelink === 1) {
-          data.push(item.link)
+        if (item.isActive) {
+          arr.push(item.imageURL)
         }
       })
-      console.log(data);
-      setCarouselData(data)
+      setCarouselData(arr)
+      setData('carousels', res)
       setLoading(false)
     })
   }, [])

@@ -6,13 +6,24 @@ import ImagesForm from "../../shared/forms/imagesForm";
 import Spinner from "../../shared/Spinner";
 
 const ImagesTool = () => {
-  const { store, showModal, hideModal, setAppData } = useContext(StoreContext);
+  const { store, showModal, hideModal, setData, showToast } = useContext(StoreContext);
 
   const [loading, setLoading] = useState([])
 
+  const getData = async () => {
+    const config = {
+      method: "get",
+      url: `/api/carousel`,
+    };
+    const res = await (await axios(config)).data;
+
+    return res
+  };
+
   useEffect(() => {
     setLoading(true)
-    setAppData('carousels').then(() => {
+    getData().then(res => {
+      setData('carousels', res)
       setLoading(false)
     })
   }, [])
@@ -21,9 +32,9 @@ const ImagesTool = () => {
   const handleAddSubmit = async (formStates) => {
     setLoading(true)
     const imageData = {
-      image: formStates.image,
-      havelink: formStates.havelink,
-      link: formStates.link,
+      imageURL: formStates.imageURL,
+      productURL: formStates.productURL,
+      isActive: formStates.isActive,
     };
 
     console.log(imageData);
@@ -31,13 +42,13 @@ const ImagesTool = () => {
     /* Send data to API to add new image to the product */
     const config = {
       method: "post",
-      url: `https://mina-jpp1.herokuapp.com/api/carousels?token=${store.auth.token}`,
+      url: `/api/carousel?token=${store.auth.token}`,
       data: imageData,
     };
-    const res = await axios(config);
-    console.log(res);
-    hideModal();
-    setAppData('carousels').then(() => {
+    await axios(config);
+    getData().then(res => {
+      setData('carousels', res)
+      hideModal();
       setLoading(false)
     })
   };
@@ -58,40 +69,73 @@ const ImagesTool = () => {
     showModal(Content);
   };
 
-  // opens edit modal
-  const toggleImage = (index) => {
+  const handleEditSubmit = async (formStates) => {
+
+    const { imageURL, productURL, isActive, id } = formStates
     const imageData = {
-      image: store.appData.carousels[index].image,
-      havelink: store.appData.carousels[index].havelink === 0 ? 1 : 0,
-      link: store.appData.carousels[index].link,
-      id: store.appData.carousels[index].id,
+      imageURL,
+      productURL,
+      isActive,
+      id,
     }
+
+    console.log(imageData);
 
     /* Send data to API to register a new user */
     const config = {
       method: 'put',
-      url: `https://mina-jpp1.herokuapp.com/api/carousels/${imageData.id}?token=${store.auth.token}`,
+      url: `/api/carousel/${imageData.id}?token=${store.auth.token}`,
       headers: {
         'Content-Type': 'application/json'
       },
       data: imageData,
     }
-    axios(config).then(() => {
-      hideModal()
-      setAppData('carousels')
+    axios(config).then(res => {
+      if (!res.data.message) {
+        getData().then(res => {
+          hideModal()
+          setData('carousels', res)
+          setLoading(false)
+        })
+      } else {
+        showToast(res.data.message, false)
+        setLoading(false)
+      }
     })
+  }
+
+  // opens edit modal
+  const editModal = (index) => {
+    const { imageURL, productURL, isActive, _id } = store.appData.carousels[index]
+    const initStates = {
+      imageURL,
+      productURL,
+      isActive,
+      id: _id,
+    }
+
+    const Content = () => {
+      return (
+        <div className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">
+          <h3 className="text-xl font-medium text-gray-900 dark:text-white">Edit Image</h3>
+          <ImagesForm onSubmit={handleEditSubmit} initStates={initStates} />
+        </div>
+      )
+    }
+    showModal(Content)
   }
 
   const handleDelete = async (index) => {
     setLoading(true)
-    const imageID = store.appData.carousels[index].id
+    const imageID = store.appData.carousels[index]._id
     /* Send data to API to register a new user */
     const config = {
       method: 'delete',
-      url: `https://mina-jpp1.herokuapp.com/api/carousels/${imageID}?token=${store.auth.token}`,
+      url: `/api/carousel/${imageID}?token=${store.auth.token}`,
     }
-    const res = await axios(config)
-    setAppData('carousels').then(() => {
+    await axios(config)
+    getData().then(res => {
+      setData('carousels', res)
       setLoading(false)
     })
   }
@@ -166,15 +210,15 @@ const ImagesTool = () => {
                         scope="row"
                         className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
                       >
-                        <img src={image.link} alt='' width={100}></img>
+                        <img src={image.imageURL} alt='' width={100}></img>
                       </th>
                       <td className="px-6 py-4">{image.havelink !== 0 ? 'On Carousel' : 'Off Carousel'}</td>
                       <td className="px-6 py-4 flex max-w-fit">
                         <button
                           id={i}
-                          onClick={(e) => toggleImage(e.currentTarget.id)} className="group relative flex-grow flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700"
+                          onClick={(e) => editModal(e.currentTarget.id)} className="group relative flex-grow flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700"
                         >
-                          {image.havelink === 0 ? <MdToggleOn color="red"/> : <MdToggleOff color="lightgreen"/>}
+                          {image.havelink === 0 ? <MdToggleOn color="red" /> : <MdToggleOff color="lightgreen" />}
                         </button>
                         <button
                           id={i}

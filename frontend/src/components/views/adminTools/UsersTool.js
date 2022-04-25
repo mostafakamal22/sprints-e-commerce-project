@@ -7,15 +7,32 @@ import Spinner from '../../shared/Spinner'
 
 const UsersTool = () => {
 
-    const { store, showModal, hideModal, showToast, setAppData } = useContext(StoreContext)
+    const { store, showModal, hideModal, showToast, setData } = useContext(StoreContext)
     const [searchResults, setSearchResults] = useState([])
     const [loading, setLoading] = useState([])
 
+    const getData = async () => {
+        const config = {
+            method: "get",
+            url: `/api/users`,
+        };
+        const res = await (await axios(config)).data;
+
+        return res
+    };
+
     useEffect(() => {
         setLoading(true)
-        setAppData('users').then((res) => {
-            setSearchResults(res)
-            setLoading(false)
+        getData().then((res) => {
+            if (res.message) {
+                console.log(res.message)
+                setLoading(false)
+            } else {
+                console.log(res);
+                setData('users', res)
+                setSearchResults(res)
+                setLoading(false)
+            }
         })
     }, [])
 
@@ -28,21 +45,20 @@ const UsersTool = () => {
         }
 
         const userData = {
-            first: formStates.firstName,
-            last: formStates.secondName,
+            firstName: formStates.firstName,
+            lastName: formStates.lastName,
             email: formStates.email,
-            pw: formStates.password,
-            address1: formStates.address,
-            address2: formStates.secondaryAddress,
+            password: formStates.password,
+            address: formStates.address,
             phone: formStates.phone,
-            auth: formStates.userType,
-            status: formStates.userStatus,
+            type: formStates.type,
+            status: formStates.status,
         }
 
         /* Send data to API to register a new user */
         const config = {
             method: 'post',
-            url: 'https://mina-jpp1.herokuapp.com/api/users',
+            url: '/api/users',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -51,7 +67,9 @@ const UsersTool = () => {
         const res = await axios(config)
         console.log(res)
         hideModal()
-        setAppData('users').then(() => {
+        getData().then(res => {
+            setData('users', res)
+            setSearchResults(res)
             setLoading(false)
         })
     }
@@ -74,14 +92,15 @@ const UsersTool = () => {
     const handleEditSubmit = async (formStates) => {
         setLoading(true)
         const userData = {
-            first: formStates.firstName,
-            last: formStates.secondName,
+            id: formStates.id,
+            firstName: formStates.firstName,
+            lastName: formStates.lastName,
             email: formStates.email,
-            address1: formStates.address,
-            address2: formStates.secondaryAddress,
+            password: formStates.password,
+            address: formStates.address,
             phone: formStates.phone,
-            auth: formStates.userType,
-            status: formStates.userStatus,
+            type: formStates.type,
+            status: formStates.status,
         }
 
         console.log(userData)
@@ -89,16 +108,17 @@ const UsersTool = () => {
         /* Send data to API to register a new user */
         const config = {
             method: 'put',
-            url: `https://mina-jpp1.herokuapp.com/api/users/${formStates.id}?token=${store.auth.token}`,
+            url: `/api/users/${formStates.id}?token=${store.auth.token}`,
             headers: {
                 'Content-Type': 'application/json'
             },
             data: userData
         }
-        const res = await axios(config)
-        console.log(res)
         hideModal()
-        setAppData('users').then(() => {
+        await axios(config)
+        getData().then(res => {
+            setData('users', res)
+            setSearchResults(res)
             setLoading(false)
         })
     }
@@ -106,16 +126,16 @@ const UsersTool = () => {
     // opens edit modal
     const modalEdit = (id) => {
         const initStates = {
-            id: store.appData.users[id].id,
-            firstName: store.appData.users[id].first_name,
-            secondName: store.appData.users[id].last_name,
+            id: store.appData.users[id]._id,
+            firstName: store.appData.users[id].firstName,
+            lastName: store.appData.users[id].lastName,
             email: store.appData.users[id].email,
             phone: store.appData.users[id].phone,
-            address: store.appData.users[id].address1,
-            secondaryAddress: store.appData.users[id].address2,
-            auth: store.appData.users[id].auth,
+            address: store.appData.users[id].address,
+            type: store.appData.users[id].type,
             status: store.appData.users[id].status,
         }
+        console.log(initStates)
 
         const Content = () => {
             return (
@@ -125,23 +145,22 @@ const UsersTool = () => {
                 </div>
             )
         }
-
         showModal(Content)
     }
 
-    const handleDelete = async (id) => {
+    const handleDelete = async (index) => {
         setLoading(true)
-        const uid = store.appData.users[id].id
+        const uid = store.appData.users[index]._id
         /* Send data to API to register a new user */
         const config = {
             method: 'delete',
-            url: `https://mina-jpp1.herokuapp.com/api/users/${uid}?token=${store.auth.token}`,
+            url: `/api/users/${uid}?token=${store.auth.token}`,
         }
-        const res = await axios(config)
-        setAppData().then(() => {
+        await axios(config)
+        getData().then(res => {
+            setSearchResults(res)
             setLoading(false)
         })
-        console.log(res)
     }
 
     return (
@@ -195,10 +214,10 @@ const UsersTool = () => {
                                         {searchResults.map((user, i) => (
                                             <tr key={i} className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
                                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                                    {user.first_name}
+                                                    {user.firstName}
                                                 </th>
                                                 <td className="px-6 py-4">
-                                                    {user.auth === 0 ? 'Normal' : 'Admin'}
+                                                    {user.type}
                                                 </td>
                                                 <td className="px-6 py-4 flex max-w-fit">
                                                     <button id={i} onClick={(e) => modalEdit(e.currentTarget.id)} className="group relative flex-grow flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700">

@@ -4,11 +4,10 @@ const carouselSchema = mongoose.Schema(
     {
         imageURL: {
             type: String,
+            required: [true, 'Please add a url'],
         },
         productURL: {
-            type: [String],
-            required: [true, 'Please add a product'],
-            unique: true,
+            type: String,
         },
         isActive: {
             type: Boolean,

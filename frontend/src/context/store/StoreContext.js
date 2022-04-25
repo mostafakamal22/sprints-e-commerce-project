@@ -83,9 +83,6 @@ export const StoreProvider = ({ children }) => {
   };
 
   const showModal = (content) => {
-    const body = document.getElementById("body");
-    body.classList.toggle("overflow-hidden");
-
     dispatch({
       type: "SHOW_MODAL",
       payload: {
@@ -96,9 +93,6 @@ export const StoreProvider = ({ children }) => {
   };
 
   const hideModal = () => {
-    const body = document.getElementById("body");
-    body.classList.toggle("overflow-hidden");
-
     dispatch({
       type: "HIDE_MODAL",
       payload: {
@@ -114,21 +108,29 @@ export const StoreProvider = ({ children }) => {
     });
   };
 
-  const setAppData = async (collection) => {
-    const config = {
-      method: "get",
-      url: `https://mina-jpp1.herokuapp.com/api/${collection}`,
-    };
-    const res = await (await axios(config)).data;
-
+  const setData = (collection, res) => {
     dispatch({
       type: "SET_DATA",
       payload: res,
       collection,
     });
+  }
 
-    return res
-  };
+  // const setAppData = async (collection) => {
+  //   const config = {
+  //     method: "get",
+  //     url: `https://mina-jpp1.herokuapp.com/api/${collection}`,
+  //   };
+  //   const res = await (await axios(config)).data;
+
+  //   dispatch({
+  //     type: "SET_DATA",
+  //     payload: res,
+  //     collection,
+  //   });
+
+  //   return res
+  // };
 
   return (
     <StoreContext.Provider
@@ -140,7 +142,8 @@ export const StoreProvider = ({ children }) => {
         hideToast,
         showModal,
         hideModal,
-        setAppData,
+        // setAppData,
+        setData,
         setLoading,
       }}
     >

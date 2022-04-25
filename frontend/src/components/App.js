@@ -23,7 +23,7 @@ const App = () => {
   useProtect();
 
   return (
-    <div className="">
+    <div className="relative">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />

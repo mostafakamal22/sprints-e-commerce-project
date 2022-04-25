@@ -10,10 +10,7 @@ const getUsers = asyncHandler(async (req, res) => {
   const data = await User.find()
 
   if (data) {
-    if (data.length === 0) {
-      res.status(200).json({ message: 'no users yet' })
-    }
-    res.status(200).json({ users: data })
+    res.status(200).json(data)
   } else {
     res.status(500).json({ message: 'unknowen server or DB error' })
   }
@@ -120,7 +117,6 @@ const editUser = asyncHandler(async (req, res) => {
     firstName,
     lastName,
     email,
-    password,
     address,
     phone,
     type,
@@ -136,7 +132,6 @@ const editUser = asyncHandler(async (req, res) => {
       firstName,
       lastName,
       email,
-      password,
       address,
       phone,
       type,

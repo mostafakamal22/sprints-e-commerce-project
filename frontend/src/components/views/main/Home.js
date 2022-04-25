@@ -5,19 +5,31 @@ import Footer from "../../shared/Footer";
 import { useContext, useEffect, useState } from "react";
 import StoreContext from "../../../context/store/StoreContext";
 import Spinner from "../../shared/Spinner";
+import axios from "axios";
 
 const Home = () => {
-  const { store, setAppData } = useContext(StoreContext);
+  const { store, setData } = useContext(StoreContext);
 
   const [products, setProducts] = useState([])
   const [newProducts, setNewProducts] = useState([])
   const [featuredProducts, setFeaturedProducts] = useState([])
 
+  const getData = async () => {
+    const config = {
+      method: "get",
+      url: `/api/products`,
+    };
+    const res = await (await axios(config)).data;
+
+    return res
+  };
+
   useEffect(() => {
-    setAppData('products').then(res => {
+    getData().then(res => {
+      setData('products', res)
       setProducts(res)
-      setNewProducts(res.filter(product => product.new === 1))
-      setFeaturedProducts(res.filter(product => product.featured === 1))
+      setNewProducts(res.filter(product => Date.now() - Date.parse(product.createdAt) < 1000000))
+      setFeaturedProducts(res.filter(product => product.isFeatured))
     })
   }, [])
 

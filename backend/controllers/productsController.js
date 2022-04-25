@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs')
 // Handle the async requests to the API
 const asyncHandler = require('express-async-handler')
 
-const Product = require('../models/productsModal')
+const Product = require('../models/productsModel')
 
 // @desc    get all products
 // @route   GET /api/products
@@ -16,11 +16,19 @@ const getProducts = asyncHandler(async (req, res) => {
         res.status(500).json({ message: 'server error please try again' })
         return
     }
-    if (data.length === 0) {
-        res.status(200).json({ message: 'no products yet!' })
-    } else {
-        res.status(200).json({ message: data })
+    res.status(200).json(data)
+})
+
+// @desc    get one product
+// @route   GET /api/products/:id
+// @access  Public
+const getProduct = asyncHandler(async (req, res) => {
+    const data = await Product.findById(req.params.id)
+    if (!data) {
+        res.status(500).json({ message: 'server error please try again' })
+        return
     }
+    res.status(200).json(data)
 })
 
 // @desc    Add new product
@@ -124,6 +132,7 @@ const editProduct = asyncHandler(async (req, res) => {
 })
 
 module.exports = {
+    getProduct,
     getProducts,
     addProduct,
     deleteProduct,

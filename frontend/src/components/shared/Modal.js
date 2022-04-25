@@ -19,7 +19,7 @@ const Modal = () => {
     return (
         <div className='h-full w-full bg-slate-400 bg-opacity-50 absolute inset-0'>
             {/* Main modal */}
-            <div className="fixed z-10 w-full inset-0 h-modal md:h-full grid place-items-center">
+            <div className="static z-10 w-full inset-0 h-modal md:h-full grid place-items-center">
                 <div className="p-4 w-full max-w-md h-full md:h-auto">
                     {/* Modal content */}
                     <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StarIcon } from "@heroicons/react/solid";
 import UsersReviewsOverView from "./UsersReviewsOverView";
 import UserReview from "./UserReview";
@@ -14,50 +14,9 @@ import { Navigation } from "swiper";
 import { AiOutlineHeart } from "react-icons/ai";
 import { useLocation } from "react-router";
 import axios from "axios";
-
-//product fake data
-const fakeProduct = {
-  href: "#",
-  breadcrumbs: [
-    { id: 1, name: "Home", href: "#" },
-    { id: 2, name: "BrickHeadz", href: "#" },
-  ],
-  images: [
-    {
-      src: "https://www.lego.com/cdn/cs/set/assets/blt3d69e678c82a7321/40550_alt1.png?fit=bounds&format=webply&quality=80&width=528&height=528&dpr=1",
-      alt: "Chip & Dale",
-    },
-    {
-      src: "https://www.lego.com/cdn/cs/set/assets/blt1d4afe55f888042a/40550_alt2.png?fit=bounds&format=webply&quality=80&width=528&height=528&dpr=1",
-      alt: "Chip & Dale",
-    },
-    {
-      src: "https://www.lego.com/cdn/cs/set/assets/bltd4b2c41519d3f7a8/40550_alt3.png?fit=bounds&format=webply&quality=80&width=528&height=528&dpr=1",
-      alt: "Chip & Dale",
-    },
-    {
-      src: "https://www.lego.com/cdn/cs/set/assets/bltdc6d17a41571ff8d/40550_alt4.png?fit=bounds&format=webply&quality=80&width=528&height=528&dpr=1",
-      alt: "Chip & Dale",
-    },
-    {
-      src: "https://www.lego.com/cdn/cs/set/assets/blt757ce0761fc7b55b/40550_alt6.png?fit=bounds&format=webply&quality=80&width=528&height=528&dpr=1",
-      alt: "Chip & Dale",
-    },
-  ],
-  age: "+10",
-  pieces: "255",
-  badge: "featured",
-  features:
-    "Dive back into childhood with these fun LEGO® BrickHeadz™ style buildable figures of Disney’s adorable chipmunk characters Chip & Dale (40550). This is a super gift idea for kids aged 10 and up, who will love the authentic details of the outfits from the show Chip ’n Dale: Rescue Rangers, which reflect the chipmunks’ individual personalities. With baseplates for display, these delightful construction models will make an eye-catching addition to any cartoon fan’s collection.",
-  highlights: [
-    "Brick-built cartoon characters - Buildable LEGO® BrickHeadz™ | Disney Chip & Dale (40550), each in their iconic outfit from Disney’s Chip ‘n Dale: Rescue Rangers ",
-    "Playful display piece - This 226-piece LEGO® | Disney building toy for kids aged 10 and up comes with step-by-step building instructions and includes baseplates for display ",
-    "Gift idea - These creative buildable LEGO® figures measure over 3.5 in. (9 cm) high, 1.5 in. (4 cm) wide and 1.5 in. (4 cm) deep. Give the set to a fan of cartoons or Disney’s Chip ‘n Dale as a treat",
-  ],
-  details:
-    'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
-};
-const reviews = { href: "#", average: 4, totalCount: 117 };
+import StoreContext from "../../../context/store/StoreContext";
+import Spinner from "../../shared/Spinner";
+import { Link } from "react-router-dom";
 
 const usersReviews = [
   {
@@ -100,33 +59,64 @@ const usersReviews = [
 
 const Product = () => {
 
+  const { store } = useContext(StoreContext)
+
   const id = useLocation().pathname.split('t/')[1]
 
-  const [product, setProduct] = useState(fakeProduct)
-  useEffect(() => {
+  const [loading, setLoading] = useState(true)
+  const [product, setProduct] = useState()
+  const [reviews, setReviews] = useState()
+
+  const getData = async () => {
     const config = {
       method: "get",
-      url: `https://mina-jpp1.herokuapp.com/api/products/${id}`,
+      url: `/api/products/${id}`,
     };
-    axios(config).then(res => {
-      setProduct({ ...fakeProduct, ...res.data })
+    const res = await (await axios(config)).data;
+
+    return res
+  };
+
+  const calcReviews = (product) => {
+    console.log(product.reviews);
+  }
+
+  useEffect(() => {
+    setLoading(true)
+
+
+    getData().then((res) => {
+      console.log(res);
+      if (res) {
+        setProduct(res)
+        calcReviews(res)
+        setReviews({ href: "#", average: 4, totalCount: 117 })
+        setLoading(false)
+      } else {
+        console.log(res.message)
+        setLoading(false)
+      }
     })
   }, [])
+
+  if (loading) {
+    return <Spinner />
+  }
 
   return (
     <div className="mt-5">
       {/* Bread crumb */}
       <div className="pt-6">
-        <nav aria-label="Breadcrumb">
+        <nav>
           <ol className="max-w-2xl mx-auto px-4 flex items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-8">
-            {product.breadcrumbs.map((breadcrumb) => (
-              <li key={breadcrumb.id}>
+            {product.tags.map((tag, i) => (
+              <li key={i}>
                 <div className="flex items-center">
                   <a
-                    href={breadcrumb.href}
+                    href={tag}
                     className="mr-2 text-sm font-medium text-gray-900"
                   >
-                    {breadcrumb.name}
+                    {tag}
                   </a>
                   <svg
                     width={16}
@@ -143,36 +133,28 @@ const Product = () => {
               </li>
             ))}
             <li className="text-sm">
-              <a
-                href={product.href}
+              <Link
+                to=''
                 aria-current="page"
                 className="font-medium text-gray-500 hover:text-gray-600"
               >
                 {product.name}
-              </a>
+              </Link>
             </li>
           </ol>
         </nav>
-
         {/* Image gallery */}
         <Swiper
           navigation={true}
           modules={[Navigation]}
           className="mt-20 max-h-[600px] max-w-[750px]"
         >
-          <SwiperSlide>
-            <img
-              className="object-cover object-center w-full h-auto"
-              src={product.coverimage}
-              alt='cover'
-            />
-          </SwiperSlide>
-          {product.images.map((pic, index) => (
+          {product.images.map((image, index) => (
             <SwiperSlide>
               <img
                 className="object-cover object-center w-full h-auto"
-                src={pic.src}
-                alt={pic.alt}
+                src={image}
+                alt={image}
                 key={index}
               />
             </SwiperSlide>
@@ -186,16 +168,13 @@ const Product = () => {
               {product.name}
             </h1>
           </div>
-
           <div className="mt-4 lg:mt-0 lg:row-span-3 self-center">
             <h2 className="sr-only">Product information</h2>
-
             <div className="w-full flex justify-between items-center">
               {/*product badge*/}
               <span className="font-medium text-sm bg-yellow-400 py-1 px-2 my-4">
-                {product.badge}
+                {product.isFeatured ? 'Featured' : ''}
               </span>
-
               {/*add to wish list*/}
               <Ripples color={"rgba(253,128,36,.1)"} during={1200}>
                 <button className="flex items-center">
@@ -206,9 +185,7 @@ const Product = () => {
                 </button>
               </Ripples>
             </div>
-
             <p className="text-3xl text-gray-900 my-5">{product.price}$</p>
-
             {/* Reviews */}
             <div className="mt-6">
               <h3 className="sr-only">Reviews</h3>
@@ -236,7 +213,6 @@ const Product = () => {
                 </a>
               </div>
             </div>
-
             <div className="flex w-full justify-center my-20">
               {/* Age */}
               <div className="basis-1/2 flex flex-col items-center justify-center border-r-2 border-yellow-400">
@@ -297,6 +273,7 @@ const Product = () => {
             </div>
           </div>
         </div>
+
         {/*users reviews overview*/}
         <hr className="w-[80vw] mx-auto lg:my-1 border-b-[0.5px] border-yellow-400"></hr>
         <UsersReviewsOverView reviews={reviews} />
@@ -312,9 +289,9 @@ const Product = () => {
         </div>
 
         {/*TOdO add review*/}
-      </div>
-    </div>
-  );
+      </div >
+    </div >
+  )
 }
 
 export default Product

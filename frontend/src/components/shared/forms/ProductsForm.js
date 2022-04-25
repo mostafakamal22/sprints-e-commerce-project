@@ -10,40 +10,41 @@ import Upload from '../../../firebase/upload'
 const ProductsForm = ({ onSubmit, initStates }) => {
 
     // load the store
-    const { store, setLoading } = useContext(StoreContext)
+    const { store } = useContext(StoreContext)
     // Form States
     const [name, setName] = useState(initStates ? initStates.name : '')
-    const [description, setDescription] = useState(initStates ? initStates.description : '')
-    const [coverImage, setCoverImage] = useState(initStates ? initStates.coverImage : '')
+    const [details, setDetails] = useState(initStates ? initStates.details : '')
+    const [images, setImages] = useState(initStates ? initStates.images : [])
     const [price, setPrice] = useState(initStates ? initStates.price : 0)
-    const [brand, setBrand] = useState(initStates ? initStates.brand : store.appData.brands[0].id)
-    const [category, setCategory] = useState(initStates ? initStates.category : store.appData.categories[0].id)
-    const [featured, setFeatured] = useState(initStates ? initStates.featured : 0)
-    const [isNew, setIsNew] = useState(initStates ? initStates.isNew : 0)
-    // eslint-disable-next-line no-unused-vars
-    const [review, setReview] = useState(initStates ? initStates.review : 0)
-    const [tag, setTag] = useState(initStates ? initStates.tag : '')
+    const [brand, setBrand] = useState(initStates ? initStates.brand : '')
+    const [category, setCategory] = useState(initStates ? initStates.category : '')
+    const [isFeatured, setIsFeatured] = useState(initStates ? initStates.isFeatured : false)
+    const [age, setAge] = useState(initStates ? initStates.age : '')
+    const [pieces, setPieces] = useState(initStates ? initStates.pieces : '')
+    const [features, setFeatures] = useState(initStates ? initStates.features : '')
+    const [highlights, setHighlights] = useState(initStates ? initStates.highlights.toString() : [])
+    const [tags, setTags] = useState(initStates ? initStates.tags.toString() : [])
 
     // runs the onSubmit func provided as a prope giving it all the state so you can use it
     const handleSubmit = (e) => {
         e.preventDefault()
-        setLoading(true)
 
         const formStates = {
             id: initStates ? initStates.id : 0,
             name,
-            description,
-            coverImage,
+            details,
+            images,
             price,
             brand,
             category,
-            featured,
-            isNew,
-            review,
-            tag,
+            isFeatured,
+            age,
+            pieces,
+            features,
+            highlights,
+            tags,
         }
         onSubmit(formStates)
-        setLoading(false)
     }
 
     return (
@@ -65,22 +66,52 @@ const ProductsForm = ({ onSubmit, initStates }) => {
                     />
                 </div>
                 <div>
-                    <label htmlFor="description" className="sr-only">
-                        Product Description
+                    <label htmlFor="details" className="sr-only">
+                        Product details
                     </label>
                     <input
-                        id="description"
-                        name="description"
+                        id="details"
+                        name="details"
                         type="text"
                         required
                         className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                        placeholder="Product Description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
+                        placeholder="Product details"
+                        value={details}
+                        onChange={(e) => setDetails(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="features" className="sr-only">
+                        Product Features
+                    </label>
+                    <input
+                        id="features"
+                        name="features"
+                        type="text"
+                        required
+                        className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        placeholder="Product Features"
+                        value={features}
+                        onChange={(e) => setFeatures(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="highlights" className="sr-only">
+                        Product Highlights
+                    </label>
+                    <input
+                        id="highlights"
+                        name="highlights"
+                        type="text"
+                        required
+                        className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        placeholder="Product Highlights (seperate by adding a ,)"
+                        value={highlights}
+                        onChange={(e) => setHighlights(e.target.value)}
                     />
                 </div>
                 <div className='flex flex-row justify-between items-center'>
-                    <Upload setCoverImage={setCoverImage} isEdit={initStates ? true : false} />
+                    <Upload setImages={setImages} isEdit={initStates ? true : false} />
                     <div className='w-1/2 grid place-items-center'>
                         <label htmlFor="price" className="justify-self-end">
                             Product Price
@@ -101,86 +132,93 @@ const ProductsForm = ({ onSubmit, initStates }) => {
                         <label htmlFor="brand">
                             Brand
                         </label>
-                        <select
+                        <input
                             id="brand"
                             name="brand"
-                            type="select"
+                            type="text"
                             required
-                            value={store.appData.brands.length !== 0 ? store.appData.brands.filter(b => b.id === Number(brand))[0].name : ''}
+                            value={brand}
                             className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                            placeholder="Select Brand"
-                            onChange={(e) => setBrand(store.appData.brands[e.target.selectedIndex].id)}
-                        >
-                            {store.appData.brands.map(brand => (
-                                <option key={brand.id} id={brand.id}>{brand.name}</option>
-                            ))}
-                        </select>
+                            placeholder="Brand"
+                            onChange={(e) => setBrand(e.target.value)}
+                        />
                     </div>
                     <div className='w-2/5'>
                         <label htmlFor="category">
                             Category
                         </label>
-                        <select
+                        <input
                             id="category"
                             name="category"
-                            type="select"
+                            type="text"
                             required
-                            value={store.appData.categories.length !== 0 ? store.appData.categories.filter(c => c.id === Number(category))[0].name : ''}
+                            value={category}
                             className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                            placeholder="Select category"
-                            onChange={(e) => setCategory(store.appData.categories[e.target.selectedIndex].id)}
-                        >
-                            {store.appData.categories.map(category => (
-                                <option key={category.id} id={category.id}>{category.name}</option>
-                            ))}
-                        </select>
+                            placeholder="Category"
+                            onChange={(e) => setCategory(e.target.value)}
+                        />
                     </div>
                 </div>
                 <div className='flex justify-between'>
-                    <div className='flex justify-between w-2/5'>
-                        <label htmlFor="featured">
-                            Featured?
+                    <div className='w-2/5'>
+                        <label htmlFor="age">
+                            Age
                         </label>
                         <input
-                            id="featured"
-                            name="featured"
-                            type="checkbox"
-                            checked={featured}
-                            className="appearance-none relative block px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none sm:text-sm"
-                            placeholder="Select category"
-                            onChange={(e) => setFeatured(e.target.checked ? 1 : 0)}
-                        >
-                        </input>
+                            id="age"
+                            name="age"
+                            type="text"
+                            required
+                            value={age}
+                            className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                            placeholder="Age"
+                            onChange={(e) => setAge(e.target.value)}
+                        />
                     </div>
-                    <div className='flex justify-between w-2/5'>
-                        <label htmlFor="isNew">
-                            Is New?
+                    <div className='w-2/5'>
+                        <label htmlFor="pieces">
+                            Pieces
                         </label>
                         <input
-                            id="isNew"
-                            name="isNew"
-                            type="checkbox"
-                            checked={isNew}
-                            className="appearance-none relative block px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none sm:text-sm"
-                            placeholder="Select category"
-                            onChange={(e) => setIsNew(e.target.checked ? 1 : 0)}
-                        >
-                        </input>
+                            id="pieces"
+                            name="pieces"
+                            type="text"
+                            required
+                            value={pieces}
+                            className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                            placeholder="pieces"
+                            onChange={(e) => setPieces(e.target.value)}
+                        />
                     </div>
                 </div>
-                <div>
-                    <label htmlFor="tag" className="sr-only">
-                        Product Tag
+                <div className='flex justify-between w-2/5'>
+                    <label htmlFor="isFeatured">
+                        Featured
                     </label>
                     <input
-                        id="tag"
-                        name="tag"
+                        id="isFeatured"
+                        name="isFeatured"
+                        type="checkbox"
+                        checked={isFeatured}
+                        className="appearance-none relative block px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none sm:text-sm"
+                        placeholder="Select category"
+                        onChange={(e) => setIsFeatured(e.target.checked ? true : false)}
+                    >
+                    </input>
+                </div>
+                <div>
+                    <label htmlFor="tags" className="sr-only">
+                        Product Tags
+                    </label>
+                    <input
+                        id="tags"
+                        name="tags"
                         type="text"
                         required
                         className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                        placeholder="Product Tag"
-                        value={tag}
-                        onChange={(e) => setTag(e.target.value)}
+                        placeholder="Product Tags (seperate by adding a ,)"
+                        value={tags}
+                        onChange={(e) => setTags(e.target.value)}
                     />
                 </div>
 

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { MdAdd, MdDelete, MdEdit } from 'react-icons/md'
 import StoreContext from '../../../context/store/StoreContext'
 import ProductsForm from '../../shared/forms/ProductsForm'
@@ -7,17 +7,33 @@ import Spinner from '../../shared/Spinner'
 
 const ProductsTool = () => {
 
-  const { store, showModal, hideModal, setAppData } = useContext(StoreContext)
+  const { store, showModal, hideModal, setData } = useContext(StoreContext)
 
   const [searchResults, setSearchResults] = useState([])
   const [loading, setLoading] = useState([])
 
+  const getData = async () => {
+    const config = {
+      method: "get",
+      url: `/api/products`,
+    };
+    const res = await (await axios(config)).data;
+
+    return res
+  };
+
   useEffect(() => {
-      setLoading(true)
-      setAppData('products').then((res) => {
-          setSearchResults(res)
-          setLoading(false)
-      })
+    setLoading(true)
+    getData().then((res) => {
+      if (res) {
+        setData('products', res)
+        setSearchResults(res)
+        setLoading(false)
+      } else {
+        console.log(res.message)
+        setLoading(false)
+      }
+    })
   }, [])
 
   // submit the add form
@@ -26,31 +42,35 @@ const ProductsTool = () => {
 
     const productData = {
       name: formStates.name,
-      description: formStates.description,
-      coverimage: formStates.coverImage,
+      details: formStates.details,
+      images: formStates.images,
       price: formStates.price,
       brand: formStates.brand,
       category: formStates.category,
-      featured: formStates.featured,
-      new: formStates.isNew,
-      review: formStates.review,
-      tag: formStates.tag,
+      isFeatured: formStates.isFeatured,
+      age: formStates.age,
+      pieces: formStates.pieces,
+      features: formStates.features,
+      highlights: formStates.highlights.split(','),
+      tags: formStates.tags.split(','),
     }
 
     /* Send data to API to register a new user */
     const config = {
       method: 'post',
-      url: `https://mina-jpp1.herokuapp.com/api/products?token=${store.auth.token}`,
+      url: `/api/products?token=${store.auth.token}`,
       headers: {
         'Content-Type': 'application/json'
       },
       data: productData
     }
-    const res = await axios(config)
-    console.log(res)
-    setAppData()
-    hideModal()
-    setLoading(false)
+    await axios(config)
+    getData().then(res => {
+      hideModal()
+      setData('products', res)
+      setSearchResults(res)
+      setLoading(false)
+    })
   }
 
   // open the modal and fill it's content 
@@ -70,52 +90,58 @@ const ProductsTool = () => {
   const handleEditSubmit = async (formStates) => {
     setLoading(true)
     const productData = {
+      id: formStates.id,
       name: formStates.name,
-      description: formStates.description,
-      coverimage: formStates.coverImage,
+      details: formStates.details,
+      images: formStates.images,
       price: formStates.price,
       brand: formStates.brand,
       category: formStates.category,
-      featured: formStates.featured,
-      new: formStates.isNew,
-      review: formStates.review,
-      tag: formStates.tag,
+      isFeatured: formStates.isFeatured,
+      age: formStates.age,
+      pieces: formStates.pieces,
+      features: formStates.features,
+      highlights: formStates.highlights.split(','),
+      tags: formStates.tags.split(','),
     }
 
-    console.log(productData);
     /* Send data to API to register a new user */
     const config = {
       method: 'put',
-      url: `https://mina-jpp1.herokuapp.com/api/products/${formStates.id}?token=${store.auth.token}`,
+      url: `/api/products/${formStates.id}?token=${store.auth.token}`,
       headers: {
         'Content-Type': 'application/json'
       },
       data: productData
     }
-    const res = await axios(config)
-    console.log(res)
-    setAppData()
-    hideModal()
-    setLoading(false)
+    await axios(config)
+    getData().then(res => {
+      hideModal()
+      setData('products', res)
+      setSearchResults(res)
+      setLoading(false)
+    })
   }
 
   // opens edit modal
   const modalEdit = (index) => {
     const initStates = {
-      id: store.appData.products[index].id,
+      id: store.appData.products[index]._id,
       name: store.appData.products[index].name,
-      description: store.appData.products[index].description,
-      coverImage: store.appData.products[index].coverimage,
+      details: store.appData.products[index].details,
+      images: store.appData.products[index].images,
       price: store.appData.products[index].price,
       brand: store.appData.products[index].brand,
       category: store.appData.products[index].category,
-      featured: store.appData.products[index].featured,
-      isNew: store.appData.products[index].new,
-      review: store.appData.products[index].review,
-      tag: store.appData.products[index].tag,
+      isFeatured: store.appData.products[index].isFeatured,
+      age: store.appData.products[index].age,
+      pieces: store.appData.products[index].pieces,
+      features: store.appData.products[index].features,
+      highlights: store.appData.products[index].highlights,
+      tags: store.appData.products[index].tags,
     }
 
-    console.log(initStates);
+    console.log(initStates)
 
     const Content = () => {
       return (
@@ -131,15 +157,18 @@ const ProductsTool = () => {
 
   const handleDelete = async (id) => {
     setLoading(true)
-    const pid = store.appData.products[id].id
+    const pid = store.appData.products[id]._id
     /* Send data to API to register a new user */
     const config = {
       method: 'delete',
-      url: `https://mina-jpp1.herokuapp.com/api/products/${pid}?token=${store.auth.token}`,
+      url: `/api/products/${pid}?token=${store.auth.token}`,
     }
     const res = await axios(config)
     console.log(res)
-    setAppData().then(() => {
+    hideModal()
+    getData().then(res => {
+      setData('products', res)
+      setSearchResults(res)
       setLoading(false)
     })
   }
@@ -184,9 +213,6 @@ const ProductsTool = () => {
                         Product Name
                       </th>
                       <th scope="col" className="px-6 py-3">
-                        Product ID
-                      </th>
-                      <th scope="col" className="px-6 py-3">
                         <span>Edit or Delete</span>
                       </th>
                     </tr>
@@ -197,9 +223,6 @@ const ProductsTool = () => {
                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                           {product.name}
                         </th>
-                        <td className="px-6 py-4">
-                          {product.id}
-                        </td>
                         <td className="px-6 py-4 flex max-w-fit">
                           <button id={i} onClick={(e) => modalEdit(e.currentTarget.id)} className="group relative flex-grow flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700">
                             <MdEdit />
