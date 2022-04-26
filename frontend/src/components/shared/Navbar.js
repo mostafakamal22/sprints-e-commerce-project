@@ -1,5 +1,5 @@
 import { Fragment, useContext, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Dialog, Transition } from '@headlessui/react'
 import { MenuIcon, SearchIcon, ShoppingBagIcon, XIcon, HeartIcon } from '@heroicons/react/outline'
 import StoreContext from '../../context/store/StoreContext'
@@ -10,6 +10,8 @@ const Navbar = () => {
     const [searchShow, setSearchShow] = useState(false)
     const { store, logoutUser } = useContext(StoreContext)
 
+    const navigate = useNavigate()
+
     const toggleSearch = () => {
         setSearchShow(!searchShow)
     }
@@ -18,6 +20,7 @@ const Navbar = () => {
         localStorage.removeItem('token')
         // updates the app state
         logoutUser()
+        navigate('/login')
     }
 
     return (

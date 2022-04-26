@@ -203,7 +203,7 @@ axios(config)
 });
 ```
 
-#### Protected `api/users/:id` DELETE
+#### Protected `api/users/:id/:location` DELETE
 
 ```
 const axios = require('axios');

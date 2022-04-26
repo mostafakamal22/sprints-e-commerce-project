@@ -9,15 +9,17 @@ export const StoreProvider = ({ children }) => {
     auth: {
       user: {
         id: 0,
-        first_name: "",
-        last_name: "",
+        firstName: "",
+        lastName: "",
         email: "",
         password: "",
-        address1: "",
-        address2: "",
+        address: "",
         phone: "",
-        auth: 0,
-        status: 0,
+        type: "",
+        status: "",
+        cartItems: [],
+        wishlistItems: [],
+        orders: [],
       },
       token: "",
       authed: false,
@@ -58,7 +60,7 @@ export const StoreProvider = ({ children }) => {
   const logoutUser = () => {
     dispatch({
       type: "LOGOUT_USER",
-      payload: initialState,
+      payload: initialState.auth,
     });
   };
 

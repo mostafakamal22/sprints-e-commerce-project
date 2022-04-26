@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { MdAdd, MdDelete, MdEdit, MdToggleOff, MdToggleOn } from "react-icons/md";
+import { MdAdd, MdDelete, MdEdit } from "react-icons/md";
 import StoreContext from "../../../context/store/StoreContext";
 import ImagesForm from "../../shared/forms/imagesForm";
 import Spinner from "../../shared/Spinner";
