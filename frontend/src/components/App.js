@@ -11,15 +11,15 @@ import Home from "./views/main/Home";
 import { Shop } from "./views/main/Shop";
 import Special from "./views/main/Special";
 import Cart from "./views/profile/Cart";
-import Wishlist from "./views/profile/Wishlist";
+import Wishlist from "./views/profile/WishList";
 import ProductPage from "./views/product/ProductPage";
 import { useContext } from "react";
 import StoreContext from "../context/store/StoreContext";
 import NotFound from "./shared/NotFound";
+import ProfilePage from "./views/profile/ProfilePage";
 
 const App = () => {
-
-  const { store } = useContext(StoreContext)
+  const { store } = useContext(StoreContext);
   useProtect();
 
   return (
@@ -36,9 +36,17 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/product/:id" element={<ProductPage />} />
-        <Route path="*" element={<NotFound code={404} msg={`Page not found!`}/>}/>
+        <Route path="/profile/:userId" element={<ProfilePage />} />
+        <Route
+          path="*"
+          element={<NotFound code={404} msg={`Page not found!`} />}
+        />
       </Routes>
-      <div className={`container toast-container relative grid place-items-center ${store.toast.isToast ? '' : 'pointer-events-none'}`}>
+      <div
+        className={`container toast-container relative grid place-items-center ${
+          store.toast.isToast ? "" : "pointer-events-none"
+        }`}
+      >
         <Toast />
       </div>
       <Modal />
