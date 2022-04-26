@@ -14,8 +14,8 @@ const { protect } = require('../middleware/authMiddleware')
 
 // Define all the routes for /api/carousel
 router.get('/', getImages)
-router.post('/', addImage)
-router.delete('/:id', deleteImage)
-router.put('/:id', editImage)
+router.post('/', protect, addImage)
+router.delete('/:id', protect, deleteImage)
+router.put('/:id', protect, editImage)
 
 module.exports = router

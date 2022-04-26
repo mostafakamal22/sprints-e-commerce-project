@@ -20,7 +20,7 @@ const AdminDashboard = () => {
 
     const { store } = useContext(StoreContext)
 
-    if (store.auth.user.auth !== 1 && store.auth.authed) {
+    if (store.auth.user.type !== 'Admin' && store.auth.authed) {
         return (
             <NotFound code={401} msg={`Unauthorized!`} />
         )

@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs')
 const asyncHandler = require('express-async-handler')
 const User = require('../models/usersModel')
 
-// @desc    Register new user
+// @desc    Gets all users
 // @route   POST /api/users
 // @access  Private
 const getUsers = asyncHandler(async (req, res) => {
@@ -18,6 +18,21 @@ const getUsers = asyncHandler(async (req, res) => {
   } else {
     res.status(401)
     throw new Error(`Unauthorized, no privilges`)
+  }
+})
+
+// @desc    Register new user
+// @route   POST /api/users/:id
+// @access  Public
+const getUser = asyncHandler(async (req, res) => {
+  const id = req.params.id
+
+  const data = await User.findById(id).select('-password')
+
+  if (data) {
+    res.status(200).json(data)
+  } else {
+    res.status(500).json({ error: 'unknowen server or DB error' })
   }
 })
 
@@ -246,6 +261,7 @@ const generateToken = (id) => {
 }
 
 module.exports = {
+  getUser,
   getUsers,
   registerUser,
   loginUser,

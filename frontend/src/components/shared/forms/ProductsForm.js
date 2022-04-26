@@ -12,6 +12,7 @@ const ProductsForm = ({ onSubmit, initStates }) => {
     // load the store
     const { store } = useContext(StoreContext)
     // Form States
+    const [loading, setLoading] = useState(initStates ? initStates.name : '')
     const [name, setName] = useState(initStates ? initStates.name : '')
     const [details, setDetails] = useState(initStates ? initStates.details : '')
     const [images, setImages] = useState(initStates ? initStates.images : [])
@@ -110,22 +111,9 @@ const ProductsForm = ({ onSubmit, initStates }) => {
                         onChange={(e) => setHighlights(e.target.value)}
                     />
                 </div>
-                <div className='flex flex-row justify-between items-center'>
-                    <Upload setImages={setImages} isEdit={initStates ? true : false} />
-                    <div className='w-1/2 grid place-items-center'>
-                        <label htmlFor="price" className="justify-self-end">
-                            Product Price
-                        </label>
-                        <input
-                            id="price"
-                            name="price"
-                            type="number"
-                            required
-                            className="appearance-none relative block w-1/2 px-3 py-2 justify-self-end border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                            value={price}
-                            onChange={(e) => setPrice(Number(e.target.value))}
-                        />
-                    </div>
+                <div className=''>
+                    <h3 className='text-center'>Product Images</h3>
+                    <Upload setLoading={setLoading} setImages={setImages} isEdit={initStates ? true : false} />
                 </div>
                 <div className='flex justify-between'>
                     <div className='w-2/5'>
@@ -191,20 +179,36 @@ const ProductsForm = ({ onSubmit, initStates }) => {
                         />
                     </div>
                 </div>
-                <div className='flex justify-between w-2/5'>
-                    <label htmlFor="isFeatured">
-                        Featured
-                    </label>
-                    <input
-                        id="isFeatured"
-                        name="isFeatured"
-                        type="checkbox"
-                        checked={isFeatured}
-                        className="appearance-none relative block px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none sm:text-sm"
-                        placeholder="Select category"
-                        onChange={(e) => setIsFeatured(e.target.checked ? true : false)}
-                    >
-                    </input>
+                <div className='flex flex-row justify-between items-center'>
+                    <div className='flex justify-between w-2/5'>
+                        <label htmlFor="isFeatured">
+                            Featured
+                        </label>
+                        <input
+                            id="isFeatured"
+                            name="isFeatured"
+                            type="checkbox"
+                            checked={isFeatured}
+                            className="appearance-none relative block px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none sm:text-sm"
+                            placeholder="Select category"
+                            onChange={(e) => setIsFeatured(e.target.checked ? true : false)}
+                        >
+                        </input>
+                    </div>
+                    <div className='w-1/2 grid place-items-center'>
+                        <label htmlFor="price" className="justify-self-end">
+                            Product Price
+                        </label>
+                        <input
+                            id="price"
+                            name="price"
+                            type="number"
+                            required
+                            className="appearance-none relative block w-1/2 px-3 py-2 justify-self-end border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                            value={price}
+                            onChange={(e) => setPrice(Number(e.target.value))}
+                        />
+                    </div>
                 </div>
                 <div>
                     <label htmlFor="tags" className="sr-only">

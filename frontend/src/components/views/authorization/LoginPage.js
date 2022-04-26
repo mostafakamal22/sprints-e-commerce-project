@@ -24,18 +24,17 @@ const LoginPage = () => {
 
     const credentials = {
       email,
-      pw: password,
+      password,
     };
 
     /* Send data to API to login */
     const config = {
-      method: "post",
-      url: "https://mina-jpp1.herokuapp.com/api/users/login",
-
+      method: 'post',
+      url: '/api/users/login',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
-      data: credentials,
+      data: credentials
     };
     const res = await axios(config);
 
@@ -51,13 +50,15 @@ const LoginPage = () => {
       user: res.data.user,
       token: res.data.token,
     };
+    console.log(data);
     loginUser(data);
 
     // Save token to local storage
     const storage = {
-      id: res.data.user.id,
+      id: res.data.user._id,
       token: res.data.token,
     };
+    console.log(storage);
     localStorage.setItem("token", JSON.stringify(storage));
     setLoading(false);
     navigate("/");

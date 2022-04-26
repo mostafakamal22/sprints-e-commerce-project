@@ -13,11 +13,13 @@ export const useProtect = () => {
         const checkToken = localStorage.getItem('token')
         if (checkToken) {
             const { id, token } = JSON.parse(checkToken)
-            const config = {
+            let config = {
                 method: 'get',
-                url: `https://mina-jpp1.herokuapp.com/api/users/${id}?token=${token}`,
-                headers: {}
-            }
+                url: `/api/users/${id}`,
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            };
             axios(config).then(res => {
                 const userData = {
                     user: res.data,

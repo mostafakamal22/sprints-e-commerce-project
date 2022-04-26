@@ -41,9 +41,13 @@ const ImagesTool = () => {
 
     /* Send data to API to add new image to the product */
     const config = {
-      method: "post",
-      url: `/api/carousel?token=${store.auth.token}`,
-      data: imageData,
+      method: 'post',
+      url: '/api/carousel',
+      headers: {
+        'Authorization': `Bearer ${store.auth.token}`,
+        'Content-Type': 'application/json'
+      },
+      data: imageData
     };
     await axios(config);
     getData().then(res => {
@@ -59,7 +63,7 @@ const ImagesTool = () => {
       return (
         <div className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">
           <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-            Add Image to product
+            Add Image
           </h3>
           <ImagesForm onSubmit={handleAddSubmit} />
         </div>
@@ -84,12 +88,13 @@ const ImagesTool = () => {
     /* Send data to API to register a new user */
     const config = {
       method: 'put',
-      url: `/api/carousel/${imageData.id}?token=${store.auth.token}`,
+      url: `/api/carousel/${imageData.id}`,
       headers: {
+        'Authorization': `Bearer ${store.auth.token}`,
         'Content-Type': 'application/json'
       },
-      data: imageData,
-    }
+      data: imageData
+    };
     axios(config).then(res => {
       if (!res.data.message) {
         getData().then(res => {
@@ -131,8 +136,11 @@ const ImagesTool = () => {
     /* Send data to API to register a new user */
     const config = {
       method: 'delete',
-      url: `/api/carousel/${imageID}?token=${store.auth.token}`,
-    }
+      url: `/api/carousel/${imageID}`,
+      headers: {
+        'Authorization': `Bearer ${store.auth.token}`
+      }
+    };
     await axios(config)
     getData().then(res => {
       setData('carousels', res)
@@ -218,7 +226,7 @@ const ImagesTool = () => {
                           id={i}
                           onClick={(e) => editModal(e.currentTarget.id)} className="group relative flex-grow flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700"
                         >
-                          {image.havelink === 0 ? <MdToggleOn color="red" /> : <MdToggleOff color="lightgreen" />}
+                          <MdEdit />
                         </button>
                         <button
                           id={i}

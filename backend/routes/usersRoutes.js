@@ -3,6 +3,7 @@ const express = require('express')
 const router = express.Router()
 // Get all the actions (testAPI) from the controller
 const {
+  getUser,
   getUsers,
   registerUser,
   loginUser,
@@ -17,6 +18,7 @@ const { protect } = require('../middleware/authMiddleware')
 
 // Define all the routes for /api/users
 router.get('/', protect, getUsers)
+router.get('/:id', getUser)
 router.post('/', registerUser)
 router.post('/login', loginUser)
 router.put('/:id', protect, editUser)
