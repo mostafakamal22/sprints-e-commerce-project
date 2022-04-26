@@ -15,6 +15,9 @@ const UsersTool = () => {
         const config = {
             method: "get",
             url: `/api/users`,
+            headers: {
+                'Authorization': `Bearer ${store.auth.token}`
+            },
         };
         const res = await (await axios(config)).data;
 
@@ -60,7 +63,8 @@ const UsersTool = () => {
             method: 'post',
             url: '/api/users',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${store.auth.token}`
             },
             data: userData
         }
@@ -108,9 +112,10 @@ const UsersTool = () => {
         /* Send data to API to register a new user */
         const config = {
             method: 'put',
-            url: `/api/users/${formStates.id}?token=${store.auth.token}`,
+            url: `/api/users/${formStates.id}`,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${store.auth.token}`
             },
             data: userData
         }
@@ -154,7 +159,10 @@ const UsersTool = () => {
         /* Send data to API to register a new user */
         const config = {
             method: 'delete',
-            url: `/api/users/${uid}?token=${store.auth.token}`,
+            url: `/api/users/${uid}`,
+            headers: {
+                'Authorization': `Bearer ${store.auth.token}`
+            }
         }
         await axios(config)
         getData().then(res => {

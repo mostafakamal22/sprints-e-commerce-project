@@ -18,32 +18,33 @@ const RegisterPage = () => {
         }
 
         const userData = {
-            first: formStates.firstName,
-            last: formStates.secondName,
+            firstName: formStates.firstName,
+            lastName: formStates.lastName,
             email: formStates.email,
-            pw: formStates.password,
-            address1: formStates.address,
-            address2: formStates.secondaryAddress,
+            password: formStates.password,
+            address: formStates.address,
             phone: formStates.phone,
-            auth: 0,
-            status: 0,
+            type: formStates.type,
+            status: formStates.status,
         }
 
         /* Send data to API to register a new user */
         const config = {
             method: 'post',
-            url: 'https://mina-jpp1.herokuapp.com/api/users',
+            url: '/api/users',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             data: userData
         }
         const res = await axios(config)
+        console.log(res)
 
         const storage = {
             id: res.data.user.id,
             authToken: res.data.token
         }
+
         localStorage.setItem('token', JSON.stringify(storage))
         const data = {
             user: res.data.user,

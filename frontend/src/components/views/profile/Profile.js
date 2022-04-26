@@ -2,7 +2,7 @@ import React from "react";
 import ProfileSummery from "./ProfileSummery";
 import AboutUser from "./AboutUser";
 import Cart from "./Cart";
-import WishList from "./WishList";
+import WishList from "./Wishlist";
 
 export default function Profile() {
   return (

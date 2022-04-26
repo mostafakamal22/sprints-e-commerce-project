@@ -11,7 +11,7 @@ import Home from "./views/main/Home";
 import { Shop } from "./views/main/Shop";
 import Special from "./views/main/Special";
 import Cart from "./views/profile/Cart";
-import Wishlist from "./views/profile/WishList";
+import Wishlist from "./views/profile/Wishlist";
 import ProductPage from "./views/product/ProductPage";
 import { useContext } from "react";
 import StoreContext from "../context/store/StoreContext";
