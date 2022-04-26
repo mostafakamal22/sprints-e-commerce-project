@@ -62,10 +62,10 @@ const addProduct = asyncHandler(async (req, res) => {
             throw new Error('already exists')
         } else {
             // create the product
-            try {
-                const data = await Product.create(newProduct)
+            const data = await Product.create(newProduct)
+            if (data) {
                 res.status(201).json(data)
-            } catch (err) {
+            } else {
                 res.status(500)
                 throw new Error('unknowen server or DB error')
             }

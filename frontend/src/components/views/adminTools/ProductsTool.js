@@ -51,25 +51,29 @@ const ProductsTool = () => {
       age: formStates.age,
       pieces: formStates.pieces,
       features: formStates.features,
-      highlights: formStates.highlights.split(','),
-      tags: formStates.tags.split(','),
+      highlights: formStates.highlights.split('{,}'),
+      tags: formStates.tags.split('{,}'),
     }
+    console.log(productData);
 
-    /* Send data to API to register a new user */
+    /* Send data to API to add a new product */
     const config = {
       method: 'post',
-      url: `/api/products?token=${store.auth.token}`,
+      url: '/api/products',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${store.auth.token}`
       },
       data: productData
-    }
-    await axios(config)
-    getData().then(res => {
-      hideModal()
-      setData('products', res)
-      setSearchResults(res)
-      setLoading(false)
+    };
+    await axios(config).then(() => {
+      getData().then(res => {
+        console.log(res);
+        hideModal()
+        setSearchResults(res)
+        setData('products', res)
+        setLoading(false)
+      })
     })
   }
 
@@ -101,16 +105,17 @@ const ProductsTool = () => {
       age: formStates.age,
       pieces: formStates.pieces,
       features: formStates.features,
-      highlights: formStates.highlights.split(','),
-      tags: formStates.tags.split(','),
+      highlights: formStates.highlights.split('{,}'),
+      tags: formStates.tags.split('{,}'),
     }
 
     /* Send data to API to register a new user */
     const config = {
       method: 'put',
-      url: `/api/products/${formStates.id}?token=${store.auth.token}`,
+      url: `/api/products/${formStates.id}`,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${store.auth.token}`
       },
       data: productData
     }
@@ -157,15 +162,18 @@ const ProductsTool = () => {
 
   const handleDelete = async (id) => {
     setLoading(true)
+    console.log(store.appData.products);
     const pid = store.appData.products[id]._id
     /* Send data to API to register a new user */
     const config = {
       method: 'delete',
-      url: `/api/products/${pid}?token=${store.auth.token}`,
+      url: `/api/products/${pid}`,
+      headers: {
+        'Authorization': `Bearer ${store.auth.token}`
+      },
     }
     const res = await axios(config)
     console.log(res)
-    hideModal()
     getData().then(res => {
       setData('products', res)
       setSearchResults(res)
@@ -193,7 +201,7 @@ const ProductsTool = () => {
                     <input
                       onChange={(e) => {
                         if (e.target.value !== '') {
-                          setSearchResults(store.appData.products.filter(user => user.first_name.toLowerCase().includes(e.target.value)))
+                          setSearchResults(store.appData.products.filter(product => product.name.toLowerCase().includes(e.target.value)))
                         } else {
                           setSearchResults(store.appData.products)
                         }

@@ -13,14 +13,14 @@ const storage = getStorage();
 
 const ImageInput = ({ id, setImages }) => {
 
-    const { showToast, setLoading } = useContext(StoreContext)
+    const { showToast } = useContext(StoreContext)
 
     const [isRunning, setIsRunning] = useState(false);
     const [progress, setProgress] = useState(0);
     const [image, setImage] = useState('');
 
     const handleUpload = async (file) => {
-        setLoading(true)
+        id !== 'image' ? setImages({ string: '', isRunning: true }) : setImages('')
         setImage('')
         // Upload files to the object 'images/fileName.jpeg'
         const storageRef = ref(storage, "images/" + file.name);
@@ -75,9 +75,8 @@ const ImageInput = ({ id, setImages }) => {
                 // Upload completed successfully, now we can get the download URL
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                     setImage(downloadURL.toString())
-                    setImages(downloadURL.toString())
+                    id !== 'image' ? setImages({ string: downloadURL.toString(), isRunning: false }) : setImages(downloadURL.toString())
                     setIsRunning(false);
-                    setLoading(false)
                 });
             }
         );

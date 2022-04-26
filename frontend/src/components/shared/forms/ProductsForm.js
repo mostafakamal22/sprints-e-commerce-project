@@ -1,5 +1,4 @@
-import { useContext, useState } from 'react'
-import StoreContext from '../../../context/store/StoreContext'
+import { useState } from 'react'
 import Upload from '../../../firebase/upload'
 
 /** 
@@ -9,8 +8,6 @@ import Upload from '../../../firebase/upload'
 
 const ProductsForm = ({ onSubmit, initStates }) => {
 
-    // load the store
-    const { store } = useContext(StoreContext)
     // Form States
     const [loading, setLoading] = useState(initStates ? initStates.name : '')
     const [name, setName] = useState(initStates ? initStates.name : '')
@@ -70,7 +67,7 @@ const ProductsForm = ({ onSubmit, initStates }) => {
                     <label htmlFor="details" className="sr-only">
                         Product details
                     </label>
-                    <input
+                    <textarea
                         id="details"
                         name="details"
                         type="text"
@@ -85,7 +82,7 @@ const ProductsForm = ({ onSubmit, initStates }) => {
                     <label htmlFor="features" className="sr-only">
                         Product Features
                     </label>
-                    <input
+                    <textarea
                         id="features"
                         name="features"
                         type="text"
@@ -227,7 +224,7 @@ const ProductsForm = ({ onSubmit, initStates }) => {
                 </div>
 
                 <div className='flex justify-center'>
-                    {store.loading
+                    {loading
                         ? (<button
                             disabled
                             type="submit"
