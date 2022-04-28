@@ -11,7 +11,7 @@ const firebaseConfig = {
     storageBucket: "sprints-e-commerce.appspot.com",
     messagingSenderId: "431577754667",
     appId: "1:431577754667:web:7e8350a938d5a098334e6e"
-};
+}
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);

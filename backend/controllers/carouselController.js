@@ -44,10 +44,10 @@ const addImage = asyncHandler(async (req, res) => {
             throw new Error('image already exists')
         } else {
             // create the image
-            try {
-                const data = await Carousel.create(newImage)
+            const data = await Carousel.create(newImage)
+            if (data) {
                 res.status(201).json(data)
-            } catch (err) {
+            } else {
                 res.status(401)
                 throw new Error('unknowen server or DB error')
             }

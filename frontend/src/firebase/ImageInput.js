@@ -8,23 +8,32 @@ import {
 } from "firebase/storage";
 import { app } from "../firebase/config";
 import { MdOutlineClose, MdUpload } from "react-icons/md";
+import { v4 as uuidv4 } from 'uuid';
 
 const storage = getStorage();
+/**
+ * advanced we can have firebase delete the unwanted files
+ * advanced we can have firebase check if the filename exists and warn the user
+ */
 
-const ImageInput = ({ id, setImages }) => {
+const ImageInput = ({ id, setImages, init }) => {
 
-    const { showToast } = useContext(StoreContext)
+    const { showToast, store, setLoading } = useContext(StoreContext)
 
     const [isRunning, setIsRunning] = useState(false);
     const [progress, setProgress] = useState(0);
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState(init ? init : '');
+    const [task, setTask] = useState({});
 
     const handleUpload = async (file) => {
+        setLoading(true)
         id !== 'image' ? setImages({ string: '', isRunning: true }) : setImages('')
         setImage('')
+        const folder = store.productForm.id === '' ? 'carousel' : `products/${store.productForm.id}/`
         // Upload files to the object 'images/fileName.jpeg'
-        const storageRef = ref(storage, "images/" + file.name);
+        const storageRef = ref(storage, `images/${folder}/${init ? id : file.name + uuidv4()}`);
         const uploadTask = uploadBytesResumable(storageRef, file);
+        setTask(uploadTask)
 
         // Listen for state changes, errors, and completion of the upload.
         uploadTask.on(
@@ -59,6 +68,10 @@ const ImageInput = ({ id, setImages }) => {
                     case "storage/canceled":
                         // User canceled the upload
                         showToast(`User canceled the upload`, false);
+                        setIsRunning(false)
+                        setProgress(0)
+                        setLoading(false)
+                        id !== 'image' ? setImages({ string: '', isRunning: false }) : setImages('')
                         return;
                     case "storage/unknown":
                         // Unknown error occurred, inspect error.serverResponse
@@ -77,6 +90,7 @@ const ImageInput = ({ id, setImages }) => {
                     setImage(downloadURL.toString())
                     id !== 'image' ? setImages({ string: downloadURL.toString(), isRunning: false }) : setImages(downloadURL.toString())
                     setIsRunning(false);
+                    setLoading(false)
                 });
             }
         );
@@ -85,7 +99,10 @@ const ImageInput = ({ id, setImages }) => {
     return (
         <div className="flex flex-wrap justify-center items-center p-3 gap-3">
             <div className="grid place-items-center relative">
-                <button type="button" onClick={() => setImage('')} className="text-white absolute top-1 right-1">
+                <button type="button" onClick={() => {
+                    setImage('')
+                    task.cancel()
+                }} className="text-white absolute top-1 right-1">
                     <MdOutlineClose />
                 </button>
                 <label

@@ -38,6 +38,7 @@ const RegisterForm = ({ onSubmit, withPW, initStates, admin }) => {
             type,
             status,
         }
+        console.log(formStates);
         onSubmit(formStates)
         setLoading(false)
     }

@@ -178,7 +178,7 @@ const UsersTool = () => {
                     <Spinner />
                 )
                 : (
-                    <div className='grid place-items-center'>
+                    <div className='grid place-items-center mb-3'>
                         <h1 className='text-left text-xl font-medium p-6 text-gray-700'>Users Data</h1>
                         <div className='max-w-2xl px-6'>
                             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">

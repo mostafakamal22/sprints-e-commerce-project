@@ -6,7 +6,7 @@ import Upload from '../../../firebase/upload'
 *   and if you want the form to have pre filled data provide it as initStates prope
 */
 
-const ProductsForm = ({ onSubmit, initStates }) => {
+const ProductsForm = ({ onSubmit, initStates, id }) => {
 
     // Form States
     const [loading, setLoading] = useState(initStates ? initStates.name : '')
@@ -20,15 +20,15 @@ const ProductsForm = ({ onSubmit, initStates }) => {
     const [age, setAge] = useState(initStates ? initStates.age : '')
     const [pieces, setPieces] = useState(initStates ? initStates.pieces : '')
     const [features, setFeatures] = useState(initStates ? initStates.features : '')
-    const [highlights, setHighlights] = useState(initStates ? initStates.highlights.toString() : [])
-    const [tags, setTags] = useState(initStates ? initStates.tags.toString() : [])
+    const [highlights, setHighlights] = useState(initStates ? initStates.highlights.toString() : '')
+    const [tags, setTags] = useState(initStates ? initStates.tags.toString() : '')
 
     // runs the onSubmit func provided as a prope giving it all the state so you can use it
     const handleSubmit = (e) => {
         e.preventDefault()
 
         const formStates = {
-            id: initStates ? initStates.id : 0,
+            id: initStates ? initStates.id : id,
             name,
             details,
             images,
@@ -110,7 +110,7 @@ const ProductsForm = ({ onSubmit, initStates }) => {
                 </div>
                 <div className=''>
                     <h3 className='text-center'>Product Images</h3>
-                    <Upload setLoading={setLoading} setImages={setImages} isEdit={initStates ? true : false} />
+                    <Upload initStates={initStates} setLoading={setLoading} setImages={setImages} isEdit={initStates ? true : false} />
                 </div>
                 <div className='flex justify-between'>
                     <div className='w-2/5'>
