@@ -168,7 +168,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 
     if (doc) {
       await User.deleteOne({ _id: id })
-      res.status(201).json({
+      res.status(200).json({
         id: doc.id
       })
     } else {

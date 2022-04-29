@@ -8,7 +8,7 @@ export const getProductsAction = async () => {
     const config = {
         method: "get",
         url: `/api/products`,
-      };
+    };
     const res = await axios(config)
     return res.status === 200 ? res.data : null
 }
@@ -36,11 +36,11 @@ export const editProductAction = async (productData) => {
         method: 'put',
         url: `/api/products/${productData.id}`,
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token
+            'Content-Type': 'application/json',
+            'Authorization': token
         },
         data: productData
-      }
+    }
     const res = await axios(config)
     return res.status === 200 ? res.data : null
 }
@@ -65,7 +65,7 @@ export const getImagesAction = async () => {
     const config = {
         method: "get",
         url: `/api/carousel`,
-      };
+    };
     const res = await axios(config)
     return res.status === 200 ? res.data : null
 }
@@ -94,11 +94,11 @@ export const editImageAction = async (imageData) => {
         method: 'put',
         url: `/api/carousel/${imageData.id}`,
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token
+            'Content-Type': 'application/json',
+            'Authorization': token
         },
         data: imageData
-      }
+    }
     const res = await axios(config)
     return res.status === 200 ? res.data : null
 }
@@ -119,14 +119,14 @@ export const deleteImageAction = async (imageID) => {
 
 // Get orders from the DB
 export const getOrdersAction = async () => {
-    /* Send data to API to add the orders */
+    /* Send data to API to get the orders */
     const config = {
         method: "get",
         url: `/api/orders`,
         headers: {
             'Authorization': token
         }
-      };
+    };
     const res = await axios(config)
     return res.status === 200 ? res.data : null
 }
@@ -149,16 +149,16 @@ export const addOrderAction = async (orderData) => {
 
 // edit a order on the DB
 export const editOrderAction = async (orderData) => {
-    /* Send data to API to add the order */
+    /* Send data to API to edit the order */
     const config = {
         method: 'put',
         url: `/api/orders/${orderData.id}`,
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token
+            'Content-Type': 'application/json',
+            'Authorization': token
         },
         data: orderData
-      }
+    }
     const res = await axios(config)
     return res.status === 200 ? res.data : null
 }
@@ -173,6 +173,98 @@ export const deleteOrderAction = async (orderID) => {
         },
     }
     /* Send data to API to delete the order */
+    const res = await axios(config)
+    return res.status === 200 ? res.data : null
+}
+
+// Get users from the DB
+export const getUsersAction = async () => {
+    /* Send data to API to get the users */
+    const config = {
+        method: "get",
+        url: `/api/users`,
+        headers: {
+            'Authorization': token
+        }
+    };
+    const res = await axios(config)
+    return res.status === 200 ? res.data : null
+}
+
+// Add a user to the DB
+export const addUserAction = async (userData) => {
+    /* Send data to API to add the user */
+    const config = {
+        method: 'post',
+        url: '/api/users',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
+        data: userData
+    }
+    const res = await axios(config)
+    return res.status === 201 ? res.data : null
+}
+
+// edit a user on the DB
+export const editUserAction = async (userData) => {
+    /* Send data to API to add the user */
+    const config = {
+        method: 'put',
+        url: `/api/users/${userData.id}`,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
+        data: userData
+    }
+    const res = await axios(config)
+    return res.status === 200 ? res.data : null
+}
+
+// Delete a user from the DB
+export const deleteUserAction = async (userID) => {
+    const config = {
+        method: 'delete',
+        url: `/api/users/${userID}`,
+        headers: {
+            'Authorization': token
+        },
+    }
+    /* Send data to API to delete the user */
+    const res = await axios(config)
+    return res.status === 200 ? res.data : null
+}
+
+// Add an item to the user [cart, wishlist, orders]
+export const addItemToUser = async (userID, location, itemID) => {
+    const config = {
+        method: 'put',
+        url: `/api/users/${userID}/${location}`,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
+        data: itemID
+    }
+    /* Send data to API to delete the user */
+    const res = await axios(config)
+    return res.status === 200 ? res.data : null
+}
+
+// Delete an item from the user [cart, wishlist, orders]
+export const deleteItemFromUser = async (userID, location, itemID) => {
+    const config = {
+        method: 'put',
+        url: `/api/users/${userID}/${location}`,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
+        data: itemID
+    }
+    /* Send data to API to delete the user */
     const res = await axios(config)
     return res.status === 200 ? res.data : null
 }

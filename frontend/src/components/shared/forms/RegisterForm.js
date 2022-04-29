@@ -19,8 +19,8 @@ const RegisterForm = ({ onSubmit, withPW, initStates, admin }) => {
     const [passwordConfirm, setPasswordConfirm] = useState(initStates ? initStates.password : '')
     const [phone, setPhone] = useState(initStates ? initStates.phone : '')
     const [address, setAddress] = useState(initStates ? initStates.address : '')
-    const [type, setType] = useState(initStates ? initStates.type : 'user')
-    const [status, setStatus] = useState(initStates ? initStates.status : 'inactive')
+    const [type, setType] = useState(initStates ? initStates.type : 'User')
+    const [status, setStatus] = useState(initStates ? initStates.status : 'Inactive')
 
     // runs the onSubmit func provided as a prope
     const handleSubmit = (e) => {
@@ -177,8 +177,8 @@ const RegisterForm = ({ onSubmit, withPW, initStates, admin }) => {
                             onChange={(e) => setType(e.target.value)}
                             value={type}
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option>Admin</option>
                             <option>User</option>
+                            <option>Admin</option>
                         </select>
                         <label htmlFor="User Status" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">User Status</label>
                         <select
@@ -186,8 +186,8 @@ const RegisterForm = ({ onSubmit, withPW, initStates, admin }) => {
                             onChange={(e) => setStatus(e.target.value)}
                             value={status}
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option>Active</option>
                             <option>Inactive</option>
+                            <option>Active</option>
                             <option>Suspended</option>
                         </select>
                     </div>) : null}
