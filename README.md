@@ -319,12 +319,18 @@ axios(config)
 const axios = require('axios');
 
 let data = JSON.stringify({
-  "userID": String,
-  "paymentMethod": String,
-  "coupon": String,
-  "status": String {pending, proccessing, shipped, delvired, canceled },
-  "products": [String],
-  "totalValue": String
+  "category": "String",
+  "images": ["String"],
+  "age": "String",
+  "pieces": "String",
+  "isFeatured": Boolean,
+  "features": "String",
+  "highlights": ["String"],
+  "details": "String",
+  "name": "String",
+  "price": Number,
+  "brand": "String",
+  "tags": ["String"]
 });
 
 let config = {
@@ -346,16 +352,23 @@ axios(config)
 const axios = require('axios');
 
 let data = JSON.stringify({
-  "paymentMethod": String,
-  "coupon": String,
-  "status": String {pending, proccessing, shipped, delvired, canceled },
-  "products": [String],
-  "totalValue": String
+  "category": "String",
+  "images": ["String"],
+  "age": "String",
+  "pieces": "String",
+  "isFeatured": Boolean,
+  "features": "String",
+  "highlights": ["String"],
+  "details": "String",
+  "name": "String",
+  "price": Number,
+  "brand": "String",
+  "tags": ["String"]
 });
 
 let config = {
   method: 'put',
-  url: 'http://localhost:8080/api/products/{orderID}',
+  url: 'http://localhost:8080/api/products/{productID}',
   headers: {
     'Authorization': `Bearer ${token}`,
     'Content-Type': 'application/json'
@@ -373,7 +386,7 @@ const axios = require('axios');
 
 let config = {
   method: 'delete',
-  url: 'http://localhost:8080/api/products/{orderID}',
+  url: 'http://localhost:8080/api/products/{prodcutID}',
   headers: {
     'Authorization': `Bearer ${token}`
   }
