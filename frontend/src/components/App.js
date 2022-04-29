@@ -43,7 +43,7 @@ const App = () => {
         />
       </Routes>
       <div
-        className={`container toast-container relative grid place-items-center ${
+        className={`container toast-container grid place-items-center z-50 ${
           store.toast.isToast ? "" : "pointer-events-none"
         }`}
       >

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useContext, useEffect, useState } from 'react'
 import { MdAdd, MdDelete, MdEdit } from 'react-icons/md'
+import { addUserAction, deleteUserAction, editUserAction, getUsersAction } from '../../../context/store/StoreActions'
 import StoreContext from '../../../context/store/StoreContext'
 import RegisterForm from '../../shared/forms/RegisterForm'
 import Spinner from '../../shared/Spinner'
@@ -10,34 +11,23 @@ const UsersTool = () => {
     const { store, showModal, hideModal, showToast, setData } = useContext(StoreContext)
     const [searchResults, setSearchResults] = useState([])
     const [loading, setLoading] = useState([])
-
-    const getData = async () => {
-        const config = {
-            method: "get",
-            url: `/api/users`,
-            headers: {
-                'Authorization': `Bearer ${store.auth.token}`
-            },
-        };
-        const res = await (await axios(config)).data;
-
-        return res
-    };
+    const [reload, setReload] = useState(false)
 
     useEffect(() => {
         setLoading(true)
-        getData().then((res) => {
-            if (res.message) {
-                console.log(res.message)
+        getUsersAction().then((data) => {
+            if (!data) {
+                showToast('an error occurred, please try again', false)
+                setData('users', [])
+                setSearchResults([])
                 setLoading(false)
             } else {
-                console.log(res);
-                setData('users', res)
-                setSearchResults(res)
+                setData('users', data)
+                setSearchResults(data)
                 setLoading(false)
             }
         })
-    }, [])
+    }, [store.productForm, reload])
 
     // submit the add form
     const handleAddSubmit = async (formStates) => {
@@ -59,23 +49,15 @@ const UsersTool = () => {
         }
 
         /* Send data to API to register a new user */
-        const config = {
-            method: 'post',
-            url: '/api/users',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${store.auth.token}`
-            },
-            data: userData
-        }
-        const res = await axios(config)
-        console.log(res)
+        const newUser = await addUserAction(userData)
         hideModal()
-        getData().then(res => {
-            setData('users', res)
-            setSearchResults(res)
+        getUsersAction().then(() => {
+            setReload(!reload)
             setLoading(false)
         })
+
+        console.log(newUser);
+        return newUser
     }
 
     // open the modal and fill it's content 
@@ -110,22 +92,15 @@ const UsersTool = () => {
         console.log(userData)
 
         /* Send data to API to register a new user */
-        const config = {
-            method: 'put',
-            url: `/api/users/${formStates.id}`,
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${store.auth.token}`
-            },
-            data: userData
-        }
+        const newUser = await editUserAction(userData)
         hideModal()
-        await axios(config)
-        getData().then(res => {
-            setData('users', res)
-            setSearchResults(res)
+        getUsersAction().then(() => {
+            setReload(!reload)
             setLoading(false)
         })
+
+        console.log(newUser);
+        return newUser
     }
 
     // opens edit modal
@@ -155,20 +130,19 @@ const UsersTool = () => {
 
     const handleDelete = async (index) => {
         setLoading(true)
-        const uid = store.appData.users[index]._id
+        const userID = store.appData.users[index]._id
         /* Send data to API to register a new user */
-        const config = {
-            method: 'delete',
-            url: `/api/users/${uid}`,
-            headers: {
-                'Authorization': `Bearer ${store.auth.token}`
+        deleteUserAction(userID).then(data => {
+            if (!data) {
+              showToast('an error occurred, please try again', false)
+              setLoading(false)
+              return
+            } else {
+              setReload(!reload)
+              console.log(data)
+              setLoading(false)
             }
-        }
-        await axios(config)
-        getData().then(res => {
-            setSearchResults(res)
-            setLoading(false)
-        })
+          })
     }
 
     return (
@@ -178,7 +152,7 @@ const UsersTool = () => {
                     <Spinner />
                 )
                 : (
-                    <div className='grid place-items-center'>
+                    <div className='grid place-items-center mb-3'>
                         <h1 className='text-left text-xl font-medium p-6 text-gray-700'>Users Data</h1>
                         <div className='max-w-2xl px-6'>
                             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">

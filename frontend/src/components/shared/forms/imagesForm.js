@@ -48,7 +48,7 @@ const ImagesForm = ({ onSubmit, initStates }) => {
           />
         </div>
         <div className="flex justify-between items-center">
-          <Upload setLoading={setLoading} setImages={setImageURL} isEdit={initStates ? true : false} carousel={true} />
+          <Upload init={initStates} setLoading={setLoading} setImages={setImageURL} isEdit={initStates ? true : false} carousel={true} />
           <div className='flex justify-between items-center'>
             <label htmlFor="isActive" className="px-3">
               Is Active

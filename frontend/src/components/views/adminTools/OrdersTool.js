@@ -1,146 +1,103 @@
 import axios from "axios"
 import { useContext, useEffect, useState } from "react"
 import { MdAdd, MdDelete, MdEdit } from "react-icons/md"
+import { addOrderAction, deleteOrderAction, editOrderAction, getOrdersAction } from "../../../context/store/StoreActions"
 import StoreContext from "../../../context/store/StoreContext"
 import CouponsForm from "../../shared/forms/CouponsForm"
+import OrdersForm from "../../shared/forms/OrdersForm"
 import Spinner from "../../shared/Spinner"
 
 const OrdersTool = () => {
-  const { store, showModal, hideModal, setAppData } = useContext(StoreContext)
+  const { store, showModal, hideModal, showToast, setData } = useContext(StoreContext)
 
   const [searchResults, setSearchResults] = useState([])
   const [loading, setLoading] = useState([])
+  const [reload, setReload] = useState(false)
 
   useEffect(() => {
-      setLoading(true)
-      setAppData('orders').then((res) => {
-          setSearchResults(res)
-          setLoading(false)
-      })
-  }, [])
+    setLoading(true)
+    getOrdersAction().then((data) => {
+      if (!data) {
+        showToast('an error occurred, please try again', false)
+        setData('orders', [])
+        setSearchResults([])
+        setLoading(false)
+      } else {
+        setData('orders', data)
+        setSearchResults(data)
+        setLoading(false)
+      }
+    })
+  }, [reload])
 
-  // submit the add form
-  // const handleAddSubmit = async (formStates) => {
+  // submit the edit form
+  const handleEditSubmit = async (formStates) => {
+    setLoading(true)
+    const orderData = {
+      id: formStates.id,
+      paymentMethod: formStates.paymentMethod,
+      coupon: formStates.coupon,
+      status: formStates.status,
+      products: formStates.products,
+      totalValue: formStates.totalValue,
+    }
+    console.log(orderData)
 
-  //   setLoading(true)
+    /* Send data to API to register a new user */
+    const newOrder = await editOrderAction(orderData)
+    hideModal()
+    getOrdersAction().then(() => {
+      setReload(!reload)
+      setLoading(false)
+    })
 
-  //   const couponData = {
-  //     name: formStates.name,
-  //     available: formStates.available,
-  //     validtille: formStates.validtille,
-  //     discounttype: formStates.discounttype,
-  //     discountvalue: formStates.discountvalue,
-  //     minorder: formStates.minorder,
-  //     /*
-  //     coupon: 1,
-  //     date: "2022-04-21T00:00:00.000Z",
-  //     id: 6,
-  //     payment: "Not Defined",
-  //     status: 0,
-  //     userid: 2,
-  //      */
-  //   }
-  //   console.log(couponData)
-
-  //   /* Send data to API to register a new user */
-  //   const config = {
-  //     method: 'post',
-  //     url: `https://mina-jpp1.herokuapp.com/api/coupons?token=${store.auth.token}`,
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     data: couponData
-  //   }
-  //   const res = await axios(config)
-  //   console.log(res)
-  //   hideModal()
-  //   setAppData().then(() => {
-  //     setLoading(false)
-  //   })
-  // }
-
-  // // open the modal and fill it's content 
-  // const modalAdd = () => {
-  //   // modal content
-  //   const Content = () => {
-  //     return (
-  //       <div className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">
-  //         <h3 className="text-xl font-medium text-gray-900 dark:text-white">Add Coupon</h3>
-  //         <CouponsForm onSubmit={handleAddSubmit} />
-  //       </div>
-  //     )
-  //   }
-  //   showModal(Content)
-  // }
-
-  // // submit the edit form
-  // const handleEditSubmit = async (formStates) => {
-  //   setLoading(true)
-  //   const couponData = {
-  //     name: formStates.name,
-  //     available: formStates.available,
-  //     validtille: formStates.validtille,
-  //     discounttype: formStates.discounttype,
-  //     discountvalue: formStates.discountvalue,
-  //     minorder: formStates.minorder,
-  //   }
-
-  //   /* Send data to API to register a new user */
-  //   const config = {
-  //     method: 'put',
-  //     url: `https://mina-jpp1.herokuapp.com/api/coupons/${formStates.id}?token=${store.auth.token}`,
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     data: couponData
-  //   }
-  //   const res = await axios(config)
-  //   console.log(res)
-  //   hideModal()
-  //   setAppData().then(() => {
-  //     setLoading(false)
-  //   })
-  // }
+    console.log(newOrder);
+    return newOrder
+  }
 
   // // opens edit modal
-  // const modalEdit = (index) => {
-  //   const initStates = {
-  //     id: store.appData.coupons[index].id,
-  //     name: store.appData.coupons[index].name,
-  //     available: store.appData.coupons[index].available,
-  //     validtille: store.appData.coupons[index].validtille,
-  //     discounttype: store.appData.coupons[index].discounttype,
-  //     discountvalue: store.appData.coupons[index].discountvalue,
-  //     minorder: store.appData.coupons[index].minorder,
-  //   }
+  const modalEdit = (index) => {
+    const initStates = {
+      id: store.appData.orders[index]._id,
+      userID: store.appData.orders[index].userID,
+      paymentMethod: store.appData.orders[index].paymentMethod,
+      coupon: store.appData.orders[index].coupon,
+      status: store.appData.orders[index].status,
+      products: store.appData.orders[index].products,
+      totalValue: store.appData.orders[index].totalValue,
+    }
+    console.log(initStates)
 
-  //   // fills the content for the edit modal
-  //   const Content = () => {
-  //     return (
-  //       <div className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">
-  //         <h3 className="text-xl font-medium text-gray-900 dark:text-white">Edit Coupon</h3>
-  //         <CouponsForm onSubmit={handleEditSubmit} initStates={initStates} />
-  //       </div>
-  //     )
-  //   }
+    // fills the content for the edit modal
+    const Content = () => {
+      return (
+        <div className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">
+          <h3 className="text-xl font-medium text-gray-900 dark:text-white">Edit Coupon</h3>
+          <OrdersForm onSubmit={handleEditSubmit} initStates={initStates} />
+        </div>
+      )
+    }
 
-  //   showModal(Content)
-  // }
+    showModal(Content)
+  }
 
-  // const handleDelete = async (index) => {
-  //   setLoading(true)
-  //   const cid = store.appData.coupons[index].id
-  //   console.log(cid)
-  //   /* Send data to API to register a new user */
-  //   const config = {
-  //     method: 'delete',
-  //     url: `https://mina-jpp1.herokuapp.com/api/coupons/${cid}?token=${store.auth.token}`,
-  //   }
-  //   const res = await axios(config)
-  //   setAppData().then(() => {
-  //     setLoading(false)
-  //   })
-  // }
+  const handleDelete = async (index) => {
+    setLoading(true)
+    const orderID = store.appData.orders[index]._id
+    console.log(orderID)
+    /* Send data to API to register a new user */
+    deleteOrderAction(orderID).then(data => {
+      if (!data) {
+        showToast('an error occurred, please try again', false)
+        setLoading(false)
+        return
+      } else {
+        setReload(!reload)
+        console.log(data)
+        setLoading(false)
+      }
+    })
+  }
 
   return (
     <>
@@ -176,7 +133,7 @@ const OrdersTool = () => {
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                       <th scope="col" className="px-6 py-3">
-                        Order ID
+                        User Name
                       </th>
                       <th scope="col" className="px-6 py-3">
                         Value
@@ -190,16 +147,16 @@ const OrdersTool = () => {
                     {searchResults.map((order, i) => (
                       <tr key={i} className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                          {order.id}
+                          {order.userID}
                         </th>
                         <td className='px-6 py-4'>
-                          {order.status === 1 ? 'Pending' : order.status === 2 ? 'Processing' : order.status === 3 ? 'Shipped' : order.status === 4 ? 'Done' : order.status === 5 ? 'Cancelled' : '' }
+                          {order.status}
                         </td>
                         <td className="px-6 py-4 flex max-w-fit">
-                          <button id={i} /*onClick={(e) => modalEdit(e.currentTarget.id)}*/ className="group relative flex-grow flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700">
+                          <button id={i} onClick={(e) => modalEdit(e.currentTarget.id)} className="group relative flex-grow flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700">
                             <MdEdit />
                           </button>
-                          <button id={i} /*onClick={(e) => handleDelete(e.currentTarget.id)}*/ className="group relative flex-grow flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:bg-rose-700">
+                          <button id={i} onClick={(e) => handleDelete(e.currentTarget.id)} className="group relative flex-grow flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:bg-rose-700">
                             <MdDelete />
                           </button>
                         </td>

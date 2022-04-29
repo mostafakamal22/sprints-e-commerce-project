@@ -1,46 +1,41 @@
 import axios from 'axios'
 import { useContext, useEffect, useState } from 'react'
 import { MdAdd, MdDelete, MdEdit } from 'react-icons/md'
+import { addProductAction, deleteProductAction, editProductAction, getProductsAction } from '../../../context/store/StoreActions'
 import StoreContext from '../../../context/store/StoreContext'
 import ProductsForm from '../../shared/forms/ProductsForm'
 import Spinner from '../../shared/Spinner'
 
 const ProductsTool = () => {
 
-  const { store, showModal, hideModal, setData } = useContext(StoreContext)
+  const { store, showModal, hideModal, setData, setProductForm, showToast } = useContext(StoreContext)
 
   const [searchResults, setSearchResults] = useState([])
   const [loading, setLoading] = useState([])
-
-  const getData = async () => {
-    const config = {
-      method: "get",
-      url: `/api/products`,
-    };
-    const res = await (await axios(config)).data;
-
-    return res
-  };
+  const [reload, setReload] = useState(false)
 
   useEffect(() => {
     setLoading(true)
-    getData().then((res) => {
-      if (res) {
-        setData('products', res)
-        setSearchResults(res)
+    getProductsAction().then((data) => {
+      if (!data) {
+        showToast('an error occurred, please try again', false)
+        setData('products', [])
+        setSearchResults([])
         setLoading(false)
       } else {
-        console.log(res.message)
+        setData('products', data)
+        setSearchResults(data)
         setLoading(false)
       }
     })
-  }, [])
+  }, [store.productForm, reload])
 
   // submit the add form
   const handleAddSubmit = async (formStates) => {
     setLoading(true)
 
     const productData = {
+      id: formStates.id,
       name: formStates.name,
       details: formStates.details,
       images: formStates.images,
@@ -57,37 +52,54 @@ const ProductsTool = () => {
     console.log(productData);
 
     /* Send data to API to add a new product */
-    const config = {
-      method: 'post',
-      url: '/api/products',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${store.auth.token}`
-      },
-      data: productData
-    };
-    await axios(config).then(() => {
-      getData().then(res => {
-        console.log(res);
-        hideModal()
-        setSearchResults(res)
-        setData('products', res)
-        setLoading(false)
-      })
+    const newProduct = await editProductAction(productData)
+    hideModal()
+    getProductsAction().then(() => {
+      setReload(!reload)
+      setLoading(false)
     })
+
+    console.log(newProduct);
+    return newProduct
   }
 
   // open the modal and fill it's content 
-  const modalAdd = () => {
-    const Content = () => {
-      return (
-        <div className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">
-          <h3 className="text-xl font-medium text-gray-900 dark:text-white">Add Product</h3>
-          <ProductsForm onSubmit={handleAddSubmit} />
-        </div>
-      )
+  const modalAdd = async () => {
+    setLoading(true)
+    const initStates = {
+      name: ' ',
+      details: ' ',
+      images: [],
+      price: 0,
+      brand: ' ',
+      category: ' ',
+      isFeatured: false,
+      age: ' ',
+      pieces: ' ',
+      features: ' ',
+      highlights: [],
+      tags: [],
     }
-    showModal(Content)
+    addProductAction(initStates).then(data => {
+      if (!data) {
+        showToast('an error occurred, please try again', false)
+        setLoading(false)
+        return
+      } else {
+        setLoading(false)
+        setProductForm(data._id, false)
+        const Content = () => {
+          return (
+            <div className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">
+              <h3 className="text-xl font-medium text-gray-900 dark:text-white">Add Product</h3>
+              <ProductsForm onSubmit={handleAddSubmit} id={data._id} />
+            </div>
+          )
+        }
+        showModal(Content)
+      }
+    })
+
   }
 
   // submit the edit form
@@ -108,23 +120,21 @@ const ProductsTool = () => {
       highlights: formStates.highlights.split('{,}'),
       tags: formStates.tags.split('{,}'),
     }
+    setProductForm(productData.id, true)
 
     /* Send data to API to register a new user */
-    const config = {
-      method: 'put',
-      url: `/api/products/${formStates.id}`,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${store.auth.token}`
-      },
-      data: productData
-    }
-    await axios(config)
-    getData().then(res => {
-      hideModal()
-      setData('products', res)
-      setSearchResults(res)
-      setLoading(false)
+    editProductAction(productData).then(data => {
+      if (!data) {
+        showToast('an error occurred, please try again', false)
+        setLoading(false)
+        return
+      } else {
+        setReload(!reload)
+        setProductForm('', false)
+        console.log(data)
+        hideModal()
+        setLoading(false)
+      }
     })
   }
 
@@ -147,6 +157,7 @@ const ProductsTool = () => {
     }
 
     console.log(initStates)
+    setProductForm(initStates.id, true)
 
     const Content = () => {
       return (
@@ -162,22 +173,19 @@ const ProductsTool = () => {
 
   const handleDelete = async (id) => {
     setLoading(true)
-    console.log(store.appData.products);
-    const pid = store.appData.products[id]._id
+    const productID = store.appData.products[id]._id
     /* Send data to API to register a new user */
-    const config = {
-      method: 'delete',
-      url: `/api/products/${pid}`,
-      headers: {
-        'Authorization': `Bearer ${store.auth.token}`
-      },
-    }
-    const res = await axios(config)
-    console.log(res)
-    getData().then(res => {
-      setData('products', res)
-      setSearchResults(res)
-      setLoading(false)
+    deleteProductAction(productID).then(data => {
+      if (!data) {
+        showToast('an error occurred, please try again', false)
+        setLoading(false)
+        return
+      } else {
+        setReload(!reload)
+        setProductForm('', false)
+        console.log(data)
+        setLoading(false)
+      }
     })
   }
 
@@ -188,7 +196,7 @@ const ProductsTool = () => {
           <Spinner />
         )
         : (
-          <div className='grid place-items-center'>
+          <div className='grid place-items-center pb-3'>
             <h1 className='text-left text-xl font-medium p-6 text-gray-700'>Products Data</h1>
             <div className='max-w-2xl px-6'>
               <div className="relative overflow-x-auto shadow-md sm:rounded-lg">

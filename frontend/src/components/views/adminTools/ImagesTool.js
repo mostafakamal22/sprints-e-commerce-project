@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { MdAdd, MdDelete, MdEdit } from "react-icons/md";
+import { addImageAction, deleteImageAction, editImageAction, getImagesAction } from "../../../context/store/StoreActions";
 import StoreContext from "../../../context/store/StoreContext";
 import ImagesForm from "../../shared/forms/imagesForm";
 import Spinner from "../../shared/Spinner";
@@ -9,24 +10,21 @@ const ImagesTool = () => {
   const { store, showModal, hideModal, setData, showToast } = useContext(StoreContext);
 
   const [loading, setLoading] = useState([])
-
-  const getData = async () => {
-    const config = {
-      method: "get",
-      url: `/api/carousel`,
-    };
-    const res = await (await axios(config)).data;
-
-    return res
-  };
+  const [reload, setReload] = useState(false)
 
   useEffect(() => {
     setLoading(true)
-    getData().then(res => {
-      setData('carousels', res)
-      setLoading(false)
+    getImagesAction().then((data) => {
+      if (!data) {
+        showToast('an error occurred, please try again', false)
+        setData('carousel', [])
+        setLoading(false)
+      } else {
+        setData('carousel', data)
+        setLoading(false)
+      }
     })
-  }, [])
+  }, [reload])
 
   // submit the add form
   const handleAddSubmit = async (formStates) => {
@@ -40,20 +38,15 @@ const ImagesTool = () => {
     console.log(imageData);
 
     /* Send data to API to add new image to the product */
-    const config = {
-      method: 'post',
-      url: '/api/carousel',
-      headers: {
-        'Authorization': `Bearer ${store.auth.token}`,
-        'Content-Type': 'application/json'
-      },
-      data: imageData
-    };
-    await axios(config);
-    getData().then(res => {
-      setData('carousels', res)
-      hideModal();
-      setLoading(false)
+    hideModal();
+    addImageAction(imageData).then(data => {
+      if (!data) {
+        showToast('an error occurred, please try again', false)
+        setLoading(false)
+      } else {
+        setReload(!reload)
+        setLoading(false)
+      }
     })
   };
 
@@ -74,7 +67,7 @@ const ImagesTool = () => {
   };
 
   const handleEditSubmit = async (formStates) => {
-
+    setLoading(true)
     const { imageURL, productURL, isActive, id } = formStates
     const imageData = {
       imageURL,
@@ -86,24 +79,13 @@ const ImagesTool = () => {
     console.log(imageData);
 
     /* Send data to API to register a new user */
-    const config = {
-      method: 'put',
-      url: `/api/carousel/${imageData.id}`,
-      headers: {
-        'Authorization': `Bearer ${store.auth.token}`,
-        'Content-Type': 'application/json'
-      },
-      data: imageData
-    };
-    axios(config).then(res => {
-      if (!res.data.message) {
-        getData().then(res => {
-          hideModal()
-          setData('carousels', res)
-          setLoading(false)
-        })
+    hideModal()
+    editImageAction(imageData).then(data => {
+      if (!data) {
+        showToast('an error occurred, please try again', false)
+        setLoading(false)
       } else {
-        showToast(res.data.message, false)
+        setReload(!reload)
         setLoading(false)
       }
     })
@@ -111,7 +93,7 @@ const ImagesTool = () => {
 
   // opens edit modal
   const editModal = (index) => {
-    const { imageURL, productURL, isActive, _id } = store.appData.carousels[index]
+    const { imageURL, productURL, isActive, _id } = store.appData.carousel[index]
     const initStates = {
       imageURL,
       productURL,
@@ -132,19 +114,16 @@ const ImagesTool = () => {
 
   const handleDelete = async (index) => {
     setLoading(true)
-    const imageID = store.appData.carousels[index]._id
+    const imageID = store.appData.carousel[index]._id
     /* Send data to API to register a new user */
-    const config = {
-      method: 'delete',
-      url: `/api/carousel/${imageID}`,
-      headers: {
-        'Authorization': `Bearer ${store.auth.token}`
+    deleteImageAction(imageID).then(data => {
+      if (!data) {
+        showToast('an error occurred, please try again', false)
+        setLoading(false)
+      } else {
+        setReload(!reload)
+        setLoading(false)
       }
-    };
-    await axios(config)
-    getData().then(res => {
-      setData('carousels', res)
-      setLoading(false)
     })
   }
 
@@ -153,7 +132,7 @@ const ImagesTool = () => {
       {loading ? (
         <Spinner />
       ) : (
-        <div className="grid place-items-center">
+        <div className="grid place-items-center pb-3">
           <h1 className="text-left text-xl font-medium p-6 text-gray-700">
             Images Data
           </h1>
@@ -209,7 +188,7 @@ const ImagesTool = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {store.appData.carousels.map((image, i) => (
+                  {store.appData.carousel.map((image, i) => (
                     <tr
                       key={i}
                       className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600"
@@ -220,7 +199,7 @@ const ImagesTool = () => {
                       >
                         <img src={image.imageURL} alt='' width={100}></img>
                       </th>
-                      <td className="px-6 py-4">{image.havelink !== 0 ? 'On Carousel' : 'Off Carousel'}</td>
+                      <td className="px-6 py-4">{image.isActive ? 'On Carousel' : 'Off Carousel'}</td>
                       <td className="px-6 py-4 flex max-w-fit">
                         <button
                           id={i}

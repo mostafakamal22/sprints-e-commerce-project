@@ -28,27 +28,21 @@ const AdminDashboard = () => {
 
     return (
         <div>
-            {store.loading
-                ? (<Spinner />)
-                : (
-                    <>
-                        <Navbar />
-                        <h1 className="text-left text-3xl font-medium text-gray-700 px-6 pt-6">Admin Dashboard</h1>
-                        <AdminToolbar />
-                        <Routes>
-                            <Route path="/users" element={<UsersTool />} />
-                            <Route path="/branches" element={<BranchesTool />} />
-                            <Route path="/brands" element={<BrandsTool />} />
-                            <Route path="/coupons" element={<CouponsTool />} />
-                            <Route path="/images" element={<ImagesTool />} />
-                            <Route path="/orders" element={<OrdersTool />} />
-                            <Route path="/products" element={<ProductsTool />} />
-                            <Route path="/categories" element={<CategoriesTool />} />
-                            <Route path="/" element={<AnalyticsTool />} />
-                        </Routes>
-                        <Footer />
-                    </>
-                )}
+            <Navbar />
+            <h1 className="text-left text-3xl font-medium text-gray-700 px-6 pt-6">Admin Dashboard</h1>
+            <AdminToolbar />
+            <Routes>
+                <Route path="/users" element={<UsersTool />} />
+                {/* <Route path="/branches" element={<BranchesTool />} />
+                <Route path="/brands" element={<BrandsTool />} /> */}
+                <Route path="/coupons" element={<CouponsTool />} />
+                <Route path="/images" element={<ImagesTool />} />
+                <Route path="/orders" element={<OrdersTool />} />
+                <Route path="/products" element={<ProductsTool />} />
+                {/* <Route path="/categories" element={<CategoriesTool />} /> */}
+                <Route path="/" element={<AnalyticsTool />} />
+            </Routes>
+            <Footer />
         </div>
     )
 }

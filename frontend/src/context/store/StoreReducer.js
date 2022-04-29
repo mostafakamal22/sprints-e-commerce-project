@@ -56,6 +56,12 @@ const storeReducer = (state, action) => {
                 ...state,
                 loading: action.payload,
             }
+        case 'SET_PRODUCT_FORM':
+            logger(state, action)
+            return {
+                ...state,
+                productForm: action.payload,
+            }
         default:
             return state
     }

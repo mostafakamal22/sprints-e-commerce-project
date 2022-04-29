@@ -40,9 +40,13 @@ export const StoreProvider = ({ children }) => {
       categories: [],
       coupons: [],
       orders: [],
-      carousels: [],
+      carousel: [],
     },
     loading: false,
+    productForm: {
+      id: '',
+      isEdit: false,
+    },
   };
 
   const [store, dispatch] = useReducer(storeReducer, initialState);
@@ -118,6 +122,16 @@ export const StoreProvider = ({ children }) => {
     });
   }
 
+  const setProductForm = (productID, isEdit) => {
+    dispatch({
+      type: "SET_PRODUCT_FORM",
+      payload: {
+        id: productID,
+        isEdit: isEdit ? isEdit : false,
+      }
+    })
+  }
+
   // const setAppData = async (collection) => {
   //   const config = {
   //     method: "get",
@@ -147,6 +161,7 @@ export const StoreProvider = ({ children }) => {
         // setAppData,
         setData,
         setLoading,
+        setProductForm,
       }}
     >
       {children}
