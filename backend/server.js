@@ -16,6 +16,7 @@ app.use(express.urlencoded({ extended: false }))
 // Define the routers used
 app.use('/api/users', require('./routes/usersRoutes'))
 app.use('/api/products', require('./routes/productsRoutes'))
+app.use('/api/orders', require('./routes/ordersRoutes'))
 app.use('/api/carousel', require('./routes/carouselRoutes'))
 
 // Serve frontend

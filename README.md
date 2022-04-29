@@ -37,10 +37,10 @@ Use this command to run both the backend and the frontend servers with one comma
 **notes:** <br>
 -routes tagged with **Protected** will need a token to be accessed<br>
 -user type inputs **Admin** and **User** with the capital letters<br>
--user status inputs **Active**, **Inactive** and **Suspended** with the capital letters<br>
--[^1]: location inputs **cartItems**, **wishlistItems** and **orders**<br>
+-user status inputs **Active**, **Inactive** and **Suspended** with the capital letters<br> -[^1]: location inputs **cartItems**, **wishlistItems** and **orders**<br>
 
 #### Protected `api/users` GET
+
 gets all users from DB
 
 ```
@@ -53,15 +53,7 @@ let config = {
     'Authorization': `Bearer ${token}`
   }
 };
-
 axios(config)
-.then((response) => {
-  console.log(JSON.stringify(response.data));
-})
-.catch((error) => {
-  console.log(error);
-});
-
 ```
 
 #### `api/users` POST
@@ -89,12 +81,6 @@ let config = {
 };
 
 axios(config)
-.then((response) => {
-  console.log(JSON.stringify(response.data));
-})
-.catch((error) => {
-  console.log(error);
-});
 ```
 
 #### `api/users/login` POST
@@ -116,12 +102,6 @@ let config = {
 };
 
 axios(config)
-.then((response) => {
-  console.log(JSON.stringify(response.data));
-})
-.catch((error) => {
-  console.log(error);
-});
 ```
 
 #### Protected `api/users/:id` PUT
@@ -149,12 +129,6 @@ let config = {
 };
 
 axios(config)
-.then((response) => {
-  console.log(JSON.stringify(response.data));
-})
-.catch((error) => {
-  console.log(error);
-});
 ```
 
 #### Protected `api/users/:id` DELETE
@@ -168,12 +142,6 @@ let config = {
 };
 
 axios(config)
-.then((response) => {
-  console.log(JSON.stringify(response.data));
-})
-.catch((error) => {
-  console.log(error);
-});
 ```
 
 #### Protected `api/users/:id/:location` PUT
@@ -187,20 +155,14 @@ let data = JSON.stringify({
 let config = {
   method: 'put',
   url: `http://localhost:8080/api/users/${userID}/${location}`,[^1]
-  headers: { 
-    'Authorization': `Bearer ${token}`, 
+  headers: {
+    'Authorization': `Bearer ${token}`,
     'Content-Type': 'application/json'
   },
   data : data
 };
 
 axios(config)
-.then((response) => {
-  console.log(JSON.stringify(response.data));
-})
-.catch((error) => {
-  console.log(error);
-});
 ```
 
 #### Protected `api/users/:id/:location` DELETE
@@ -214,18 +176,115 @@ let data = JSON.stringify({
 let config = {
   method: 'delete',
   url: `http://localhost:8080/api/users/${userID}/${location}`,
-  headers: { 
-    'Authorization': `Bearer ${token}`, 
+  headers: {
+    'Authorization': `Bearer ${token}`,
     'Content-Type': 'application/json'
   },
   data : data
 };
 
 axios(config)
-.then((response) => {
-  console.log(JSON.stringify(response.data));
-})
-.catch((error) => {
-  console.log(error);
+```
+
+#### Protected `api/orders` GET
+
+```
+const axios = require('axios');
+
+let config = {
+  method: 'get',
+  url: `http://localhost:8080/api/orders`,
+  headers: {
+    'Authorization': `Bearer ${token}`
+  },
+  data : data
+};
+
+axios(config)
+```
+
+#### Protected `api/orders/:id` GET
+
+```
+const axios = require('axios');
+
+let config = {
+  method: 'get',
+  url: `http://localhost:8080/api/orders/{orderID}`,
+  headers: {
+    'Authorization': `Bearer ${token}`
+  },
+  data : data
+};
+
+axios(config)
+```
+
+#### Protected `api/orders` POST
+
+```
+const axios = require('axios');
+
+let data = JSON.stringify({
+  "userID": String,
+  "paymentMethod": String,
+  "coupon": String,
+  "status": String {pending, proccessing, shipped, delvired, canceled },
+  "products": [String],
+  "totalValue": String
 });
+
+let config = {
+  method: 'post',
+  url: 'http://localhost:8080/api/orders',
+  headers: {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  },
+  data : data
+};
+
+axios(config)
+```
+
+#### Protected `api/orders/:id` PUT
+
+```
+const axios = require('axios');
+
+let data = JSON.stringify({
+  "paymentMethod": String,
+  "coupon": String,
+  "status": String {pending, proccessing, shipped, delvired, canceled },
+  "products": [String],
+  "totalValue": String
+});
+
+let config = {
+  method: 'put',
+  url: 'http://localhost:8080/api/orders/{orderID}',
+  headers: {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  },
+  data : data
+};
+
+axios(config)
+```
+
+#### Protected `api/orders/:id` DELETE
+
+```
+const axios = require('axios');
+
+let config = {
+  method: 'delete',
+  url: 'http://localhost:8080/api/orders/{orderID}',
+  headers: {
+    'Authorization': `Bearer ${token}`
+  }
+};
+
+axios(config)
 ```
