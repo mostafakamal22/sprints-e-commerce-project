@@ -196,8 +196,7 @@ let config = {
   url: `http://localhost:8080/api/orders`,
   headers: {
     'Authorization': `Bearer ${token}`
-  },
-  data : data
+  }
 };
 
 axios(config)
@@ -213,8 +212,7 @@ let config = {
   url: `http://localhost:8080/api/orders/{orderID}`,
   headers: {
     'Authorization': `Bearer ${token}`
-  },
-  data : data
+  }
 };
 
 axios(config)
@@ -281,6 +279,101 @@ const axios = require('axios');
 let config = {
   method: 'delete',
   url: 'http://localhost:8080/api/orders/{orderID}',
+  headers: {
+    'Authorization': `Bearer ${token}`
+  }
+};
+
+axios(config)
+```
+
+#### `api/products` GET
+
+```
+const axios = require('axios');
+
+let config = {
+  method: 'get',
+  url: `http://localhost:8080/api/products`,
+};
+
+axios(config)
+```
+
+#### `api/products/:id` GET
+
+```
+const axios = require('axios');
+
+let config = {
+  method: 'get',
+  url: `http://localhost:8080/api/products/{productID}`
+};
+
+axios(config)
+```
+
+#### Protected `api/products` POST
+
+```
+const axios = require('axios');
+
+let data = JSON.stringify({
+  "userID": String,
+  "paymentMethod": String,
+  "coupon": String,
+  "status": String {pending, proccessing, shipped, delvired, canceled },
+  "products": [String],
+  "totalValue": String
+});
+
+let config = {
+  method: 'post',
+  url: 'http://localhost:8080/api/products',
+  headers: {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  },
+  data : data
+};
+
+axios(config)
+```
+
+#### Protected `api/products/:id` PUT
+
+```
+const axios = require('axios');
+
+let data = JSON.stringify({
+  "paymentMethod": String,
+  "coupon": String,
+  "status": String {pending, proccessing, shipped, delvired, canceled },
+  "products": [String],
+  "totalValue": String
+});
+
+let config = {
+  method: 'put',
+  url: 'http://localhost:8080/api/products/{orderID}',
+  headers: {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  },
+  data : data
+};
+
+axios(config)
+```
+
+#### Protected `api/products/:id` DELETE
+
+```
+const axios = require('axios');
+
+let config = {
+  method: 'delete',
+  url: 'http://localhost:8080/api/products/{orderID}',
   headers: {
     'Authorization': `Bearer ${token}`
   }
