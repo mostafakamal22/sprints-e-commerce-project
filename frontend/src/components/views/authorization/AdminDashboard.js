@@ -33,13 +33,13 @@ const AdminDashboard = () => {
             <AdminToolbar />
             <Routes>
                 <Route path="/users" element={<UsersTool />} />
-                <Route path="/branches" element={<BranchesTool />} />
-                <Route path="/brands" element={<BrandsTool />} />
+                {/* <Route path="/branches" element={<BranchesTool />} />
+                <Route path="/brands" element={<BrandsTool />} /> */}
                 <Route path="/coupons" element={<CouponsTool />} />
                 <Route path="/images" element={<ImagesTool />} />
                 <Route path="/orders" element={<OrdersTool />} />
                 <Route path="/products" element={<ProductsTool />} />
-                <Route path="/categories" element={<CategoriesTool />} />
+                {/* <Route path="/categories" element={<CategoriesTool />} /> */}
                 <Route path="/" element={<AnalyticsTool />} />
             </Routes>
             <Footer />

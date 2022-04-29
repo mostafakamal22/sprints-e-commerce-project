@@ -17,14 +17,14 @@ const AdminToolbar = () => {
             name: "Users Tool",
             to: '/admin/dashboard/users'
         },
-        {
-            name: "Braches Tool",
-            to: '/admin/dashboard/branches'
-        },
-        {
-            name: "Brands Tool",
-            to: '/admin/dashboard/brands'
-        },
+        // {
+        //     name: "Braches Tool",
+        //     to: '/admin/dashboard/branches'
+        // },
+        // {
+        //     name: "Brands Tool",
+        //     to: '/admin/dashboard/brands'
+        // },
         {
             name: "Coupons Tool",
             to: '/admin/dashboard/coupons'
@@ -41,10 +41,10 @@ const AdminToolbar = () => {
             name: "Products Tool",
             to: '/admin/dashboard/products'
         },
-        {
-            name: "Categories Tool",
-            to: '/admin/dashboard/categories'
-        },
+        // {
+        //     name: "Categories Tool",
+        //     to: '/admin/dashboard/categories'
+        // },
         {
             name: "Analytics Tool",
             to: '/admin/dashboard/'

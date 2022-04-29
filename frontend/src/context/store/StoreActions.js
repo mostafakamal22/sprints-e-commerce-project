@@ -117,6 +117,66 @@ export const deleteImageAction = async (imageID) => {
     return res.status === 200 ? res.data : null
 }
 
+// Get orders from the DB
+export const getOrdersAction = async () => {
+    /* Send data to API to add the orders */
+    const config = {
+        method: "get",
+        url: `/api/orders`,
+        headers: {
+            'Authorization': token
+        }
+      };
+    const res = await axios(config)
+    return res.status === 200 ? res.data : null
+}
+
+// Add a order to the DB
+export const addOrderAction = async (orderData) => {
+    /* Send data to API to add the order */
+    const config = {
+        method: 'post',
+        url: '/api/orders',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
+        data: orderData
+    }
+    const res = await axios(config)
+    return res.status === 201 ? res.data : null
+}
+
+// edit a order on the DB
+export const editOrderAction = async (orderData) => {
+    /* Send data to API to add the order */
+    const config = {
+        method: 'put',
+        url: `/api/orders/${orderData.id}`,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
+        data: orderData
+      }
+    const res = await axios(config)
+    return res.status === 200 ? res.data : null
+}
+
+// Delete a order from the DB
+export const deleteOrderAction = async (orderID) => {
+    const config = {
+        method: 'delete',
+        url: `/api/orders/${orderID}`,
+        headers: {
+            'Authorization': token
+        },
+    }
+    /* Send data to API to delete the order */
+    const res = await axios(config)
+    return res.status === 200 ? res.data : null
+}
+
 // // Get user and repos
 // export const getUserAndRepos = async (login) => {
 //     const [user, repos] = await Promise.all([

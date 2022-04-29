@@ -86,7 +86,7 @@ const deleteOrder = asyncHandler(async (req, res) => {
             })
         } else {
             res.status(400)
-            throw new Error('Invalid product id')
+            throw new Error('Invalid order id')
         }
     } else {
         res.status(401)
