@@ -1,5 +1,7 @@
 # E-Commerce App Project
 
+![sprints-e-commerce-project](https://socialify.git.ci/mostafakamal22/sprints-e-commerce-project/image?language=1&name=1&owner=1&pattern=Solid&stargazers=1&theme=Auto)
+
 This project was created with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
